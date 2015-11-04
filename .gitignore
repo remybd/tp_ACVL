@@ -1,2 +1,5 @@
 *.ipr
 tp_ACVL.iws
+*.iml
+out
+.idea
