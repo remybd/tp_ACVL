@@ -6,6 +6,6 @@ package ElementsDiagramme;
  * @author Thibaut
  *
  */
-public abstract class Transition implements Element {
+public abstract class Transition extends Sujet implements Element {
 
 }

@@ -4,15 +4,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Toolkit;
 
+import com.company.Controlleur;
+import com.mxgraph.view.mxGraph;
 
 /**
  * Created by Jerem on 11/10/2015.
  */
-public class EditeurGraphique extends JFrame {
+public class EditeurGraphique extends JFrame implements ObservateurVue {
 
     Toolkit tool = getToolkit();
 
-    public final EditeurGraphique editeur_graphique = this;
+    private mxGraph graph = new mxGraph();
+    private ControlleurDiagramme controlleur = null;
 
     //  Partie Barre de menu
     private JMenuBar menu = new JMenuBar();
@@ -27,7 +30,8 @@ public class EditeurGraphique extends JFrame {
     private JMenuItem consulter_manuel = new JMenuItem("Consulter Manuel");
     private JMenuItem a_propos = new JMenuItem("A Propos");
 
-    public EditeurGraphique(){
+    public EditeurGraphique(ControlleurDiagramme controlleur){
+        this.controlleur = controlleur;
         this.setTitle("Editeur Graphique");
         this.setVisible(true);
         this.setSize(tool.getScreenSize());
@@ -56,4 +60,12 @@ public class EditeurGraphique extends JFrame {
 
     }
 
+    /*public void ajoutEtat(){
+        CreationEtat window_etat = new CreationEtat();
+        window_etat.getValider().
+    }
+
+    /*void miseAjour(){
+
+    }*/
 }
