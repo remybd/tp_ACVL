@@ -8,4 +8,5 @@ package RessourcesExternes;
 >>>>>>> f3d9486c3f09a1615d954838355bac0f26c4bd12
  */
 public class Manuel {
+    private String chemin = "path/userGuide";
 }
