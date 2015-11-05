@@ -9,8 +9,6 @@ import java.awt.event.ActionListener;
  */
 public class MenuContextuel extends JPopupMenu {
 
-
-
     private JMenu ajouter = new JMenu("Ajouter");
     private JMenu etat = new JMenu("Etat");
     private JMenuItem etat_simple = new JMenuItem("Simple");
@@ -57,7 +55,7 @@ public class MenuContextuel extends JPopupMenu {
         ajouter_transition.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new CreationTransition();
+                new CreationTransition(((EditeurGraphique)getParent()).getControleur());
             }
         });
         ajouter.add(ajouter_transition);

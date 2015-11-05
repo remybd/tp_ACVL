@@ -14,8 +14,8 @@ public class CreationEtat extends FenetrePopup implements ActionListener{
     private JLabel nom_etat = new JLabel("Nom de l'etat");
     private JButton valider = new JButton("Valider");
 
-    public CreationEtat(ControlleurDiagramme controlleur){
-        super(controlleur);
+    public CreationEtat(ControleurDiagramme controleur){
+        super(controleur);
         JPanel centered = new JPanel();
         text_etat.setPreferredSize(new Dimension(150,30));
         centered.add(nom_etat);

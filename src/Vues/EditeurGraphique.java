@@ -15,7 +15,7 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
     Toolkit tool = getToolkit();
 
     private mxGraph graph = new mxGraph();
-    private ControlleurDiagramme controlleur = null;
+    private ControleurDiagramme controleur = null;
 
     //  Partie Barre de menu
     private JMenuBar menu = new JMenuBar();
@@ -30,8 +30,8 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
     private JMenuItem consulter_manuel = new JMenuItem("Consulter Manuel");
     private JMenuItem a_propos = new JMenuItem("A Propos");
 
-    public EditeurGraphique(ControlleurDiagramme controlleur){
-        this.controlleur = controlleur;
+    public EditeurGraphique(ControleurDiagramme controleur){
+        this.controleur = controleur;
         this.setTitle("Editeur Graphique");
         this.setVisible(true);
         this.setSize(tool.getScreenSize());
@@ -60,9 +60,13 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
 
     }
 
-    /*public void ajoutEtat(){
+    public void ajoutEtat(){
         CreationEtat window_etat = new CreationEtat();
-        window_etat.getValider().
+        //window_etat.getValider().
+    }
+
+    public ControleurDiagramme getControleur(){
+        return controleur;
     }
 
     /*void miseAjour(){

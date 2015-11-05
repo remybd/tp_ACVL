@@ -9,14 +9,14 @@ import java.awt.*;
 public class FenetrePopup extends JFrame{
 
     private JPanel pan = new JPanel();
-    private ControlleurDiagramme controlleur = null;
+    private ControleurDiagramme controleur = null;
 
-    public FenetrePopup(ControlleurDiagramme controlleur){
+    public FenetrePopup(ControleurDiagramme controleur){
         pan.setLayout(new BorderLayout());
         this.setVisible(true);
         this.setSize(700,500);
         this.setLocationRelativeTo(null);
-        this.controlleur = controlleur;
+        this.controleur = controleur;
     }
 
     public JPanel getPan() {
