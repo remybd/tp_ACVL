@@ -1,5 +1,6 @@
 package ElementsDiagramme;
 
+import Vues.Observateur;
 
 /**
  *  TODO
@@ -8,4 +9,7 @@ package ElementsDiagramme;
  */
 public abstract class Transition extends Sujet implements Element {
 
+	public Transition(Observateur obs){
+		super(obs);
+	}
 }

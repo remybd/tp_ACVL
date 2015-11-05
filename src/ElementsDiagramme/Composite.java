@@ -10,8 +10,8 @@ import Vues.Observateur;
 public class Composite extends EtatIntermediaire {
 	private Conteneur _fils;
 
-	public Composite(String nom, Conteneur fils){
-		super(nom);
+	public Composite(Observateur obs, String nom, Conteneur fils){
+		super(obs, nom);
 		this.setFils(fils);
 	}
 	
@@ -22,22 +22,4 @@ public class Composite extends EtatIntermediaire {
 	public void setFils(Conteneur _fils) {
 		this._fils = _fils;
 	}
-
-	@Override
-	public void attache(Observateur observateur) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void detache(Observateur observateur) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void informe() {
-		// TODO Auto-generated method stub
-		
-	}	
 }

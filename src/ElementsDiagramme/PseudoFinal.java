@@ -10,8 +10,8 @@ import Vues.Observateur;
 public class PseudoFinal  extends Etat {
 	private TransitionFinale _trans;
 
-	public PseudoFinal(String nom, TransitionFinale transitionFinale){
-		super(nom);
+	public PseudoFinal(Observateur obs, String nom, TransitionFinale transitionFinale){
+		super(obs, nom);
 		this.setTransition(transitionFinale);
 	}
 	
@@ -21,24 +21,6 @@ public class PseudoFinal  extends Etat {
 
 	public void setTransition(TransitionFinale _trans) {
 		this._trans = _trans;
-	}
-
-	@Override
-	public void attache(Observateur observateur) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void detache(Observateur observateur) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void informe() {
-		// TODO Auto-generated method stub
-		
 	}
 	
 }

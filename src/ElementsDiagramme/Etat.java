@@ -1,5 +1,6 @@
 package ElementsDiagramme;
 
+import Vues.Observateur;
 
 /**
  *  TODO
@@ -9,7 +10,8 @@ package ElementsDiagramme;
 public abstract class Etat extends Sujet implements Element {
 	private String _nom;
 	
-	public Etat(String nom){
+	public Etat(Observateur obs, String nom){
+		super(obs);
 		this.setNom(nom);
 	}
 	

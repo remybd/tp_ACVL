@@ -12,7 +12,8 @@ public class TransitionIntermediaire extends Transition {
 	private EtatIntermediaire _source;
 	private EtatIntermediaire _dest;
 	
-	public TransitionIntermediaire(String etiquette, EtatIntermediaire etatSource, EtatIntermediaire etatDest){
+	public TransitionIntermediaire(Observateur obs, String etiquette, EtatIntermediaire etatSource, EtatIntermediaire etatDest){
+		super(obs);
 		this.setEtiquette(etiquette);
 		this.setSource(etatSource);
 		this.setDestination(etatDest);
@@ -40,23 +41,5 @@ public class TransitionIntermediaire extends Transition {
 
 	public void setDestination(EtatIntermediaire _dest) {
 		this._dest = _dest;
-	}
-
-	@Override
-	public void attache(Observateur observateur) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void detache(Observateur observateur) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void informe() {
-		// TODO Auto-generated method stub
-		
 	}
 }

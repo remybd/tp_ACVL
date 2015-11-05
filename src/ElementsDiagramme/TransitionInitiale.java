@@ -10,7 +10,8 @@ import Vues.Observateur;
 public class TransitionInitiale extends Transition {
 	private PseudoInitial _etatInit;
 	
-	public TransitionInitiale(PseudoInitial etatInitial){
+	public TransitionInitiale(Observateur obs, PseudoInitial etatInitial){
+		super(obs);
 		this.setPseudoInitial(etatInitial);
 	}
 
@@ -20,25 +21,6 @@ public class TransitionInitiale extends Transition {
 
 	public void setPseudoInitial(PseudoInitial _etatInit) {
 		this._etatInit = _etatInit;
-	}
-
-	@Override
-	public void attache(Observateur observateur) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void detache(Observateur observateur) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void informe() {
-		// TODO Auto-generated method stub
-		
-	}
-	
+	}	
 	
 }

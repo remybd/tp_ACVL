@@ -14,7 +14,8 @@ public class TransitionFinale extends Transition {
 	private String _etiquette;
 	private HashSet<PseudoFinal> _etatsFinaux = new HashSet<PseudoFinal>();
 	
-	public TransitionFinale(String etiquette){
+	public TransitionFinale(Observateur obs, String etiquette){
+		super(obs);
 		this.setEtiquette(etiquette);
 	}
 	
@@ -35,23 +36,5 @@ public class TransitionFinale extends Transition {
 			_etatsFinaux = new HashSet<PseudoFinal>();
 			
 		this._etatsFinaux.add(etatFinal);
-	}
-
-	@Override
-	public void attache(Observateur observateur) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void detache(Observateur observateur) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void informe() {
-		// TODO Auto-generated method stub
-		
 	}
 }
