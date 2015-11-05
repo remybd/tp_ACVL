@@ -6,8 +6,12 @@ package ElementsDiagramme;
  * @author Thibaut
  *
  */
-public abstract class Etat implements Element {
+public abstract class Etat extends Sujet implements Element {
 	private String _nom;
+	
+	public Etat(String nom){
+		this.setNom(nom);
+	}
 	
 	public String getNom(){
 		return _nom;

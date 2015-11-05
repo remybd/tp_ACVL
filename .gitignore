@@ -4,3 +4,7 @@ tp_ACVL.iws
 out
 .idea
 *.~vsdx
+/bin/
+
+.classpath
+*.project
