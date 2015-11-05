@@ -1,5 +1,6 @@
 package Controleurs;
 
+import ElementsDiagramme.Conteneur;
 import ElementsDiagramme.Element;
 
 import java.util.HashMap;

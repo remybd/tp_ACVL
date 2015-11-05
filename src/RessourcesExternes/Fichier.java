@@ -1,5 +1,7 @@
 package RessourcesExternes;
 
+import ElementsDiagramme.Conteneur;
+
 /**
  * Created by rémy on 05/11/2015.
  */
@@ -7,7 +9,7 @@ public class Fichier {
     private String nom;
     private String extension;
     private String chemin;
-    private Conteneneur maintConteneur;
+    private Conteneur maintConteneur;
 
     public Fichier (String nom, String extension, String chemin, String mainConteneur){
         this.nom = nom;
