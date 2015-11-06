@@ -1,5 +1,6 @@
 package ElementsDiagramme;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
 import Erreurs.Erreur;

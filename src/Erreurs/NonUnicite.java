@@ -5,7 +5,7 @@ import ElementsDiagramme.Etat;
 /**
  * Created by rémy on 05/11/2015.
  */
-public abstract class NonUnicite extends ErreurEtat{
+public class NonUnicite extends ErreurEtat{
     private Etat etatMemeNom;
 
     public NonUnicite(Etat etat, Etat etatMemeNom, int importance){
