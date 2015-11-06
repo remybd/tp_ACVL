@@ -64,7 +64,7 @@ public class MenuContextuel extends JPopupMenu {
         modifier_etat.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new EditionEtat();
+                new EtatGraph();
             }
         });
         modifier.add(modifier_etat);
@@ -72,7 +72,7 @@ public class MenuContextuel extends JPopupMenu {
         modifier_transition.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new EditionTransition();
+                new TransitionGraph();
             }
         });
         modifier.add(modifier_transition);
