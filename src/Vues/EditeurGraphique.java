@@ -2,6 +2,8 @@ package Vues;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -10,6 +12,7 @@ import javax.swing.JMenuItem;
 
 import Controleurs.ControleurDiagramme;
 
+import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.view.mxGraph;
 
 /**
@@ -57,10 +60,26 @@ public class EditeurGraphique extends JFrame implements Observateur {
 		
 		this.setJMenuBar(menu);
 		
+		        
+        mxGraph graph = new mxGraph();
+        Object parent = graph.getDefaultParent();
+     
+        graph.getModel().beginUpdate();
+        try {
+          Object v1 = graph.insertVertex(parent, null, "Hello", 20, 20, 80, 30);
+          Object v2 = graph.insertVertex(parent, null, "World!", 240, 150, 80, 30);
+          graph.insertEdge(parent, null, "Edge", v1, v2);
+        } finally {
+          graph.getModel().endUpdate();
+        }
+     
+        mxGraphComponent graphComponent = new mxGraphComponent(graph);
+        getContentPane().add(graphComponent);
 		this.addMouseListener(new MenuContextuelListener());
+		
 	}
 	
-	static public EditeurGraphique instance() {
+	public static EditeurGraphique instance() {
 		return instanceUnique;
 	}
 	
@@ -70,12 +89,12 @@ public class EditeurGraphique extends JFrame implements Observateur {
 
 
 
-  /*  public void ajoutEtat(){
-        CreationEtat window_etat = new CreationEtat();
+    public void ajoutEtat(){
+      //  CreationEtat window_etat = new CreationEtat();
         //window_etat.getValider().
     }
 
-    public ControleurDiagramme getControleur(){
+   /* public ControleurDiagramme getControleur(){
         return controleur;
     }*/
 
@@ -84,7 +103,6 @@ public class EditeurGraphique extends JFrame implements Observateur {
 		// TODO Auto-generated method stub
 		
 	}
-
     /*void miseAjour(){
 
     }*/

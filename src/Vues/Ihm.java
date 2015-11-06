@@ -1,5 +1,10 @@
 package Vues;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.JFrame;
+
 import ElementsDiagramme.Etat;
 import ElementsDiagramme.Transition;
 
@@ -30,4 +35,18 @@ public class Ihm {
 
         return null;
     }
+    
+	public static void main(String[] args) {
+	    Ihm frame = Ihm.instance();
+	    frame.getEdGraphique().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    frame.getEdGraphique().setSize(400, 320);
+	    frame.getEdGraphique().setVisible(true);
+	/*    frame.getEdGraphique().addMouseListener(new MouseAdapter() { 
+	    	public void mousePressed(MouseEvent e) {
+	    		System.out.println("test");
+	    	}
+	    	
+	    });*/
+	    
+	  }
 }
