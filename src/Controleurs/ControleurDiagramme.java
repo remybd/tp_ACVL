@@ -26,13 +26,13 @@ public class ControleurDiagramme {
         this.ihm = ihm;
     }
 
-    public void ajouterTransition(Transition t){
+    public void ajouterTransition(String type, String etiquette, Etat s, Etat d){
         mainConteneur.addElmt(t);
         TransitionGraph tg = ihm.createTransitionGraph(t);
         correspondance.put(tg,t);
     }
 
-    public void ajouterEtat(Etat e){
+    public void ajouterEtat(String type, String nom){
         mainConteneur.addElmt(e);
         EtatGraph eg = ihm.createEtatGraph(e);
         correspondance.put(eg,e);

@@ -5,4 +5,6 @@ package ElementsDiagramme;
  */
 public interface Element {
 	public void supprimer(); //suppression de l'élément this
+    boolean isEtatIntermediaire();
+    boolean isTransition();
 }
