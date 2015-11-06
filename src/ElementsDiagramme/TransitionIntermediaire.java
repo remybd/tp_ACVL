@@ -1,6 +1,6 @@
 package ElementsDiagramme;
 
-import Vues.Observateur;
+import Vues.ObservateurVue;
 
 /**
  *  TODO
@@ -12,7 +12,7 @@ public class TransitionIntermediaire extends Transition {
 	private EtatIntermediaire _source;
 	private EtatIntermediaire _dest;
 	
-	public TransitionIntermediaire(Observateur obs, String etiquette, EtatIntermediaire etatSource, EtatIntermediaire etatDest){
+	public TransitionIntermediaire(ObservateurVue obs, String etiquette, EtatIntermediaire etatSource, EtatIntermediaire etatDest){
 		super(obs);
 		this.setEtiquette(etiquette);
 		this.setSource(etatSource);

@@ -2,7 +2,7 @@ package ElementsDiagramme;
 
 import java.util.HashSet;
 
-import Vues.Observateur;
+import Vues.ObservateurVue;
 
 /**
  *  TODO
@@ -12,7 +12,7 @@ import Vues.Observateur;
 public class Composite extends EtatIntermediaire {
 	private Conteneur _fils;
 
-	public Composite(Observateur obs, String nom, Conteneur fils){
+	public Composite(ObservateurVue obs, String nom, Conteneur fils){
 		super(obs, nom);
 		this.setFils(fils);
 	}

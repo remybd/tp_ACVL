@@ -4,13 +4,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Toolkit;
 
-import com.company.Controlleur;
+import Controleurs.ControleurDiagramme;
 import com.mxgraph.view.mxGraph;
 
 /**
  * Created by Jerem on 11/10/2015.
  */
+
 public class EditeurGraphique extends JFrame implements ObservateurVue {
+
+    private ZoneErreur zone_erreur;
 
     Toolkit tool = getToolkit();
 
@@ -61,7 +64,7 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
     }
 
     public void ajoutEtat(){
-        CreationEtat window_etat = new CreationEtat();
+        CreationEtat window_etat = new CreationEtat(controleur);
         //window_etat.getValider().
     }
 

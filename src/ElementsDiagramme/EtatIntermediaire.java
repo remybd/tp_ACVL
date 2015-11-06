@@ -2,8 +2,7 @@ package ElementsDiagramme;
 
 import java.util.HashSet;
 
-import Erreurs.Erreur;
-import Vues.Observateur;
+import Vues.ObservateurVue;
 
 /**
  *  TODO
@@ -16,7 +15,7 @@ public abstract class EtatIntermediaire extends Etat{
 	//transitions dont la source est this
 	private HashSet<TransitionIntermediaire> _sources = new HashSet<TransitionIntermediaire>();
 	
-	public EtatIntermediaire(Observateur obs, String nom){
+	public EtatIntermediaire(ObservateurVue obs, String nom){
 		super(obs, nom);
 	}
 	

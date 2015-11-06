@@ -64,7 +64,7 @@ public class MenuContextuel extends JPopupMenu {
         modifier_etat.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new EtatGraph();
+                new EtatGraph((EditeurGraphique)getParent()).getControleur());
             }
         });
         modifier.add(modifier_etat);
