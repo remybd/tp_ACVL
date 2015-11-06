@@ -22,4 +22,5 @@ public abstract class Etat extends Sujet implements Element {
 	public void setNom(String nom){
 		_nom = nom;
 	}
+
 }
