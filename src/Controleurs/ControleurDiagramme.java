@@ -2,9 +2,12 @@ package Controleurs;
 
 import ElementsDiagramme.Conteneur;
 import ElementsDiagramme.Element;
+import ElementsDiagramme.Etat;
+import ElementsDiagramme.Transition;
 import Erreurs.Erreur;
 import Vues.ElementGraphique;
 import Vues.EtatGraph;
+import Vues.Ihm;
 import Vues.TransitionGraph;
 
 import java.util.HashMap;
@@ -15,18 +18,24 @@ import java.util.HashSet;
  */
 public class ControleurDiagramme {
     private Conteneur mainConteneur;
+    private Ihm ihm;
     private HashMap<ElementGraphique,Element> correspondance;
 
-    public ControleurDiagramme(Conteneur mainConteneur){
+    public ControleurDiagramme(Conteneur mainConteneur, Ihm ihm){
         this.mainConteneur = mainConteneur;
+        this.ihm = ihm;
     }
 
-    public void ajouterTransition(TransitionGraph t){
-
+    public void ajouterTransition(Transition t){
+        mainConteneur.addElmt(t);
+        TransitionGraph tg = ihm.createTransitionGraph(t);
+        correspondance.put(tg,t);
     }
 
-    public void ajouterEtat(EtatGraph e){
-
+    public void ajouterEtat(Etat e){
+        mainConteneur.addElmt(e);
+        EtatGraph eg = ihm.createEtatGraph(e);
+        correspondance.put(eg,e);
     }
 
     public void renommerEtat(EtatGraph eg, String nom){

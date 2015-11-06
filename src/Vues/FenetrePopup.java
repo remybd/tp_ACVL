@@ -1,5 +1,7 @@
 package Vues;
 
+import Controleurs.ControleurDiagramme;
+
 import javax.swing.*;
 import java.awt.*;
 
