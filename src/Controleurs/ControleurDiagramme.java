@@ -5,10 +5,7 @@ import ElementsDiagramme.Element;
 import ElementsDiagramme.Etat;
 import ElementsDiagramme.Transition;
 import Erreurs.Erreur;
-import Vues.ElementGraphique;
-import Vues.EtatGraph;
-import Vues.Ihm;
-import Vues.TransitionGraph;
+import Vues.*;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -32,7 +29,7 @@ public class ControleurDiagramme {
         correspondance.put(tg,t);
     }
 
-    public void ajouterEtat(String type, String nom){
+    public void ajouterEtat(EnumEtat type, String nom){
         mainConteneur.addElmt(e);
         EtatGraph eg = ihm.createEtatGraph(e);
         correspondance.put(eg,e);
