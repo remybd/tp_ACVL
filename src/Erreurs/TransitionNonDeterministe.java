@@ -6,7 +6,7 @@ import ElementsDiagramme.Transition;
 /**
  * Created by rémy on 05/11/2015.
  */
-public abstract class TransitionNonDeterministe extends Erreur{
+public class TransitionNonDeterministe extends Erreur{
     private Transition transitionParent;
 
     public TransitionNonDeterministe(Transition transition, int importance){

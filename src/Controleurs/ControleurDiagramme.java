@@ -153,8 +153,10 @@ public class ControleurDiagramme {
     }
 
     public HashSet<Erreur> chercherErreurs(){
-
-        return new HashSet<Erreur>();
+    	if(mainConteneur == null)
+    		return new HashSet<Erreur>();
+    	
+    	return mainConteneur.chercherErreurs();
     }
 
     public HashMap<ElementGraphique, Element> getCorrespondance() {

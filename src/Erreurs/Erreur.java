@@ -6,6 +6,10 @@ import ElementsDiagramme.Sujet;
  * Created by rémy on 05/11/2015.
  */
 public abstract class Erreur extends Sujet{
+	public final static int ERR_UNICITE_ETAT = 1;
+	public final static int ERR_ETAT_BLOQUANT = 1;
+	public final static int ERR_TRANSITION_NON_DETERM = 1;
+	
     private String nom;
     private int importance;
 
