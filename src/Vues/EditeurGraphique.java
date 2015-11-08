@@ -3,26 +3,42 @@ import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Hashtable;
 
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import Controleurs.ControleurDiagramme;
 
 import com.mxgraph.model.mxCell;
 import com.mxgraph.model.mxGeometry;
 import com.mxgraph.swing.mxGraphComponent;
+import com.mxgraph.util.mxConstants;
 import com.mxgraph.view.mxGraph;
+import com.mxgraph.view.mxStylesheet;
 
 /**
  * Created by Jerem on 11/10/2015.
  */
-public class EditeurGraphique extends JFrame implements Observateur {
 
-	final private static EditeurGraphique instanceUnique = new EditeurGraphique();
+public class EditeurGraphique extends JFrame implements ObservateurVue {
 
+    private ZoneErreur zone_erreur;
+    private JPanel content = new JPanel();
+
+    final private static EditeurGraphique instanceUnique = new EditeurGraphique();
+
+    Toolkit tool = getToolkit();
+
+    private Ihm ihm = Ihm.instance();
+
+    //-------------------------------------------
     //  Partie Barre de menu
     private JMenuBar menu = new JMenuBar();
 
@@ -34,17 +50,20 @@ public class EditeurGraphique extends JFrame implements Observateur {
     private JMenuItem fermer = new JMenuItem("Fermer");
 
     private JMenuItem consulter_manuel = new JMenuItem("Consulter Manuel");
-    private JMenuItem a_propos = new JMenuItem("A Propos");
-	
+    private JMenuItem a_propos = new JMenuItem("A Propos");	
     
     //Partie gestionnaire de graphe
   //  private ArrayList<mxCell> 
 	private mxGraph graph = new mxGraph();
-
+	
+    private JTextField filename = new JTextField();
+    private JTextField dir = new JTextField();
     
 	private EditeurGraphique() {
+
+
+
 		this.setTitle("Editeur Graphique");
-		this.setVisible(true);
 		this.setSize(tool.getScreenSize());
 		
 		createMenu();
@@ -66,7 +85,7 @@ public class EditeurGraphique extends JFrame implements Observateur {
     		mxGeometry geometry = new mxGeometry(20, 20, 80, 30);
     		geometry.setRelative(false);
 
-    		vertex = new mxCell("Hello", geometry, null);
+    		vertex = new mxCell("Hello", geometry, "ROUNDED");
     		vertex.setId(null);
     		vertex.setVertex(true);
     		vertex.setConnectable(true);
@@ -90,6 +109,14 @@ public class EditeurGraphique extends JFrame implements Observateur {
      //   graphComponent.getComponents()[0]..addMouseListener(new MenuContextuelListener(graphComponent.getComponent(0)));
  ///       graphComponent.getGraphControl().getComponentListeners()[0].
    //     graphComponent.
+        
+        mxStylesheet stylesheet = graph.getStylesheet();
+        Hashtable<String, Object> style = new Hashtable<String, Object>();
+        style.put(mxConstants.STYLE_OPACITY, 50);
+        style.replace(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_CONNECTOR);
+        style.put(mxConstants.STYLE_FONTCOLOR, "#774400");
+        stylesheet.putCellStyle("ROUNDED", style);
+        
         System.out.println("hsit" + graphComponent.getCellAt(19,19));
         System.out.println("hzesit");
         System.out.println(graphComponent.getCellAt(20,20).equals(vertex) + "HOURAAAA");
@@ -101,14 +128,47 @@ public class EditeurGraphique extends JFrame implements Observateur {
 	    setSize(400, 320);
 	    setVisible(true);
 	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      //  mxConstants.STYLE_SOURCE_PORT;
 
 	}
 
 	private void createMenu() {
 		// Ajout des sous-items aux items de la barre de menu
+        ouvrir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser c = new JFileChooser();
+                int rVal = c.showSaveDialog(EditeurGraphique.this);
+                if (rVal == JFileChooser.APPROVE_OPTION) {
+                    filename.setText(c.getSelectedFile().getName());
+                    dir.setText(c.getCurrentDirectory().toString());
+                }
+                if (rVal == JFileChooser.CANCEL_OPTION) {
+                    filename.setText("");
+                    dir.setText("");
+                }
+            }
+        });
+        enregistrer.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser c = new JFileChooser();
+                // Demonstrate "Save" dialog:
+                int rVal = c.showSaveDialog(EditeurGraphique.this);
+                if (rVal == JFileChooser.APPROVE_OPTION) {
+                    filename.setText(c.getSelectedFile().getName());
+                    dir.setText(c.getCurrentDirectory().toString());
+                }
+                if (rVal == JFileChooser.CANCEL_OPTION) {
+                    filename.setText("You pressed cancel");
+                    dir.setText("");
+                }
+            }
+        });
 		fichier.add(ouvrir);
 		fichier.add(enregistrer);
 		fichier.addSeparator();
+
 		fermer.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
@@ -125,32 +185,23 @@ public class EditeurGraphique extends JFrame implements Observateur {
 		
 		this.setJMenuBar(menu);
 	}
-	
-	public static EditeurGraphique instance() {
-		return instanceUnique;
-	}
-	
-    Toolkit tool = getToolkit();   
-
 
     public void ajoutEtat(){
       //  CreationEtat window_etat = new CreationEtat();
         //window_etat.getValider().
     	//graph.
     }
-
-   /* public ControleurDiagramme getControleur(){
-        return controleur;
-    }*/
+    	
+    public ControleurDiagramme getControleur(){
+        return ihm.getControleur();
+    }
 
 	@Override
 	public void miseAJour() {
 		// TODO Auto-generated method stub
 		
 	}
-    /*void miseAjour(){
 
-    }*/
 	
 	/*	JPanel mainPanel = new JPanel();
 	  mainPanel.addMouseListener(new MouseAdapter() {
@@ -195,4 +246,8 @@ public class EditeurGraphique extends JFrame implements Observateur {
   graphComponent.
   LayoutManager.pack();
 */
+    public static EditeurGraphique instance() {
+        return instanceUnique;
+    }
+
 }

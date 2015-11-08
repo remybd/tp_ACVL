@@ -1,22 +1,22 @@
 package ElementsDiagramme;
 
-import Vues.Observateur;
+import Vues.ObservateurVue;
 
 /**
  * Created by rémy on 05/11/2015.
  */
 public abstract class Sujet {
-	private Observateur _obs;
+	private ObservateurVue _obs;
 	
-	public Sujet(Observateur obs){
+	public Sujet(ObservateurVue obs){
 		this.setObservateur(obs);
 	}
 
-	public Observateur getObservateur() {
+	public ObservateurVue getObservateur() {
 		return _obs;
 	}
 
-	public void setObservateur(Observateur _obs) {
+	public void setObservateur(ObservateurVue _obs) {
 		this._obs = _obs;
 	}
 }

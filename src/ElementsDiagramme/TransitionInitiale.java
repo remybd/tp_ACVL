@@ -1,6 +1,6 @@
 package ElementsDiagramme;
 
-import Vues.Observateur;
+import Vues.ObservateurVue;
 
 /**
  *  TODO
@@ -10,7 +10,7 @@ import Vues.Observateur;
 public class TransitionInitiale extends Transition {
 	private PseudoInitial _etatInit;
 	
-	public TransitionInitiale(Observateur obs, PseudoInitial etatInitial){
+	public TransitionInitiale(ObservateurVue obs, PseudoInitial etatInitial){
 		super(obs);
 		this.setPseudoInitial(etatInitial);
 	}

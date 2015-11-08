@@ -1,6 +1,6 @@
 package ElementsDiagramme;
 
-import Vues.Observateur;
+import Vues.ObservateurVue;
 
 /**
  *  TODO
@@ -10,7 +10,7 @@ import Vues.Observateur;
 public class PseudoFinal  extends Etat {
 	private TransitionFinale _trans;
 
-	public PseudoFinal(Observateur obs, String nom, TransitionFinale transitionFinale){
+	public PseudoFinal(ObservateurVue obs, String nom, TransitionFinale transitionFinale){
 		super(obs, nom);
 		this.setTransition(transitionFinale);
 	}

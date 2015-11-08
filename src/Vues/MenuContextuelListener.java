@@ -16,6 +16,7 @@ public class MenuContextuelListener extends MouseAdapter {
 		this.GraphComponent = GraphComponent;
 	}
 	
+
         public void mousePressed(MouseEvent e){
             if (e.isPopupTrigger())
                 doPop(e);
@@ -38,5 +39,6 @@ public class MenuContextuelListener extends MouseAdapter {
         		
             menu.show(e.getComponent(), e.getX(), e.getY());
         }
+       
 
 }

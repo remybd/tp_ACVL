@@ -8,10 +8,11 @@ import Controleurs.ControleurDiagramme;
 public class Suppression extends FenetrePopup {
 
 	public Suppression(ControleurDiagramme controleur) {
-		super(controleur);
+	//	super(controleur);
 		// TODO Auto-generated constructor stub
 	}
  /*   public Suppression(){
 
     }*/
+
 }

@@ -9,6 +9,8 @@ import java.awt.event.ActionListener;
  */
 public class MenuContextuel extends JPopupMenu {
 
+    private Ihm ihm = Ihm.instance();
+
     private JMenu ajouter = new JMenu("Ajouter");
     private JMenu etat = new JMenu("Etat");
     private JMenuItem etat_simple = new JMenuItem("Simple");
@@ -26,24 +28,41 @@ public class MenuContextuel extends JPopupMenu {
     private JMenuItem modifier_conteneur = new JMenuItem("Modifier le conteneur parent");
 
     public MenuContextuel(EnumObjetSelectionne objSelectionne){
-        etat_simple.addActionListener(new ActionListener() {
+        creationMenu();
+        
+        if(objSelectionne.equals(EnumObjetSelectionne.AUCUN)) {
+        	ajouter_transition.setEnabled(false);
+        	modifier.setEnabled(false);
+        	supprimer.setEnabled(false);
+        	modifier_conteneur.setEnabled(false);
+        } else if(objSelectionne.equals(EnumObjetSelectionne.ETAT)) {
+        	modifier_transition.setEnabled(false);
+        } else if(objSelectionne.equals(EnumObjetSelectionne.TRANSITION)) {
+        	ajouter.setEnabled(false);
+        	modifier_etat.setEnabled(false);
+        	modifier_conteneur.setEnabled(false);
+        } 
+    }
+
+	private void creationMenu() {
+		etat_simple.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-           //     new CreationEtat();
+                new CreationEtat(EnumEtat.SIMPLE);
             }
         });
 
         etat_final.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-           //     new CreationEtat();
+                new CreationEtat(EnumEtat.FINAL);
             }
         });
 
         etat_composite.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            //    new CreationEtat();
+                new CreationEtat(EnumEtat.COMPOSITE);
             }
         });
         etat.add(etat_simple);
@@ -54,7 +73,7 @@ public class MenuContextuel extends JPopupMenu {
         ajouter_transition.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-           //     new CreationTransition(((EditeurGraphique)getParent()).getControleur());
+                new CreationTransition();
             }
         });
         ajouter.add(ajouter_transition);
@@ -63,7 +82,7 @@ public class MenuContextuel extends JPopupMenu {
         modifier_etat.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               // new EtatGraph();
+                new EditionEtat("");
             }
         });
         modifier.add(modifier_etat);
@@ -71,14 +90,20 @@ public class MenuContextuel extends JPopupMenu {
         modifier_transition.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-              //  new TransitionGraph();
+                new EditionTransition();
             }
         });
         modifier.add(modifier_transition);
 
         add(modifier);
         add(supprimer);
-        add(modifier_conteneur);
 
-    }
+        modifier_conteneur.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ChoixConteneur();
+            }
+        });
+        add(modifier_conteneur);
+	}
 }

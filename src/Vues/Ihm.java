@@ -1,12 +1,7 @@
 package Vues;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import Controleurs.ControleurDiagramme;
 
-import javax.swing.JFrame;
-
-import ElementsDiagramme.Etat;
-import ElementsDiagramme.Transition;
 
 /**
  * Created by r�my on 06/11/2015.
@@ -14,7 +9,7 @@ import ElementsDiagramme.Transition;
 public class Ihm {
 	final private static Ihm instanceUnique = new Ihm();
 	private EditeurGraphique edGraphique = EditeurGraphique.instance();
-
+    private ControleurDiagramme controleur;
 
 	private Ihm() {	}
 	
@@ -25,6 +20,10 @@ public class Ihm {
 	public EditeurGraphique getEdGraphique() {
 		return this.edGraphique;
 	}
+
+    public ControleurDiagramme getControleur(){
+        return controleur;
+    }
 	
     public TransitionGraph createTransitionGraph(Transition t){
 
@@ -53,4 +52,5 @@ public class Ihm {
 	    });*/
 	    
 	  }
+
 }

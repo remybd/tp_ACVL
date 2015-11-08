@@ -2,8 +2,7 @@ package ElementsDiagramme;
 
 import java.util.HashSet;
 
-import Erreurs.Erreur;
-import Vues.Observateur;
+import Vues.ObservateurVue;
 
 /**
  *  TODO
@@ -14,7 +13,7 @@ public class TransitionFinale extends Transition {
 	private String _etiquette;
 	private HashSet<PseudoFinal> _etatsFinaux = new HashSet<PseudoFinal>();
 	
-	public TransitionFinale(Observateur obs, String etiquette){
+	public TransitionFinale(ObservateurVue obs, String etiquette){
 		super(obs);
 		this.setEtiquette(etiquette);
 	}

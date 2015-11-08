@@ -1,6 +1,6 @@
 package ElementsDiagramme;
 
-import Vues.Observateur;
+import Vues.ObservateurVue;
 
 /**
  *  TODO
@@ -9,7 +9,7 @@ import Vues.Observateur;
  */
 public class Simple extends EtatIntermediaire{
 
-	public Simple(Observateur obs, String nom){
+	public Simple(ObservateurVue obs, String nom){
 		super(obs, nom);
 	}
 

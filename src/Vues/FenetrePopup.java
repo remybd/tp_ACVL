@@ -1,7 +1,5 @@
 package Vues;
 
-import Controleurs.ControleurDiagramme;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -11,14 +9,12 @@ import java.awt.*;
 public class FenetrePopup extends JFrame{
 
     private JPanel pan = new JPanel();
-    private ControleurDiagramme controleur = null;
 
-    public FenetrePopup(ControleurDiagramme controleur){
+    public FenetrePopup(){
         pan.setLayout(new BorderLayout());
         this.setVisible(true);
         this.setSize(700,500);
         this.setLocationRelativeTo(null);
-        this.controleur = controleur;
     }
 
     public JPanel getPan() {
