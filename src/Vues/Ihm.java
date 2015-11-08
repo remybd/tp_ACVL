@@ -1,14 +1,30 @@
 package Vues;
 
-import ElementsDiagramme.Element;
-import ElementsDiagramme.Etat;
-import ElementsDiagramme.Transition;
+import Controleurs.ControleurDiagramme;
+
 
 /**
- * Created by rémy on 06/11/2015.
+ * Created by rï¿½my on 06/11/2015.
  */
 public class Ihm {
+	final private static Ihm instanceUnique = new Ihm();
+	private EditeurGraphique edGraphique = EditeurGraphique.instance();
+    private ControleurDiagramme controleur;
 
+	private Ihm() {	}
+	
+	static public Ihm instance() {
+		return instanceUnique;
+	}
+
+	public EditeurGraphique getEdGraphique() {
+		return this.edGraphique;
+	}
+
+    public ControleurDiagramme getControleur(){
+        return controleur;
+    }
+	
     public TransitionGraph createTransitionGraph(Transition t){
 
         return null;
@@ -17,5 +33,9 @@ public class Ihm {
     public EtatGraph createEtatGraph(Etat e){
 
         return null;
+    }
+
+    public static void main(String[] args){
+        //instanceUnique.getEdGraphique();
     }
 }

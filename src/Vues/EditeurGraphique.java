@@ -1,11 +1,13 @@
 package Vues;
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.Toolkit;
 
 import Controleurs.ControleurDiagramme;
+import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.view.mxGraph;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Created by Jerem on 11/10/2015.
@@ -14,12 +16,16 @@ import com.mxgraph.view.mxGraph;
 public class EditeurGraphique extends JFrame implements ObservateurVue {
 
     private ZoneErreur zone_erreur;
+    private JPanel content = new JPanel();
+
+    final private static EditeurGraphique instanceUnique = new EditeurGraphique();
 
     Toolkit tool = getToolkit();
 
     private mxGraph graph = new mxGraph();
-    private ControleurDiagramme controleur = null;
+    private Ihm ihm = Ihm.instance();
 
+    //-------------------------------------------
     //  Partie Barre de menu
     private JMenuBar menu = new JMenuBar();
 
@@ -33,46 +39,99 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
     private JMenuItem consulter_manuel = new JMenuItem("Consulter Manuel");
     private JMenuItem a_propos = new JMenuItem("A Propos");
 
-    public EditeurGraphique(ControleurDiagramme controleur){
-        this.controleur = controleur;
-        this.setTitle("Editeur Graphique");
-        this.setVisible(true);
-        this.setSize(tool.getScreenSize());
+    private JTextField filename = new JTextField(), dir = new JTextField();
+	//-------------------------------------
 
-        // Ajout des sous-items aux items de la barre de menu
-        fichier.add(ouvrir);
-        fichier.add(enregistrer);
-        fichier.addSeparator();
-        fermer.addActionListener(new ActionListener() {
+	private EditeurGraphique() {		
+		this.setTitle("Editeur Graphique");
+		this.setSize(tool.getScreenSize());
+		
+		// Ajout des sous-items aux items de la barre de menu
+        ouvrir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.exit(0);
+                JFileChooser c = new JFileChooser();
+                int rVal = c.showSaveDialog(EditeurGraphique.this);
+                if (rVal == JFileChooser.APPROVE_OPTION) {
+                    filename.setText(c.getSelectedFile().getName());
+                    dir.setText(c.getCurrentDirectory().toString());
+                }
+                if (rVal == JFileChooser.CANCEL_OPTION) {
+                    filename.setText("");
+                    dir.setText("");
+                }
             }
         });
-        fichier.add(fermer);
+        enregistrer.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser c = new JFileChooser();
+                // Demonstrate "Save" dialog:
+                int rVal = c.showSaveDialog(EditeurGraphique.this);
+                if (rVal == JFileChooser.APPROVE_OPTION) {
+                    filename.setText(c.getSelectedFile().getName());
+                    dir.setText(c.getCurrentDirectory().toString());
+                }
+                if (rVal == JFileChooser.CANCEL_OPTION) {
+                    filename.setText("You pressed cancel");
+                    dir.setText("");
+                }
+            }
+        });
+		fichier.add(ouvrir);
+		fichier.add(enregistrer);
+		fichier.addSeparator();
 
-        aide.add(consulter_manuel);
-        aide.add(a_propos);
+		fermer.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        System.exit(0);
+		    }
+		});
+		fichier.add(fermer);
+		
+		aide.add(consulter_manuel);
+		aide.add(a_propos);
+		
+		menu.add(fichier);
+		menu.add(aide);
+		
+		this.setJMenuBar(menu);
 
-        menu.add(fichier);
-        menu.add(aide);
+        mxGraph graph = new mxGraph();
+        Object parent = graph.getDefaultParent();
 
-        this.setJMenuBar(menu);
+        graph.getModel().beginUpdate();
+        try {
+            Object v1 = graph.insertVertex(parent, null, "Hello", 20, 20, 80, 30);
+            Object v2 = graph.insertVertex(parent, null, "World!", 240, 150, 80, 30);
+            graph.insertEdge(parent, null, "Edge", v1, v2);
+        } finally {
+            graph.getModel().endUpdate();
+        }
 
-        this.addMouseListener(new MenuContextuelListener());
+        mxGraphComponent graphComponent = new mxGraphComponent(graph);
+        content.add(graphComponent);
+        content.addMouseListener(new MenuContextuelListener());
 
-    }
+        this.setContentPane(content);
 
-    public void ajoutEtat(){
-        CreationEtat window_etat = new CreationEtat(controleur);
-        //window_etat.getValider().
-    }
+        this.setVisible(true);
+
+	}
 
     public ControleurDiagramme getControleur(){
-        return controleur;
+        return ihm.getControleur();
     }
 
-    /*void miseAjour(){
+	@Override
+	public void miseAJour() {
+		// TODO Auto-generated method stub
+		
+	}
 
-    }*/
+    public static EditeurGraphique instance() {
+        return instanceUnique;
+    }
+
 }

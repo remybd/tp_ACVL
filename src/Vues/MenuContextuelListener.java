@@ -1,6 +1,5 @@
 package Vues;
 
-import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -8,6 +7,10 @@ import java.awt.event.MouseEvent;
  * Created by Jerem on 03/11/2015.
  */
 public class MenuContextuelListener extends MouseAdapter {
+
+    public MenuContextuelListener(){
+        System.out.println("Menu contextuel listener crée");
+    }
 
         public void mousePressed(MouseEvent e){
             if (e.isPopupTrigger())
