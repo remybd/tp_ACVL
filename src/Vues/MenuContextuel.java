@@ -25,26 +25,25 @@ public class MenuContextuel extends JPopupMenu {
 
     private JMenuItem modifier_conteneur = new JMenuItem("Modifier le conteneur parent");
 
-    public MenuContextuel(){
-
+    public MenuContextuel(EnumObjetSelectionne objSelectionne){
         etat_simple.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new CreationEtat();
+           //     new CreationEtat();
             }
         });
 
         etat_final.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new CreationEtat();
+           //     new CreationEtat();
             }
         });
 
         etat_composite.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new CreationEtat();
+            //    new CreationEtat();
             }
         });
         etat.add(etat_simple);
@@ -55,7 +54,7 @@ public class MenuContextuel extends JPopupMenu {
         ajouter_transition.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new CreationTransition(((EditeurGraphique)getParent()).getControleur());
+           //     new CreationTransition(((EditeurGraphique)getParent()).getControleur());
             }
         });
         ajouter.add(ajouter_transition);
@@ -64,7 +63,7 @@ public class MenuContextuel extends JPopupMenu {
         modifier_etat.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new EtatGraph();
+               // new EtatGraph();
             }
         });
         modifier.add(modifier_etat);
@@ -72,7 +71,7 @@ public class MenuContextuel extends JPopupMenu {
         modifier_transition.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new TransitionGraph();
+              //  new TransitionGraph();
             }
         });
         modifier.add(modifier_transition);

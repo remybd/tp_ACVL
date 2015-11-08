@@ -38,9 +38,13 @@ public class Ihm {
     
 	public static void main(String[] args) {
 	    Ihm frame = Ihm.instance();
-	    frame.getEdGraphique().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	    frame.getEdGraphique().setSize(400, 320);
-	    frame.getEdGraphique().setVisible(true);
+
+	  /*  JGraph graph = new JGraph();
+	    JFrame frame = new JFrame();
+	    frame.getContentPane().add(new JScrollPane(graph));
+	    frame.pack();
+	    frame.setVisible(true);*/
+	    
 	/*    frame.getEdGraphique().addMouseListener(new MouseAdapter() { 
 	    	public void mousePressed(MouseEvent e) {
 	    		System.out.println("test");
