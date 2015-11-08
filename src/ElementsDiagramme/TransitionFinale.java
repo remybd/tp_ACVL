@@ -36,4 +36,19 @@ public class TransitionFinale extends Transition {
 			
 		this._etatsFinaux.add(etatFinal);
 	}
+
+	@Override
+	public void supprimer() {
+
+	}
+
+	@Override
+	public boolean isEtatIntermediaire() {
+		return false;
+	}
+
+	@Override
+	public boolean isTransition() {
+		return false;
+	}
 }

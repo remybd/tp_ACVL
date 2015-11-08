@@ -25,5 +25,20 @@ public class PseudoInitial extends Etat {
 
 	public void setTransition(TransitionInitiale _trans) {
 		this._trans = _trans;
-	}	
+	}
+
+	@Override
+	public void supprimer() {
+
+	}
+
+	@Override
+	public boolean isEtatIntermediaire() {
+		return false;
+	}
+
+	@Override
+	public boolean isTransition() {
+		return false;
+	}
 }

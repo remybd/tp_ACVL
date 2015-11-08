@@ -29,17 +29,22 @@ public abstract class EtatIntermediaire extends Etat{
 			
 		this._dest.add(dest);
 	}
+    public void setDestinations(HashSet<TransitionIntermediaire> destinations){
+        _dest = destinations;
+    }
 	
 	public HashSet<TransitionIntermediaire> getSources() {
 		return _sources;
 	}
-	public void setSource(TransitionIntermediaire source) {
+	public void addSource(TransitionIntermediaire source) {
 		if(this._sources == null)
 			this._sources = new HashSet<TransitionIntermediaire>();
 			
 		this._sources.add(source);
 	}
-	
+	public void setSources(HashSet<TransitionIntermediaire> sources){
+        _sources = sources;
+    }
 
 	/**
 	 * 
@@ -53,5 +58,10 @@ public abstract class EtatIntermediaire extends Etat{
 		}
 		
 		return false;
+	}
+
+	@Override
+	public boolean isEtatIntermediaire() {
+		return true;
 	}
 }

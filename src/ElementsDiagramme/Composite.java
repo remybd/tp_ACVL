@@ -6,7 +6,6 @@ import java.util.HashSet;
 import Vues.ObservateurVue;
 import Erreurs.NonUnicite;
 
-
 /**
  *  TODO
  * @author Thibaut
@@ -56,4 +55,5 @@ public class Composite extends EtatIntermediaire {
 		// TODO Auto-generated method stub
 		
 	}
+
 }
