@@ -3,10 +3,14 @@ package ElementsDiagramme;
 import java.util.HashMap;
 import java.util.HashSet;
 
+<<<<<<< HEAD
 import Erreurs.ErreurEtat;
 import Erreurs.NonUnicite;
 import Erreurs.TransitionNonDeterministe;
+=======
+>>>>>>> c95168935f7e02c087fbdb7bf1ebc13ab3a1cdcd
 import Vues.ObservateurVue;
+import Erreurs.NonUnicite;
 
 /**
  *  TODO

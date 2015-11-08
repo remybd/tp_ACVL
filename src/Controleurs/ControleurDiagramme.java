@@ -55,7 +55,6 @@ public class ControleurDiagramme {
         return t;
     }
 
-
     public Etat ajouterEtat(EnumEtat type, String nom){
         Etat e;
 

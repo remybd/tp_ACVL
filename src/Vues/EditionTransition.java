@@ -24,7 +24,7 @@ public class EditionTransition extends FenetrePopup implements ActionListener{
     private JPanel line_4 = new JPanel();
 
 
-    public EditionTransition(){
+    public EditionTransition(String etiquette){
         super();
         //etiquette_transition.setPreferredSize(new Dimension(150, 30));
 
@@ -38,6 +38,7 @@ public class EditionTransition extends FenetrePopup implements ActionListener{
 
         line_3.setLayout(new BoxLayout(line_3, BoxLayout.LINE_AXIS));
         line_3.add(etiquette_label);
+        etiquette_transition.setText(etiquette);
         line_3.add(etiquette_transition);
         this.valider.addActionListener(this);
 

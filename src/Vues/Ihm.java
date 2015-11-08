@@ -1,6 +1,7 @@
 package Vues;
 
 import Controleurs.ControleurDiagramme;
+import ElementsDiagramme.Conteneur;
 import ElementsDiagramme.Etat;
 import ElementsDiagramme.Transition;
 
@@ -12,6 +13,7 @@ public class Ihm {
 	final private static Ihm instanceUnique = new Ihm();
 	private EditeurGraphique edGraphique = EditeurGraphique.instance();
     private ControleurDiagramme controleur;
+    private Conteneur conteneur_principal;
 
 	private Ihm() {	}
 	
@@ -33,26 +35,14 @@ public class Ihm {
     }
 
     public EtatGraph createEtatGraph(Etat e){
-
+        // TODO : Faire les
+        if(e.isEtatSimple()){
+            edGraphique.ajouterEtatSimple();
+        }
         return null;
     }
-    
-	public static void main(String[] args) {
-	    Ihm frame = Ihm.instance();
 
-	  /*  JGraph graph = new JGraph();
-	    JFrame frame = new JFrame();
-	    frame.getContentPane().add(new JScrollPane(graph));
-	    frame.pack();
-	    frame.setVisible(true);*/
-	    
-	/*    frame.getEdGraphique().addMouseListener(new MouseAdapter() { 
-	    	public void mousePressed(MouseEvent e) {
-	    		System.out.println("test");
-	    	}
-	    	
-	    });*/
-	    
-	  }
-
+    public static void main(String[] args){
+        Ihm frame = Ihm.instance();
+    }
 }
