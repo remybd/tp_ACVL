@@ -22,5 +22,14 @@ public class PseudoFinal  extends Etat {
 	public void setTransition(TransitionFinale _trans) {
 		this._trans = _trans;
 	}
-	
+
+	@Override
+	public void supprimer() {
+
+	}
+
+	@Override
+	public boolean isEtatIntermediaire() {
+		return false;
+	}
 }

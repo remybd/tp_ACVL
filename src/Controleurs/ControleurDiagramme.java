@@ -4,9 +4,7 @@ import ElementsDiagramme.*;
 import ElementsDiagramme.Etat;
 import ElementsDiagramme.Transition;
 import Erreurs.Erreur;
-import Exceptions.NoIntermediaryAndFinalStateException;
-import Exceptions.NoIntermediaryAndInitialStateException;
-import Exceptions.NoIntermediaryStateException;
+import Exceptions.*;
 import Vues.*;
 
 import java.util.HashMap;
@@ -87,15 +85,59 @@ public class ControleurDiagramme {
     }
 
 
-    public void renommerEtat(EtatGraph eg, String nom){
+    public void renommerEtat(EtatGraph eg, String nom) throws NameNotModifiableException {
+        Etat e = (Etat)getElementFromGraphic(eg);
+
+        if(e.isEtatIntermediaire()){
+            e.setNom(nom);
+        } else {
+            throw new NameNotModifiableException();
+        }
     }
 
-    public void modifierConteneurParent(EtatGraph eg, EtatGraph parent){
 
+
+    public void modifierConteneurParent(EtatGraph eg, ElementGraphique parent) throws Exception {
+        Etat e = (Etat)getElementFromGraphic(eg);
+
+        if(!e.isEtatIntermediaire())
+            throw new ParentNotModifiableException();
+        EtatIntermediaire ei = (EtatIntermediaire)e;
+
+        Element p = getElementFromGraphic(parent);
+        Conteneur c;
+        if(p instanceof Composite){
+            c = ((Composite) p).getFils();
+        } else if (p instanceof Conteneur){
+            c = (Conteneur) p;
+        } else {
+            throw new NotAParentException();
+        }
+
+        //TO DO : enlever les transitions de leurs destinations et sources
+        for(Transition t : ei.getDestinations()){
+
+        }
+        for(Transition t : ei.getSources()){
+
+        }
+
+        ei.setSources(new HashSet<TransitionIntermediaire>());
+        ei.setDestinations(new HashSet<TransitionIntermediaire>());
+        c.addElmt(ei);
+
+        //TO DO : enlever l'état de son conteneur parent précédent
     }
 
-    public void supprimerElement(ElementGraphique e){
 
+
+    public void supprimerElement(ElementGraphique elem){
+        Element e = getElementFromGraphic(elem);
+        if(e.isEtatIntermediaire()){
+
+        } else if(e instanceof PseudoFinal){
+            //TO DO : pas sur de pouvoir faire ce instanceof
+        }
     }
 
     public void changerSource(TransitionGraph t, EtatGraph source){
@@ -121,5 +163,9 @@ public class ControleurDiagramme {
 
     public Conteneur getMainConteneur() {
         return mainConteneur;
+    }
+
+    private Element getElementFromGraphic(ElementGraphique eg){
+        return correspondance.get(eg);
     }
 }

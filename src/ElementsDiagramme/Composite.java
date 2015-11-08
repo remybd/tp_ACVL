@@ -3,12 +3,8 @@ package ElementsDiagramme;
 import java.util.HashMap;
 import java.util.HashSet;
 
-<<<<<<< HEAD
-import Vues.ObservateurVue;
-=======
 import Erreurs.NonUnicite;
-import Vues.Observateur;
->>>>>>> 0169b07351ea42846724c1442dce3dcdee6664c6
+import Vues.ObservateurVue;
 
 /**
  *  TODO
@@ -59,4 +55,5 @@ public class Composite extends EtatIntermediaire {
 		// TODO Auto-generated method stub
 		
 	}
+
 }
