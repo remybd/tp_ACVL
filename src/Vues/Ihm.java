@@ -1,6 +1,8 @@
 package Vues;
 
 import Controleurs.ControleurDiagramme;
+import ElementsDiagramme.Etat;
+import ElementsDiagramme.Transition;
 
 
 /**
