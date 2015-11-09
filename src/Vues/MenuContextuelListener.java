@@ -29,9 +29,9 @@ public class MenuContextuelListener extends MouseAdapter {
     private void doPop(MouseEvent e){
         ElementGraphique child =  new ElementGraphique(null, ((mxCell)GraphComponent.getCellAt(e.getX(), e.getY())));
         MenuContextuel menu = null;
-        if(child == null)
+        if(child.getObjet_graphique() == null)
             menu = new MenuContextuel(EnumObjetSelectionne.AUCUN, child);
-        else if(!child.isVertex())
+        else if(!child.getObjet_graphique().isVertex())
             menu = new MenuContextuel(EnumObjetSelectionne.TRANSITION, child);
         else
             menu = new MenuContextuel(EnumObjetSelectionne.ETAT, child);

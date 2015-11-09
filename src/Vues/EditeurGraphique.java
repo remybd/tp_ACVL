@@ -1,6 +1,7 @@
 package Vues;
 
 import Controleurs.ControleurDiagramme;
+import ElementsDiagramme.Element;
 import com.mxgraph.model.mxCell;
 import com.mxgraph.model.mxGeometry;
 import com.mxgraph.swing.mxGraphComponent;
@@ -12,6 +13,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Hashtable;
 
 /**
@@ -22,6 +25,8 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
 
     String etatStyle = mxConstants.STYLE_SHAPE + "="+ mxConstants.SHAPE_ELLIPSE;
     String etatFinalStyle = mxConstants.STYLE_SHAPE + "="+ mxConstants.SHAPE_DOUBLE_ELLIPSE;
+
+    private HashMap<String, ElementGraphique> liste_elements_graphiques = new HashMap();
 
     private ZoneErreur zone_erreur;
     private JPanel content = new JPanel();
@@ -244,4 +249,15 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
         return instanceUnique;
     }
 
+    public HashMap<String, ElementGraphique> getListe_elements_graphiques() {
+        return liste_elements_graphiques;
+    }
+
+    public void setListe_elements_graphiques(HashMap<String, ElementGraphique> liste_elements_graphiques) {
+        this.liste_elements_graphiques = liste_elements_graphiques;
+    }
+
+    public ElementGraphique getElement_from_liste(String label){
+        return liste_elements_graphiques.get(label);
+    }
 }

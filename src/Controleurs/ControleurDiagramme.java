@@ -84,7 +84,7 @@ public class ControleurDiagramme {
     }
 
 
-    public void renommerEtat(EtatGraph eg, String nom) throws NameNotModifiableException {
+    public void renommerEtat(EtatGraph eg, EnumEtat nom) throws NameNotModifiableException {
         Etat e = (Etat)getElementFromGraphic(eg);
 
         if(e.isEtatIntermediaire()){
