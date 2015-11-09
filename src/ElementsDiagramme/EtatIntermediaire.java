@@ -24,11 +24,11 @@ public abstract class EtatIntermediaire extends Etat{
 		return _dest;
 	}
 	public void addDestination(TransitionIntermediaire dest) {
-		if(this._dest == null)
-			this._dest = new HashSet<TransitionIntermediaire>();
-			
-		this._dest.add(dest);
-	}
+        if(this._dest == null)
+            this._dest = new HashSet<TransitionIntermediaire>();
+
+        this._dest.add(dest);
+    }
     public void setDestinations(HashSet<TransitionIntermediaire> destinations){
         _dest = destinations;
     }

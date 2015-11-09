@@ -42,4 +42,19 @@ public class TransitionIntermediaire extends Transition {
 	public void setDestination(EtatIntermediaire _dest) {
 		this._dest = _dest;
 	}
+
+	@Override
+	public void supprimer() {
+
+	}
+
+	@Override
+	public boolean isEtatIntermediaire() {
+		return false;
+	}
+
+	@Override
+	public boolean isTransition() {
+		return true;
+	}
 }

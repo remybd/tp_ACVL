@@ -116,10 +116,22 @@ public class ControleurDiagramme {
 
         //TO DO : enlever les transitions de leurs destinations et sources
         for(Transition t : ei.getDestinations()){
-
+            if(t instanceof TransitionFinale){
+                PseudoFinal ef = ((TransitionFinale)(t)).getPseudoFinal();
+                ef.setTransition(null);
+            } else {
+                EtatIntermediaire etatIntermediaire = ((TransitionIntermediaire)(t)).getDestination();
+                etatIntermediaire.unLinkDestination(t);
+            }
         }
         for(Transition t : ei.getSources()){
-
+            if(t instanceof TransitionInitiale){
+                PseudoInitial pi = ((TransitionInitiale)(t)).getPseudoInitial();
+                pi.setTransition(null);
+            } else {
+                EtatIntermediaire etatIntermediaire = ((TransitionIntermediaire)(t)).getSource();
+                etatIntermediaire.unLinkSource(t);
+            }
         }
 
         ei.setSources(new HashSet<TransitionIntermediaire>());
