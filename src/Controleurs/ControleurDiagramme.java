@@ -113,7 +113,6 @@ public class ControleurDiagramme {
             throw new NotAParentException();
         }
 
-        //TO DO : enlever les transitions de leurs destinations et sources
         for(Transition t : ei.getDestinations()){
             if(t instanceof TransitionFinale){
                 PseudoFinal ef = ((TransitionFinale)(t)).getPseudoFinal();
@@ -151,8 +150,22 @@ public class ControleurDiagramme {
         }
     }
 
-    public void changerSource(TransitionGraph t, EtatGraph source){
+    public void changerSource(TransitionGraph transitionGraph, EtatGraph source) throws NotASourceException {
+        Transition t = (Transition)getElementFromGraphic(transitionGraph);
+        Etat e = (Etat)getElementFromGraphic(source);
 
+        if(e instanceof PseudoFinal){
+            throw new NotASourceException();
+        }
+
+        //TO DO
+        if(t instanceof TransitionInitiale){
+            PseudoInitial pi = ((TransitionInitiale)(t)).getPseudoInitial();
+            pi.setTransition(null);
+        } else {
+            EtatIntermediaire etatIntermediaire = ((TransitionIntermediaire)(t)).getSource();
+            etatIntermediaire.unLinkSource(t);
+        }
     }
 
     public void changerDest(TransitionGraph t, EtatGraph dest){
