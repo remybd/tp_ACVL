@@ -1,5 +1,9 @@
 package Vues;
 
+import ElementsDiagramme.Element;
+import ElementsDiagramme.EnumTransition;
+
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -8,10 +12,11 @@ import java.awt.event.ActionListener;
  */
 public class MenuContextuelItemListener{
 
-    private static String nom_element;
+    //private static String nom_element;
+    private static ElementGraphique element;
 
-    public MenuContextuelItemListener(String nom_element){
-        this.nom_element = nom_element;
+    public MenuContextuelItemListener(ElementGraphique element){
+        this.element = element;
     }
 
     public static class CreationEtatSimpleListener implements ActionListener {
@@ -38,36 +43,48 @@ public class MenuContextuelItemListener{
 
     public static class ModifierEtatListener extends MenuContextuelItemListener implements ActionListener{
 
-        public ModifierEtatListener(String nom_element) {
-            super(nom_element);
+        public ModifierEtatListener(ElementGraphique element) {
+            super(element);
         }
 
         public void actionPerformed(ActionEvent e) {
-            new EditionEtat(super.nom_element);
+            new EditionEtat(super.element.getNom());
         }
     }
 
-    public static class AjouterTransitionListener implements ActionListener{
+    public static class AjouterTransitionListener extends MenuContextuelItemListener implements ActionListener{
+
+        public AjouterTransitionListener(ElementGraphique element) {
+            super(element);
+        }
+
         public void actionPerformed(ActionEvent e) {
-            new CreationTransition();
+            if(((EtatGraph)element).getType() == EnumEtat.INIT)
+                new CreationTransition(super.element.getNom(), EnumTransition.INIT);
+            else if(((EtatGraph)element).getType() == EnumEtat.FINAL) {
+                JOptionPane message_erreur = new JOptionPane();
+                message_erreur.showMessageDialog(null, "Impossible d'ajouter une transition à un état pseudo-final", "Erreur", JOptionPane.ERROR_MESSAGE);
+            }
+            else
+                new CreationTransition(super.element.getNom(), EnumTransition.INTER);
         }
     }
 
     public static class ModifierTransitionListener extends MenuContextuelItemListener implements ActionListener{
 
-        public ModifierTransitionListener(String nom_element) {
-            super(nom_element);
+        public ModifierTransitionListener(ElementGraphique element) {
+            super(element);
         }
 
         public void actionPerformed(ActionEvent e) {
-            new EditionTransition(super.nom_element);
+            new EditionTransition(super.element.getNom());
         }
     }
 
     public static class ChoixConteneurListener extends MenuContextuelItemListener implements ActionListener{
 
-        public ChoixConteneurListener(String nom_element) {
-            super(nom_element);
+        public ChoixConteneurListener(ElementGraphique element) {
+            super(element);
         }
 
         public void actionPerformed(ActionEvent e) {

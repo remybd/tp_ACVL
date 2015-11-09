@@ -56,7 +56,7 @@ public class EditionTransition extends FenetrePopup implements ActionListener{
     }
 
     public void actionPerformed(ActionEvent arg0){
-        //Ihm.instance().getControleur().create_transition(, this.type);
+        Ihm.instance().getControleur().create_transition(, this.type);
         this.dispose();
     }
 

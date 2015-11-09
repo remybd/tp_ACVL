@@ -23,6 +23,7 @@ public class ControleurDiagramme {
         this.ihm = ihm;
     }
 
+    //TODO A modifier, ajouterTransition doit recevoir des EtatGraph de la Vue et non pas des états
     public Transition ajouterTransition(EnumTransition type, String etiquette, Etat s, Etat d) throws Exception {
         Transition t;
 

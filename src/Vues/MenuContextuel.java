@@ -59,13 +59,13 @@ public class MenuContextuel extends JPopupMenu {
         etat.add(etat_composite);
         ajouter.add(etat);
 
-        ajouter_transition.addActionListener(new MenuContextuelItemListener.AjouterTransitionListener());
+        ajouter_transition.addActionListener(new MenuContextuelItemListener.AjouterTransitionListener(element));
         ajouter.add(ajouter_transition);
         add(ajouter);
 
         if (element != null) {
-            modifier_etat.addActionListener(new MenuContextuelItemListener.ModifierEtatListener(element.getNom()));
-            modifier_transition.addActionListener(new MenuContextuelItemListener.ModifierTransitionListener(element.getNom()));
+            modifier_etat.addActionListener(new MenuContextuelItemListener.ModifierEtatListener(element));
+            modifier_transition.addActionListener(new MenuContextuelItemListener.ModifierTransitionListener(element));
         }
         modifier.add(modifier_etat);
 
@@ -74,7 +74,7 @@ public class MenuContextuel extends JPopupMenu {
         add(modifier);
         add(supprimer);
 
-        modifier_conteneur.addActionListener(new MenuContextuelItemListener.ChoixConteneurListener(""));
+        modifier_conteneur.addActionListener(new MenuContextuelItemListener.ChoixConteneurListener(element));
         add(modifier_conteneur);
 
     }

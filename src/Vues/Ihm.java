@@ -35,9 +35,14 @@ public class Ihm {
     }
 
     public EtatGraph createEtatGraph(Etat e){
-        // TODO : Faire les
         if(e.isEtatSimple()){
-            edGraphique.ajouterEtatSimple();
+            edGraphique.ajouterEtatSimple(e.getNom(),EnumEtat.SIMPLE);
+        } else if(e.isEtatPseudoInitial()){
+            edGraphique.ajouterEtatPseudoInitial(e.getNom(),EnumEtat.INIT);
+        } else if (e.isEtatPseudoFinal()){
+            edGraphique.ajouterEtatPseudoFinal(e.getNom(), EnumEtat.FINAL);
+        } else {
+            edGraphique.ajouterEtatComposite(e.getNom(), EnumEtat.COMPOSITE);
         }
         return null;
     }
