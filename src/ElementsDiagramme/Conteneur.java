@@ -4,11 +4,17 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import Erreurs.Erreur;
+import Erreurs.ErreurEtat;
 import Erreurs.NonUnicite;
+import Erreurs.TransitionNonDeterministe;
 import Tools.TableSymboles;
 
+/**
+ * TODO : instanceof : bien ou pas bien ?
+ * @author Thibaut
+ *
+ */
 public class Conteneur {
-	private final int ERR_UNICITE = 1;
 	
 	private PseudoInitial _etatInit;
 	private HashSet<Element> _elmts = new HashSet<Element>();;
@@ -26,12 +32,21 @@ public class Conteneur {
 	}
 	
 	
-	/** TODO
+	/**
 	 * 
-	 * @return La liste des erreurs trouvées dans 
+	 * @return La liste des erreurs trouvées dans le conteneur this et tous ses états composites
 	 */
 	public HashSet<Erreur> chercherErreurs(){
-		return null;
+		HashSet<Erreur> erreurs = new HashSet<Erreur>();
+		erreurs.addAll(this.chercherEtatsBloquants());
+		erreurs.addAll(this.chercherTransNnDeterm());
+		
+		HashMap<Conteneur,HashSet<NonUnicite>> etatsDupliques = this.chercherPluriciteEtats();
+		for(Conteneur cont : etatsDupliques.keySet()){
+			erreurs.addAll(etatsDupliques.get(cont));
+		}
+		
+		return erreurs;
 	}
 	
 	/**
@@ -56,7 +71,7 @@ public class Conteneur {
 					}
 					
 					//on ajoute l'erreur
-					NonUnicite erreur = new NonUnicite((Etat)elmt, nomsUtilises.get(nomEtat), ERR_UNICITE);
+					NonUnicite erreur = new NonUnicite((Etat)elmt, nomsUtilises.get(nomEtat), Erreur.ERR_UNICITE_ETAT);
 					etatsIdentiques.get(this).add(erreur);					
 				}
 				else
@@ -76,13 +91,13 @@ public class Conteneur {
 	 * Gestion erreur d'états bloquants
 	 * @return la liste des états qui sont bloquants
 	 */
-	public HashSet<EtatIntermediaire> chercherEtatsBloquants(){
-		HashSet<EtatIntermediaire> etatsBloquants = new HashSet<EtatIntermediaire>(); 
+	public HashSet<ErreurEtat> chercherEtatsBloquants(){
+		HashSet<ErreurEtat> etatsBloquants = new HashSet<ErreurEtat>(); 
 		
 		for(Element elmt : this._elmts){
 			if(elmt instanceof EtatIntermediaire){
 				if(((EtatIntermediaire)elmt).estBloquant())
-					etatsBloquants.add((EtatIntermediaire)elmt);
+					etatsBloquants.add(new ErreurEtat("Etat bloquant", (Etat)elmt, Erreur.ERR_ETAT_BLOQUANT));
 				
 				//si l'elmt est un état composite : nous devons détecter les erreurs au sein de celui-ci
 				if(elmt instanceof Composite)
@@ -92,6 +107,23 @@ public class Conteneur {
 		}
 		
 		return etatsBloquants;
+	}
+	
+	/**
+	 * Gestion erreur de transitions non déterministes
+	 * @return
+	 */
+	public HashSet<TransitionNonDeterministe> chercherTransNnDeterm(){
+		HashSet<TransitionNonDeterministe> transNnDeterm = new HashSet<TransitionNonDeterministe>();
+		
+		for(Element elmt : this._elmts){
+			if(elmt instanceof EtatIntermediaire){
+				if(elmt instanceof EtatIntermediaire)
+					transNnDeterm.addAll( ((EtatIntermediaire)elmt).chercherTransNnDeterm());
+			}
+		}
+		
+		return transNnDeterm;
 	}
 	
 	public PseudoInitial getPseudoInitial() {
