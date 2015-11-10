@@ -17,15 +17,24 @@ public class ControleurDiagramme {
     private Conteneur mainConteneur;
     private Ihm ihm;
     private HashMap<ElementGraphique,Element> correspondance;
+    final private static ControleurDiagramme instanceUnique = new ControleurDiagramme();
 
-    public ControleurDiagramme() throws Exception {
+    private ControleurDiagramme(){
         this.ihm = Ihm.instance();
-        PseudoInitial pi = (PseudoInitial)ajouterEtat(EnumEtat.INIT,"",null);
+        PseudoInitial pi = null;
+
+        try {
+            pi = (PseudoInitial)ajouterEtat(EnumEtat.INIT,"",null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         this.mainConteneur = new Conteneur(pi);
         pi.setConteneurParent(mainConteneur);
     }
 
-
+    static public ControleurDiagramme instance() {
+        return instanceUnique;
+    }
 
     //TODO A modifier, ajouterTransition doit recevoir des EtatGraph de la Vue et non pas des états
     public Transition ajouterTransition(EnumTransition type, String etiquette, Etat s, Etat d, EtatGraph parent) throws Exception {
