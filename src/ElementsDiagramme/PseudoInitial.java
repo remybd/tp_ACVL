@@ -29,7 +29,10 @@ public class PseudoInitial extends Etat {
 
 	@Override
 	public void supprimer() {
-
+		if(_trans == null)
+			return;
+		
+		_trans.setPseudoInitial(null);
 	}
 
 	@Override
@@ -39,6 +42,26 @@ public class PseudoInitial extends Etat {
 
 	@Override
 	public boolean isTransition() {
+		return false;
+	}
+
+	@Override
+	public boolean isEtatComposite() {
+		return false;
+	}
+
+	@Override
+	public boolean isEtatSimple() {
+		return false;
+	}
+
+	@Override
+	public boolean isEtatPseudoInitial() {
+		return true;
+	}
+
+	@Override
+	public boolean isEtatPseudoFinal() {
 		return false;
 	}
 }

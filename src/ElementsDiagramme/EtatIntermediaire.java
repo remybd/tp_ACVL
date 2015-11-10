@@ -48,6 +48,17 @@ public abstract class EtatIntermediaire extends Etat{
 	public void setSources(HashSet<TransitionIntermediaire> sources){
         _sources = sources;
     }
+	
+	@Override
+	public void supprimer() {
+		for(TransitionIntermediaire trans : _sources){
+			trans.setSource(null);
+		}
+
+		for(TransitionIntermediaire trans : _dest){
+			trans.setDestination(null);
+		}
+	} 
 
 	/**
 	 * 

@@ -91,8 +91,11 @@ public class TransitionIntermediaire extends Transition {
 
 	@Override
 	public void supprimer() {
-		// TODO Auto-generated method stub
+		if(_source != null)
+			_source.addDestination(null);
 		
+		if(_dest != null)
+			_dest.addSource(null);
 	}
 
 	@Override
@@ -105,18 +108,25 @@ public class TransitionIntermediaire extends Transition {
 		return true;
 	}
 
-	@Override
-	public void supprimer() {
 
-	}
 
 	@Override
-	public boolean isEtatIntermediaire() {
+	public boolean isEtatComposite() {
 		return false;
 	}
 
 	@Override
-	public boolean isTransition() {
-		return true;
+	public boolean isEtatSimple() {
+		return false;
+	}
+
+	@Override
+	public boolean isEtatPseudoInitial() {
+		return false;
+	}
+
+	@Override
+	public boolean isEtatPseudoFinal() {
+		return false;
 	}
 }

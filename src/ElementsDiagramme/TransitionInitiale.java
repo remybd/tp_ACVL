@@ -25,8 +25,10 @@ public class TransitionInitiale extends Transition {
 
 	@Override
 	public void supprimer() {
-		// TODO Auto-generated method stub
+		if(_etatInit == null)
+			return;
 		
+		_etatInit.setTransition(null);
 	}
 
 	@Override
@@ -37,6 +39,26 @@ public class TransitionInitiale extends Transition {
 	@Override
 	public boolean isTransition() {
 		return true;
+	}
+
+	@Override
+	public boolean isEtatComposite() {
+		return false;
+	}
+
+	@Override
+	public boolean isEtatSimple() {
+		return false;
+	}
+
+	@Override
+	public boolean isEtatPseudoInitial() {
+		return false;
+	}
+
+	@Override
+	public boolean isEtatPseudoFinal() {
+		return false;
 	}	
 	
 }
