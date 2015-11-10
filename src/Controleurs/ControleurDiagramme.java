@@ -84,7 +84,7 @@ public class ControleurDiagramme {
         return e;
     }
 
-
+    //TODO Modifier les String passées en paramètre pour le type de l'état en EnumEtat
     public void renommerEtat(EtatGraph eg, EnumEtat nom) throws NameNotModifiableException {
         Etat e = (Etat)getElementFromGraphic(eg);
 

@@ -25,10 +25,8 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
 
     private final static String etatInitialStyle = mxConstants.STYLE_SHAPE + "="+ mxConstants.SHAPE_ELLIPSE;
     private final static String etatFinalStyle = mxConstants.STYLE_SHAPE + "="+ mxConstants.SHAPE_DOUBLE_ELLIPSE;
-    private final static String etatCompositeStyle = mxConstants.STYLE_SHAPE + "="+ mxConstants.SHAPE_DOUBLE_ELLIPSE;
 
-
-    private HashMap<String, ElementGraphique> liste_elements_graphiques = new HashMap();
+    private HashSet<ElementGraphique> liste_elements_graphiques = new HashSet();
 
     private ZoneErreur zone_erreur;
     private JPanel content = new JPanel();
@@ -73,9 +71,6 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
         FlowLayout bl = new FlowLayout(FlowLayout.CENTER);   //layoutManager
         mainPanel.setLayout(bl);    //attache le layoutManager au panel           
 
-        JLabel  lab=new JLabel("Bonjour le monde!!");  //crÃ©Ã© un label
-        mainPanel.add(lab);  //l'ajoute au panel       
-
         Object parent = graph.getDefaultParent();
         Object v1 = null;
         mxCell vertex = null;
@@ -85,19 +80,19 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
             mxGeometry geometry = new mxGeometry(20, 20, 80, 30);
             geometry.setRelative(false);
 
-            vertex = new mxCell("Hello", geometry, "ROUNDED");
+            /*vertex = new mxCell("Hello", geometry, "ROUNDED");
             vertex.setId(null);
             vertex.setVertex(true);
             vertex.setConnectable(true);
             graph.addCell(vertex, parent);
-            System.out.println(vertex.isVertex());
+            System.out.println(vertex.isVertex());*/
 
+            //v1 = (Object) vertex;
+            graph.insertVertex(parent, null, "Initial", 20, 20, 30, 30, etatInitialStyle);
 
-            v1 = (Object) vertex;
-            //   Object v1 = graph.insertVertex(parent, null, "Hello", 20, 20, 80, 30);
+            /*Object v2 = graph.insertVertex(parent, null, "Final!", 240, 150, 30, 30, etatFinalStyle);
+            graph.insertEdge(parent, null, "Edge", v1, v2);*/
 
-            Object v2 = graph.insertVertex(parent, null, "World!", 240, 150, 80, 30);
-            graph.insertEdge(parent, null, "Edge", v1, v2);
         } finally {
             graph.getModel().endUpdate();
         }
@@ -201,7 +196,7 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
         Object etat_graph;
         try {
             etat_graph = this.getGraphComponent().getGraph().insertVertex(parent, null, label, 50, 50, 80, 30);
-            this.getListe_elements_graphiques().put(label, new ElementGraphique(null,(mxCell)etat_graph));
+            //this.getListe_elements_graphiques().put(label, new ElementGraphique(null,(mxCell)etat_graph));
         } finally {
             graph.getModel().endUpdate();
         }
@@ -212,8 +207,8 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
         Object parent = graph.getDefaultParent();
         Object etat_graph;
         try {
-            etat_graph = this.getGraphComponent().getGraph().insertVertex(parent, null, label, 50, 50, 80, 30, etatCompositeStyle);
-            this.getListe_elements_graphiques().put(label, new ElementGraphique(null,(mxCell)etat_graph));
+            etat_graph = this.getGraphComponent().getGraph().insertVertex(parent, null, label, 50, 50, 80, 30);
+            //this.getListe_elements_graphiques().put(label, new ElementGraphique(null,(mxCell)etat_graph));
         } finally {
             graph.getModel().endUpdate();
         }
@@ -225,7 +220,7 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
         Object etat_graph;
         try {
             etat_graph = this.getGraphComponent().getGraph().insertVertex(parent, null, label, 50, 50, 80, 30, etatFinalStyle);
-            this.getListe_elements_graphiques().put(label, new ElementGraphique(null,(mxCell)etat_graph));
+            //this.getListe_elements_graphiques().put(label, new ElementGraphique(null,(mxCell)etat_graph));
         } finally {
             graph.getModel().endUpdate();
         }
@@ -237,7 +232,7 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
         Object etat_graph;
         try {
             etat_graph = this.getGraphComponent().getGraph().insertVertex(parent, null, label, 50, 50, 80, 30, etatFinalStyle);
-            this.getListe_elements_graphiques().put(label, new ElementGraphique(null,(mxCell)etat_graph));
+            //this.getListe_elements_graphiques().put(label, new ElementGraphique(null,(mxCell)etat_graph));
         } finally {
             graph.getModel().endUpdate();
         }
@@ -290,7 +285,7 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
         return instanceUnique;
     }
 
-    public HashMap<String, ElementGraphique> getListe_elements_graphiques() {
+    /*public HashMap<String, ElementGraphique> getListe_elements_graphiques() {
         return liste_elements_graphiques;
     }
 
@@ -300,7 +295,7 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
 
     public ElementGraphique getElement_from_liste(String label){
         return liste_elements_graphiques.get(label);
-    }
+    }*/
 
     public mxGraphComponent getGraphComponent(){
         return graphComponent;

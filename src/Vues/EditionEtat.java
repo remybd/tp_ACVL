@@ -17,14 +17,14 @@ public class EditionEtat extends FenetrePopup implements ActionListener{
 
     EnumEtat type;
 
-    public EditionEtat(String nom_element){
+    public EditionEtat(EtatGraph etat_graph){
         super();
         //this.type = getParent();
         System.out.println();
 
         JPanel centered = new JPanel();
         text_etat.setPreferredSize(new Dimension(150,30));
-        text_etat.setText(nom_element);
+        text_etat.setText(etat_graph.getNom());
         centered.add(nom_etat);
         centered.add(text_etat);
 
