@@ -36,8 +36,16 @@ public class Ihm {
         this.controleur = controleur;
     }
 	
-    public TransitionGraph createTransitionGraph(EtatGraph parent, Transition t){
-        return null;
+    public TransitionGraph createTransitionGraph(EtatGraph s, EtatGraph d, Transition t){
+        TransitionGraph res = null;
+        if(t.isTransitionInitiale()){
+            res = edGraphique.
+        } else if (t.isTransitionIntermediaire()){
+            res = edGraphique.
+        } else {
+            res = edGraphique.
+        }
+
     }
 
     public EtatGraph createEtatGraph(EtatGraph parent, Etat e) {

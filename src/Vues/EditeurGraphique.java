@@ -3,7 +3,9 @@ package Vues;
 import Controleurs.ControleurDiagramme;
 import ElementsDiagramme.EnumEtat;
 
+import ElementsDiagramme.EnumTransition;
 import ElementsDiagramme.Etat;
+import ElementsDiagramme.Transition;
 import com.mxgraph.model.mxCell;
 import com.mxgraph.model.mxGeometry;
 import com.mxgraph.swing.mxGraphComponent;
@@ -250,6 +252,22 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
             graph.getModel().endUpdate();
         }
         return eg;
+    }
+
+    public TransitionGraph ajouterTransitionInitiale(EtatGraph parent, EtatGraph source, EtatGraph destination, String etiquette, EnumTransition type){
+        this.getGraphComponent().getGraph().getModel().beginUpdate();
+        Object newEtatParent = ((parent == null) ? graph.getDefaultParent() : parent.getObjet_graphique());
+        mxCell transition_graph;
+        TransitionGraph tg;
+        try {
+            transition_graph = (mxCell)this.getGraphComponent().getGraph().insertEdge(newEtatParent, null, etiquette,
+                    (Object)source.getObjet_graphique(),(Object)destination.getObjet_graphique());
+            tg = new TransitionGraph(parent,transition_graph, type);
+            this.getListe_elements_graphiques().put(transition_graph,tg);
+        } finally {
+            graph.getModel().endUpdate();
+        }
+        return tg;
     }
 
 	/*	JPanel mainPanel = new JPanel();
