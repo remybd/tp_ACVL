@@ -51,6 +51,10 @@ public class Ihm {
     }
 
     public static void main(String[] args){
-        ControleurDiagramme con = new ControleurDiagramme();
+        try {
+            ControleurDiagramme con = new ControleurDiagramme();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
