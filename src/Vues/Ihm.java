@@ -33,7 +33,6 @@ public class Ihm {
     }
 	
     public TransitionGraph createTransitionGraph(EtatGraph parent, Transition t){
-
         return null;
     }
 
