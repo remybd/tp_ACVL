@@ -14,9 +14,23 @@ public class Simple extends EtatIntermediaire{
 	}
 
 	@Override
-	public void supprimer() {
-		// TODO Auto-generated method stub
-		
+	public boolean isEtatComposite() {
+		return false;
+	}
+
+	@Override
+	public boolean isEtatSimple() {
+		return true;
+	}
+
+	@Override
+	public boolean isEtatPseudoInitial() {
+		return false;
+	}
+
+	@Override
+	public boolean isEtatPseudoFinal() {
+		return false;
 	}
 	
 }

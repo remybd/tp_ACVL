@@ -1,6 +1,6 @@
 package Vues;
 
-import ElementsDiagramme.EnumTransition;
+import ElementsDiagramme.EnumEtat;
 
 /**
  * Created by Jerem on 03/11/2015.

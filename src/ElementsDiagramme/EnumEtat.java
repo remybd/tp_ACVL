@@ -1,4 +1,4 @@
-package Vues;
+package ElementsDiagramme;
 
 /**
  * Created by Jerem on 08/11/2015.

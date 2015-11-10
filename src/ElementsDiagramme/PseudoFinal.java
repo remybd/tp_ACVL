@@ -1,5 +1,7 @@
 package ElementsDiagramme;
 
+import java.util.HashSet;
+
 import Vues.ObservateurVue;
 
 /**
@@ -8,28 +10,59 @@ import Vues.ObservateurVue;
  *
  */
 public class PseudoFinal  extends Etat {
-	private TransitionFinale _trans;
+	private HashSet<TransitionFinale> _trans = new HashSet<TransitionFinale>();
 
 	public PseudoFinal(ObservateurVue obs, String nom, TransitionFinale transitionFinale){
 		super(obs, nom);
-		this.setTransition(transitionFinale);
+		this.addTransition(transitionFinale);
 	}
 	
-	public TransitionFinale getTransition() {
+	public HashSet<TransitionFinale> getTransitions() {
 		return _trans;
 	}
 
-	public void setTransition(TransitionFinale _trans) {
-		this._trans = _trans;
+	public void addTransition(TransitionFinale trans) {
+		if(_trans == null)
+			_trans = new HashSet<TransitionFinale>();
+			
+		this._trans.add(trans);
+	}
+	
+	public void resetTransitions(){
+		for(TransitionFinale trans : _trans){
+			trans.setPseudoFinal(null);
+		}
+		
+		_trans = new HashSet<TransitionFinale>();
 	}
 
 	@Override
 	public void supprimer() {
-
+		this.resetTransitions();
 	}
 
 	@Override
 	public boolean isEtatIntermediaire() {
 		return false;
+	}
+
+	@Override
+	public boolean isEtatComposite() {
+		return false;
+	}
+
+	@Override
+	public boolean isEtatSimple() {
+		return false;
+	}
+
+	@Override
+	public boolean isEtatPseudoInitial() {
+		return false;
+	}
+
+	@Override
+	public boolean isEtatPseudoFinal() {
+		return true;
 	}
 }

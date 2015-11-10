@@ -1,7 +1,7 @@
 package Vues;
 
 import Controleurs.ControleurDiagramme;
-import ElementsDiagramme.Element;
+import ElementsDiagramme.EnumEtat;
 import com.mxgraph.model.mxCell;
 import com.mxgraph.model.mxGeometry;
 import com.mxgraph.swing.mxGraphComponent;
@@ -14,7 +14,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Hashtable;
 
 /**

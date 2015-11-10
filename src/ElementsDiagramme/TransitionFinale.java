@@ -11,7 +11,7 @@ import Vues.ObservateurVue;
  */
 public class TransitionFinale extends Transition {
 	private String _etiquette;
-	private HashSet<PseudoFinal> _etatsFinaux = new HashSet<PseudoFinal>();
+	private PseudoFinal _etatFinal;
 	
 	public TransitionFinale(ObservateurVue obs, String etiquette){
 		super(obs);
@@ -26,20 +26,20 @@ public class TransitionFinale extends Transition {
 		_etiquette = etiquette;
 	}
 	
-	public HashSet<PseudoFinal> getPseudoFinaux(){
-		return this._etatsFinaux;
+	public PseudoFinal getPseudoFinal(){
+		return this._etatFinal;
 	}
 	
-	public void addPseudoFinal(PseudoFinal etatFinal){
-		if(this._etatsFinaux == null)
-			_etatsFinaux = new HashSet<PseudoFinal>();
-			
-		this._etatsFinaux.add(etatFinal);
+	public void setPseudoFinal(PseudoFinal etatFinal){
+		this._etatFinal = etatFinal;
 	}
 
 	@Override
 	public void supprimer() {
-
+		if(_etatFinal == null)
+			return;
+		
+		_etatFinal.addTransition(null);
 	}
 
 	@Override
@@ -49,6 +49,26 @@ public class TransitionFinale extends Transition {
 
 	@Override
 	public boolean isTransition() {
+		return true;
+	}
+
+	@Override
+	public boolean isEtatComposite() {
+		return false;
+	}
+
+	@Override
+	public boolean isEtatSimple() {
+		return false;
+	}
+
+	@Override
+	public boolean isEtatPseudoInitial() {
+		return false;
+	}
+
+	@Override
+	public boolean isEtatPseudoFinal() {
 		return false;
 	}
 }

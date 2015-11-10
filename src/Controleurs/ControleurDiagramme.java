@@ -23,29 +23,11 @@ public class ControleurDiagramme {
         this.ihm = ihm;
     }
 
+
+
     //TODO A modifier, ajouterTransition doit recevoir des EtatGraph de la Vue et non pas des états
-    public Transition ajouterTransition(EnumTransition type, String etiquette, Etat s, Etat d) throws Exception {
-        Transition t;
-
-        //TO DO : peut être modifier les constructeurs pour ne pas avoir à mettre null pour l'Observateur
-        if(type == EnumTransition.INTER){
-            if(!s.isEtatIntermediaire() || !d.isEtatIntermediaire())
-                throw new NoIntermediaryStateException();
-
-            t = new TransitionIntermediaire(null,etiquette,(EtatIntermediaire)s,(EtatIntermediaire)d);
-        }
-        else if(type == EnumTransition.FINAL){
-            if(!s.isEtatIntermediaire() || !(d instanceof PseudoFinal))
-                throw new NoIntermediaryAndFinalStateException();
-            //TO DO : peut être modifier le constructeur pour avoir à remplir les états
-            t = new TransitionFinale(null,etiquette);
-        }
-        else{//transition initiale
-            if(!(s instanceof PseudoInitial) || !d.isEtatIntermediaire())
-                throw new NoIntermediaryAndInitialStateException();
-            //TO DO : peut être modifier le constructeur pour avoir à remplir l'état de destination ?
-            t = new TransitionInitiale(null,(PseudoInitial)s);
-        }
+    public Transition ajouterTransition(EnumTransition type, String etiquette, Etat s, Etat d, EtatGraph parent) throws Exception {
+        Transition t = Transition.creerTransition(type,etiquette,s,d);
 
         TransitionGraph tg = ihm.createTransitionGraph(t);
         t.setObservateur(tg);
@@ -56,26 +38,10 @@ public class ControleurDiagramme {
         return t;
     }
 
-    public Etat ajouterEtat(EnumEtat type, String nom){
-        Etat e;
+    public Etat ajouterEtat(EnumEtat type, String nom, EtatGraph parent){
+        Etat e = Etat.creerEtat(type,nom,this);
 
-        //TO DO : peut être modifier les constructeurs pour ne pas avoir à mettre null pour l'Observateur
-        if(type == EnumEtat.COMPOSITE){
-            PseudoInitial init = (PseudoInitial)ajouterEtat(EnumEtat.INIT,nom);
-            e = new Composite(null,nom, new Conteneur(init));
-        }
-        else if(type == EnumEtat.INIT){
-            e = new PseudoInitial(null,"init_"+nom);
-        }
-        else if(type == EnumEtat.SIMPLE){
-            e = new Simple(null,nom);
-        }
-        else{//état final
-            //TO DO : peut être modifier le constructeur pour ne pas avoir à mettre null pour la transition
-            e = new PseudoFinal(null,"final_"+nom,null);
-        }
-
-        EtatGraph eg = ihm.createEtatGraph(e);
+        EtatGraph eg = ihm.createEtatGraph(e,parent);
         e.setObservateur(eg);
 
         mainConteneur.addElmt(e);
@@ -84,8 +50,7 @@ public class ControleurDiagramme {
         return e;
     }
 
-    //TODO Modifier les String passées en paramètre pour le type de l'état en EnumEtat
-    public void renommerEtat(EtatGraph eg, EnumEtat nom) throws NameNotModifiableException {
+    public void renommerEtat(EtatGraph eg, String nom) throws NameNotModifiableException {
         Etat e = (Etat)getElementFromGraphic(eg);
 
         if(e.isEtatIntermediaire()){
@@ -97,7 +62,7 @@ public class ControleurDiagramme {
 
 
 
-    public void modifierConteneurParent(EtatGraph eg, ElementGraphique parent) throws Exception {
+    /*public void modifierConteneurParent(EtatGraph eg, ElementGraphique parent) throws Exception {
         Etat e = (Etat)getElementFromGraphic(eg);
 
         if(!e.isEtatIntermediaire())
@@ -114,11 +79,10 @@ public class ControleurDiagramme {
             throw new NotAParentException();
         }
 
-        //TO DO : enlever les transitions de leurs destinations et sources
         for(Transition t : ei.getDestinations()){
             if(t instanceof TransitionFinale){
                 PseudoFinal ef = ((TransitionFinale)(t)).getPseudoFinal();
-                ef.setTransition(null);
+                ef.resetTransitions();
             } else {
                 EtatIntermediaire etatIntermediaire = ((TransitionIntermediaire)(t)).getDestination();
                 etatIntermediaire.unLinkDestination(t);
@@ -139,7 +103,7 @@ public class ControleurDiagramme {
         c.addElmt(ei);
 
         //TO DO : enlever l'état de son conteneur parent précédent
-    }
+    }*/
 
 
 
@@ -152,8 +116,29 @@ public class ControleurDiagramme {
         }
     }
 
-    public void changerSource(TransitionGraph t, EtatGraph source){
 
+
+    public void modifierTransition(TransitionGraph transitionGraph, EtatGraph source, EtatGraph dest,String etiquette){
+
+    }
+
+
+    public void changerSource(TransitionGraph transitionGraph, EtatGraph source) throws NotASourceException {
+        Transition t = (Transition)getElementFromGraphic(transitionGraph);
+        Etat e = (Etat)getElementFromGraphic(source);
+
+        if(e instanceof PseudoFinal){
+            throw new NotASourceException();
+        }
+
+        //TO DO
+        if(t instanceof TransitionInitiale){
+            PseudoInitial pi = ((TransitionInitiale)(t)).getPseudoInitial();
+            pi.setTransition(null);
+        } else {
+            EtatIntermediaire etatIntermediaire = ((TransitionIntermediaire)(t)).getSource();
+            etatIntermediaire.unLinkSource(t);
+        }
     }
 
     public void changerDest(TransitionGraph t, EtatGraph dest){
@@ -169,6 +154,15 @@ public class ControleurDiagramme {
     		return new HashSet<Erreur>();
     	
     	return mainConteneur.chercherErreurs();
+    }
+
+    public HashSet<EtatGraph> getStatesFromSameConteneur(EtatGraph etatGraph){
+
+    }
+
+    //renvoie tous les états simples et composites fils de l'étatGraph père
+    public HashSet<EtatGraph> getSonFromFatherState(EtatGraph father){
+
     }
 
     public HashMap<ElementGraphique, Element> getCorrespondance() {

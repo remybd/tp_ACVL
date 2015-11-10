@@ -1,6 +1,6 @@
 package Vues;
 
-import ElementsDiagramme.Element;
+import ElementsDiagramme.EnumEtat;
 import ElementsDiagramme.EnumTransition;
 
 import javax.swing.*;

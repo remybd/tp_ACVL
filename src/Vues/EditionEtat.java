@@ -1,5 +1,6 @@
 package Vues;
 
+import ElementsDiagramme.EnumEtat;
 import Exceptions.NameNotModifiableException;
 
 import javax.swing.*;
