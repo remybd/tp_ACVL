@@ -1,5 +1,7 @@
 package ElementsDiagramme;
 
+import java.util.ArrayList;
+
 import Vues.ObservateurVue;
 
 /**
@@ -40,11 +42,15 @@ public class TransitionInitiale extends Transition {
 	}
 
 	@Override
-	public void supprimer() {
+	public ArrayList<Element> supprimer() {
+		ArrayList<Element> elmtsSupr = new ArrayList<Element>();
+		elmtsSupr.add(this);
+		
 		if(_etatInit == null)
-			return;
+			return elmtsSupr;
 		
 		_etatInit.setTransition(null);
+		return elmtsSupr;
 	}
 	
 

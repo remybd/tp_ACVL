@@ -1,6 +1,7 @@
 package ElementsDiagramme;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -28,15 +29,21 @@ public class Conteneur implements Serializable {
 		super();
 	}
 
-	public void supprimer(){
-		if(_etatInit != null)
+	public ArrayList<Element> supprimer(){
+		ArrayList<Element> elmtsSupr = new ArrayList<Element>();
+		
+		if(_etatInit != null){
 			_etatInit.supprimer();
+			elmtsSupr.add(_etatInit);
+		}
 		
 		for(Element elmt : this._elmts){
 			elmt.supprimer();
+			elmtsSupr.add(elmt);
 		}
 		
 		_erreurs = null;
+		return elmtsSupr;
 	}
 	
 	
