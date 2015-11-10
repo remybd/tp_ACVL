@@ -9,7 +9,9 @@ import java.util.ArrayList;
  * Created by rémy on 04/11/2015.
  */
 public abstract class Element extends Sujet implements Serializable {
-    private Conteneur conteneurParent;
+	private static final long serialVersionUID = 43L;
+	
+	private Conteneur conteneurParent;
 
     public Element(Conteneur c){
         super();
