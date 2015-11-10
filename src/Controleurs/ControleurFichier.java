@@ -2,6 +2,7 @@ package Controleurs;
 
 import java.awt.Desktop;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import ElementsDiagramme.Conteneur;
@@ -12,11 +13,30 @@ import RessourcesExternes.FichierSauvegarde;
  * Created by rémy on 05/11/2015.
  */
 public class ControleurFichier {
-    private FichierSauvegarde fichierDeSauvegarde;
+	private static ControleurFichier instanceUnique = new ControleurFichier();
+    private FichierSauvegarde fichierDeSauvegarde = null;
     private Fichier manuel = new Fichier("userGuide","pdf","");
 
+    private ControleurFichier(){
+    	
+    }
+    
+
+    public static ControleurFichier instance(){
+        return instanceUnique;
+    }
+
+    
     public void creerFichier(String name, String path, Conteneur c){
-    	fichierDeSauvegarde = new FichierSauvegarde(name,FichierSauvegarde.FICHIER_EXTENSION, path, c);
+    	try {
+			fichierDeSauvegarde = new FichierSauvegarde(name,FichierSauvegarde.FICHIER_EXTENSION, path, c);
+		} catch (FileNotFoundException e) {
+			// TODO : propager l'erreur dans l'IHM
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO : propager l'erreur dans l'IHM
+			e.printStackTrace();
+		}
     }
 
     public Conteneur chargerFichier(String path){ 	

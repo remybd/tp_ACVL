@@ -101,10 +101,10 @@ public class ControleurDiagramme {
 
     public void supprimerElement(ElementGraphique elem){
         Element e = getElementFromGraphic(elem);
-        if(e.isEtatIntermediaire()){
 
-        } else if(e instanceof PseudoFinal){
-            //TO DO : pas sur de pouvoir faire ce instanceof
+        for(Element element : e.supprimer()){
+            ihm.removeElem(getElemGraphFromElem(element).getObjet_graphique());
+            correspondance.remove(elem);
         }
     }
 
@@ -243,5 +243,9 @@ public class ControleurDiagramme {
         } else {
             throw new BadCorrespondanceBetweenObservateurAndSubjectType();
         }
+    }
+
+    private ElementGraphique getElemGraphFromElem(Element e) {
+        return (EtatGraph)e.getObservateur();
     }
 }

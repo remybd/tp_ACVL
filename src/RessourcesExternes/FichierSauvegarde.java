@@ -12,9 +12,19 @@ public class FichierSauvegarde extends Fichier{
 	
     private Conteneur mainConteneur;
 
-    public FichierSauvegarde (String nom, String extension, String chemin, Conteneur mainConteneur){
+    //création d'un fichier
+    public FichierSauvegarde(String nom, String extension, String chemin, Conteneur mainConteneur) throws FileNotFoundException, IOException{
         super(nom, extension, chemin);
+
         this.mainConteneur = mainConteneur;
+        this.sauvegarderFichier();
+    }
+
+    //ouverture d'un fichier
+    public FichierSauvegarde(String path) throws ClassNotFoundException, IOException{
+        super(path);
+        
+        this.mainConteneur = chargerFichier();
     }
 
     public void sauvegarderFichier() throws FileNotFoundException, IOException{
@@ -24,15 +34,21 @@ public class FichierSauvegarde extends Fichier{
             oos = new ObjectOutputStream(
                     new BufferedOutputStream(
                             new FileOutputStream(
-                                    new File(getChemin()+getNom()+getExtension()))));
+                                    new File(this.getCheminRelatif()))));
 
             //écriture du mainconteneur dans le fichier
             oos.writeObject(mainConteneur);
-        } finally{
-        	if(oos != null)
+
+        }finally{
+        	if(oos!=null)
         		oos.close();
         }
     }
+
+    public Conteneur getMainConteneur() {
+        return mainConteneur;
+    }
+
     
     /**
      * Lit le fichier et en retourne le conteneur

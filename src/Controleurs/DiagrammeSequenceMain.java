@@ -12,6 +12,7 @@ public class DiagrammeSequenceMain {
             ControleurDiagramme con = ControleurDiagramme.instance();
             con.init();
             Ihm.instance().setControleur(con);
+
         } catch (Exception e){
             e.printStackTrace();
         }

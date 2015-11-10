@@ -6,6 +6,30 @@ public class Fichier {
     private String extension;
     private String chemin;
 	
+    /**
+     * 
+     * @param chemin : le chemin complet du fichier, incluant nom et (optionnel) l'extension, ou juste le nom
+     */
+    public Fichier (String chemin){
+        int point = chemin.lastIndexOf('.');
+        if(point<0){
+        	this.setExtension(FichierSauvegarde.FICHIER_EXTENSION);
+        	point = chemin.length();
+        }
+        else
+        	this.setExtension(chemin.substring(point+1, chemin.length()));
+        
+        int slash = chemin.lastIndexOf('/');
+        if(slash<0){
+        	this.setNom(chemin.substring(0, point));
+        	this.setChemin("");
+        }
+        else{
+        	this.setNom(chemin.substring(slash+1, point));
+        	this.setChemin(chemin.substring(0, slash));        	
+        }
+    }
+    
     public Fichier (String nom, String extension, String chemin){
         this.setNom(nom);
         this.setExtension(extension);
