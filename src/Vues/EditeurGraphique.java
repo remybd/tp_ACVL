@@ -110,6 +110,21 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
         //  graphComponent.getCellAt(MouseEvent.gCursor.getDefaultCursor().g, arg1)
         graphComponent.getGraphControl().addMouseListener(new MenuContextuelListener(graphComponent));
         graphComponent.getGraphControl().setSize(this.getSize());
+    //    graphComponent.getGraph().setEdgeLabelsMovable(false);
+    //    graphComponent.getGraph().setAllowDanglingEdges(false);
+        graphComponent.getGraphHandler().setRemoveCellsFromParent(false);
+        graphComponent.setConnectable(false);
+        graphComponent.getGraph().setVertexLabelsMovable(false);
+        graphComponent.getGraph().setEdgeLabelsMovable(false);
+        graphComponent.setEnterStopsCellEditing(false);
+     //   graphComponent.getGraphHandler().set;
+        graphComponent.getGraph().setDropEnabled(false);
+     //   graphComponent.setImportEnabled(false);
+        
+    //    graphComponent.getGraph().setExtendParents(false);
+
+       // graphComponent.getGraphHandler().set;
+
         //     graphComponent.getComponentAt(System, arg1)
         //   graphComponent.getComponents()[0]..addMouseListener(new MenuContextuelListener(graphComponent.getComponent(0)));
         ///       graphComponent.getGraphControl().getComponentListeners()[0].
