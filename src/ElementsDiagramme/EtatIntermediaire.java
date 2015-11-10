@@ -2,6 +2,7 @@ package ElementsDiagramme;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 
 import Erreurs.Erreur;
 import Erreurs.TransitionNonDeterministe;
@@ -24,22 +25,37 @@ public abstract class EtatIntermediaire extends Etat{
 	}
 	
 	/**
-	 * Converti le pseudo intial spécifié en EtatIntermediaire
+	 * Converti le pseudo initial spécifié en EtatIntermediaire
 	 * @param init
 	 */
 	public EtatIntermediaire(PseudoInitial init){
 		super(init.getConteneurParent(), init.getNom());
-		this.addDestination(init.getTransition());
+		this.setObservateur(init.getObservateur());
+		
+		TransitionInitiale transInit = init.getTransition();
+		
+		if(transInit != null)
+			this.addDestination(new TransitionIntermediaire(transInit, this));
 	}
-	
+
 
 	/**
 	 * Converti le pseudo final spécifié en EtatIntermediaire
 	 * @param init
 	 */
-	public EtatIntermediaire(PseudoFinal init){
-		super(init.getConteneurParent(), init.getNom());
-		_dest = init.getTransitions();
+	public EtatIntermediaire(PseudoFinal etat){
+		super(etat.getConteneurParent(), etat.getNom());
+		this.setObservateur(etat.getObservateur());
+		
+		HashSet<TransitionFinale> transFin = etat.getTransitions();
+		
+		if(transFin != null){
+			Iterator<TransitionFinale> it = transFin.iterator();
+			
+			while(it.hasNext()){
+				this.addDestination(new TransitionIntermediaire(it.next(), this));				
+			}
+		}
 	}
 	
 	public HashSet<TransitionIntermediaire> getDestinations() {
@@ -104,7 +120,7 @@ public abstract class EtatIntermediaire extends Etat{
 	 */
 	public boolean estBloquant(){
 		for(TransitionIntermediaire source : _sources){
-			if(source.getDestination() != this)
+			if(source.getEtatDest() != this)
 				return true;
 		}
 		

@@ -17,6 +17,30 @@ public class PseudoFinal  extends Etat {
 		this.addTransition(transitionFinale);
 	}
 	
+
+	/**
+	 * Converti le pseudo intial spécifié en PseudoFinal ; la transition associée est perdue
+	 * @param 
+	 */
+	public PseudoFinal(PseudoInitial init){
+		super(init.getConteneurParent(), init.getNom());
+		this.setObservateur(init.getObservateur());
+	}
+	
+
+	/**
+	 * Converti le EtatIntermediaire spécifié en PseudoFinal
+	 * @param 
+	 */
+	public PseudoFinal(EtatIntermediaire etat){
+		super(etat.getConteneurParent(), etat.getNom());
+		this.setObservateur(etat.getObservateur());
+		
+		for(TransitionIntermediaire trans : etat.getDestinations()){
+			this.addTransition(new TransitionFinale(trans, this));			
+		}
+	}
+	
 	public HashSet<TransitionFinale> getTransitions() {
 		return _trans;
 	}

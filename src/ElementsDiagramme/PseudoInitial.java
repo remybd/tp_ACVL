@@ -1,5 +1,7 @@
 package ElementsDiagramme;
 
+import java.util.HashSet;
+
 import Vues.ObservateurVue;
 
 /**
@@ -17,6 +19,32 @@ public class PseudoInitial extends Etat {
 	public PseudoInitial(Conteneur parent, String nom, TransitionInitiale transition){
 		super(parent, nom);
 		this.setTransition(transition);
+	}
+
+
+
+	/**
+	 * Converti le PseudoFinal spécifié en PseudoInitial ; la transition associée est perdue
+	 * @param 
+	 */
+	public PseudoInitial(PseudoFinal init){
+		super(init.getConteneurParent(), init.getNom());
+		this.setObservateur(init.getObservateur());
+	}
+	
+
+	/**
+	 * Converti le EtatIntermediaire spécifié en PseudoInitial
+	 * @param 
+	 */
+	public PseudoInitial(EtatIntermediaire etat){
+		super(etat.getConteneurParent(), etat.getNom());
+		this.setObservateur(etat.getObservateur());
+		
+		HashSet<TransitionIntermediaire> trans = etat.getDestinations();
+		
+		if(trans != null && trans.size()>0)
+			this.setTransition(new TransitionInitiale(trans.iterator().next(), this));
 	}
 	
 	public TransitionInitiale getTransition() {

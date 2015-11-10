@@ -19,6 +19,35 @@ public class TransitionIntermediaire extends Transition {
 		this.setEtatDest(etatDest);
 	}
 	
+	/**
+	 * Converti le TransitionInitiale spécifié en TransitionIntermediaire
+	 * @param transInit
+	 * @param EtatIntermediaire : la source
+	 */
+	public TransitionIntermediaire(TransitionInitiale transInit, EtatIntermediaire etatSource) {
+		super(transInit.getConteneurParent());
+		this.setObservateur(transInit.getObservateur());
+		
+		this.setEtiquette("");
+		this.setEtatSource(etatSource);
+		this.setEtatDest(transInit.getEtatDest());
+	}
+
+	/**
+	 * Converti le TransitionFinale spécifié en TransitionIntermediaire
+	 * @param trans
+	 * @param etatIntermediaire : la destination
+	 */
+	public TransitionIntermediaire(TransitionFinale trans, EtatIntermediaire etatIntermediaire) {
+		super(trans.getConteneurParent());
+		this.setObservateur(trans.getObservateur());
+		
+		this.setEtiquette(trans.getEtiquette());
+		this.setEtatSource(trans.getEtatSource());
+		this.setEtatDest(etatIntermediaire);
+	}
+
+
 	public String getEtiquette(){
 		return _etiquette;
 	}
@@ -101,23 +130,19 @@ public class TransitionIntermediaire extends Transition {
 		return true;
 	}
 
-	@Override
-	public void setEtatSource(Etat etat) {
+	public void setEtatSource(EtatIntermediaire etat) {
 		this._source = etat;
 	}
 
-	@Override
-	public void setEtatDest(Etat etat) {
+	public void setEtatDest(EtatIntermediaire etat) {
 		this._dest = etat;		
 	}
 
-	@Override
-	public Etat getEtatSource() {
+	public EtatIntermediaire getEtatSource() {
 		return _source;
 	}
 
-	@Override
-	public Etat getEtatDest() {
+	public EtatIntermediaire getEtatDest() {
 		return _dest;
 	}
 }

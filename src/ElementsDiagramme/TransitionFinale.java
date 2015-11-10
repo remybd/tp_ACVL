@@ -19,6 +19,35 @@ public class TransitionFinale extends Transition {
 		this.setEtiquette(etiquette);
 	}
 	
+
+	/**
+	 * Converti la TransitionIntermediaire spécifiée en TransitionFinale
+	 * @param trans
+	 * @param pseudoFinal
+	 */
+	public TransitionFinale(TransitionIntermediaire trans, PseudoFinal pseudoFinal) {
+		super(trans.getConteneurParent());
+		this.setObservateur(trans.getObservateur());
+		
+		this.setEtiquette(trans.getEtiquette());
+		this.setEtatSource(trans.getEtatSource());
+		this.setPseudoFinal(pseudoFinal);
+	}
+
+	/**
+	 * Converti la TransitionInitiale spécifiée en TransitionFinale ; l'état destination est perdu
+	 * @param trans
+	 * @param pseudoFinal
+	 */
+	public TransitionFinale(TransitionInitiale trans, PseudoFinal pseudoFinal) {
+		super(trans.getConteneurParent());
+		this.setObservateur(trans.getObservateur());
+		
+		this.setEtiquette("");
+		this.setPseudoFinal(pseudoFinal);
+	}
+
+
 	public String getEtiquette(){
 		return _etiquette;
 	}
@@ -59,24 +88,20 @@ public class TransitionFinale extends Transition {
 		return false;
 	}
 
-	@Override
 	public EtatIntermediaire getEtatSource() {
 		return _etatSource;
 	}
 
 
-	@Override
-	public void setEtatSource(Etat etat) {
+	public void setEtatSource(EtatIntermediaire etat) {
 		this._etatSource = etat;
 	}
 
-	@Override
-	public void setEtatDest(Etat etat) {
+	public void setEtatDest(PseudoFinal etat) {
 		this._etatFinal = etat;
 	}
 
-	@Override
-	public Etat getEtatDest() {
+	public PseudoFinal getEtatDest() {
 		return _etatFinal;
 	}
 }

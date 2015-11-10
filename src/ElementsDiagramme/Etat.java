@@ -53,10 +53,8 @@ public abstract class Etat extends Element {
 	public static Etat creerEtat(EnumEtat type, String nom, ControleurDiagramme c, Conteneur parent) throws Exception {
 		Etat e;
 
-		//TO DO : peut être modifier les constructeurs pour ne pas avoir à mettre null pour l'Observateur
 		if(type == EnumEtat.COMPOSITE){
-			PseudoInitial init = (PseudoInitial)c.ajouterEtat(EnumEtat.INIT,nom,null);
-			e = new Composite(parent ,nom, new Conteneur(init));
+			e = new Composite(parent ,nom, new Conteneur());
 		}
 		else if(type == EnumEtat.INIT){
 			e = new PseudoInitial(parent,"init_"+nom);
@@ -65,7 +63,7 @@ public abstract class Etat extends Element {
 			e = new Simple(parent,nom);
 		}
 		else{//état final
-			//TO DO : peut être modifier le constructeur pour ne pas avoir à mettre null pour la transition
+			//TODO : peut être modifier le constructeur pour ne pas avoir à mettre null pour la transition
 			e = new PseudoFinal(parent,"final_"+nom,null);
 		}
 
