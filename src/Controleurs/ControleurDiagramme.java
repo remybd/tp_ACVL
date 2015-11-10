@@ -27,27 +27,7 @@ public class ControleurDiagramme {
 
     //TODO A modifier, ajouterTransition doit recevoir des EtatGraph de la Vue et non pas des états
     public Transition ajouterTransition(EnumTransition type, String etiquette, Etat s, Etat d) throws Exception {
-        Transition t;
-
-        //TO DO : peut être modifier les constructeurs pour ne pas avoir à mettre null pour l'Observateur
-        if(type == EnumTransition.INTER){
-            if(!s.isEtatIntermediaire() || !d.isEtatIntermediaire())
-                throw new NoIntermediaryStateException();
-
-            t = new TransitionIntermediaire(null,etiquette,(EtatIntermediaire)s,(EtatIntermediaire)d);
-        }
-        else if(type == EnumTransition.FINAL){
-            if(!s.isEtatIntermediaire() || !(d instanceof PseudoFinal))
-                throw new NoIntermediaryAndFinalStateException();
-            //TO DO : peut être modifier le constructeur pour avoir à remplir les états
-            t = new TransitionFinale(null,etiquette);
-        }
-        else{//transition initiale
-            if(!(s instanceof PseudoInitial) || !d.isEtatIntermediaire())
-                throw new NoIntermediaryAndInitialStateException();
-            //TO DO : peut être modifier le constructeur pour avoir à remplir l'état de destination ?
-            t = new TransitionInitiale(null,(PseudoInitial)s);
-        }
+        Transition t = Transition.creerTransition(type,etiquette,s,d);
 
         TransitionGraph tg = ihm.createTransitionGraph(t);
         t.setObservateur(tg);
@@ -59,23 +39,7 @@ public class ControleurDiagramme {
     }
 
     public Etat ajouterEtat(EnumEtat type, String nom){
-        Etat e;
-
-        //TO DO : peut être modifier les constructeurs pour ne pas avoir à mettre null pour l'Observateur
-        if(type == EnumEtat.COMPOSITE){
-            PseudoInitial init = (PseudoInitial)ajouterEtat(EnumEtat.INIT,nom);
-            e = new Composite(null,nom, new Conteneur(init));
-        }
-        else if(type == EnumEtat.INIT){
-            e = new PseudoInitial(null,"init_"+nom);
-        }
-        else if(type == EnumEtat.SIMPLE){
-            e = new Simple(null,nom);
-        }
-        else{//état final
-            //TO DO : peut être modifier le constructeur pour ne pas avoir à mettre null pour la transition
-            e = new PseudoFinal(null,"final_"+nom,null);
-        }
+        Etat e = Etat.creerEtat(type,nom,this);
 
         EtatGraph eg = ihm.createEtatGraph(e);
         e.setObservateur(eg);
@@ -87,7 +51,7 @@ public class ControleurDiagramme {
     }
 
 
-    public void renommerEtat(EtatGraph eg, String nom) throws NameNotModifiableException {
+    public void renommerEtat(EtatGraph eg, EnumEtat nom) throws NameNotModifiableException {
         Etat e = (Etat)getElementFromGraphic(eg);
 
         if(e.isEtatIntermediaire()){
@@ -191,6 +155,10 @@ public class ControleurDiagramme {
     		return new HashSet<Erreur>();
     	
     	return mainConteneur.chercherErreurs();
+    }
+
+    public HashSet<Element> getStatesFromSameConteneur(EtatGraph etatGraph){
+
     }
 
     public HashMap<ElementGraphique, Element> getCorrespondance() {
