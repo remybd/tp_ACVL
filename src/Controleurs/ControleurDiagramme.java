@@ -18,9 +18,11 @@ public class ControleurDiagramme {
     private Ihm ihm;
     private HashMap<ElementGraphique,Element> correspondance;
 
-    public ControleurDiagramme(){
-        this.mainConteneur = new Conteneur(ajouterEtat(EnumEtat.INIT));
-        this.ihm = ihm;
+    public ControleurDiagramme() throws Exception {
+        this.ihm = Ihm.instance();
+        PseudoInitial pi = (PseudoInitial)ajouterEtat(EnumEtat.INIT,"",null);
+        this.mainConteneur = new Conteneur(pi);
+        pi.setConteneurParent(mainConteneur);
     }
 
 
