@@ -22,7 +22,11 @@ public class ControleurFichier {
     }
 
     public void sauvegarderFichier(){
-
+        if(fichierDeSauvegarde != null)
+            fichierDeSauvegarde.sauvegarderFichier();
+        else {
+            fichierDeSauvegarde = new Fichier();
+        }
     }
 
     public Manuel getManuel(){

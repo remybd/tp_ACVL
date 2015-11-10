@@ -59,14 +59,17 @@ public class MenuContextuelItemListener{
         }
 
         public void actionPerformed(ActionEvent e) {
-            if(((EtatGraph)element).getType() == EnumEtat.INIT)
-                new CreationTransition((EtatGraph)element, EnumTransition.INIT);
-            else if(((EtatGraph)element).getType() == EnumEtat.FINAL) {
-                JOptionPane message_erreur = new JOptionPane();
-                message_erreur.showMessageDialog(null, "Impossible d'ajouter une transition à un état pseudo-final", "Erreur", JOptionPane.ERROR_MESSAGE);
+            try {
+                if (((EtatGraph) element).getType() == EnumEtat.INIT)
+                    new CreationTransition((EtatGraph) element, EnumTransition.INIT);
+                else if (((EtatGraph) element).getType() == EnumEtat.FINAL) {
+                    JOptionPane message_erreur = new JOptionPane();
+                    message_erreur.showMessageDialog(null, "Impossible d'ajouter une transition à un état pseudo-final", "Erreur", JOptionPane.ERROR_MESSAGE);
+                } else
+                    new CreationTransition((EtatGraph) element, EnumTransition.INTER);
+            } catch (Exception ex){
+                ex.printStackTrace();
             }
-            else
-                new CreationTransition((EtatGraph)element, EnumTransition.INTER);
         }
     }
 

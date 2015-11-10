@@ -131,6 +131,16 @@ public abstract class EtatIntermediaire extends Etat{
 	public boolean isEtatIntermediaire() {
 		return true;
 	}
+
+	@Override
+	public boolean isEtatPseudoInitial() {
+		return false;
+	}
+
+	@Override
+	public boolean isEtatPseudoFinal() {
+		return false;
+	}
 	
 
 	/**

@@ -2,18 +2,20 @@ package Vues;
 
 import ElementsDiagramme.EnumEtat;
 import ElementsDiagramme.EnumTransition;
+import ElementsDiagramme.Etat;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashSet;
 
 /**
  * Created by Jerem on 03/11/2015.
  */
 public class CreationTransition extends FenetrePopup implements ActionListener{
 
-    private JComboBox liste_etats = new JComboBox();
+    private JComboBox liste_etats;
     private JLabel liste_label = new JLabel("Liste des etats de destination");
     private JLabel etiquette_label = new JLabel("Etiquette");
     private JTextField etiquette_transition = new JTextField();
@@ -22,7 +24,7 @@ public class CreationTransition extends FenetrePopup implements ActionListener{
     private EnumTransition type;
     private EtatGraph etat_source;
 
-    public CreationTransition(EtatGraph etat_source, EnumTransition type){
+    public CreationTransition(EtatGraph etat_source, EnumTransition type) throws Exception {
         super();
         this.type = type;
         this.etat_source = etat_source;
@@ -34,6 +36,16 @@ public class CreationTransition extends FenetrePopup implements ActionListener{
         g.setHgap(15);
         g.setVgap(15);
 
+        HashSet<EtatGraph> liste_elements = Ihm.instance().getControleur().getStatesFromSameConteneur(etat_source);
+        String[] liste_noms_etats = new String[liste_elements.size()];
+
+        int i=0;
+        for(EtatGraph e: liste_elements){
+            liste_noms_etats[i] = e.getNom();
+            i++;
+        }
+        liste_etats = new JComboBox(liste_noms_etats);
+
         getPan().add(liste_label);
         getPan().add(liste_etats);
         getPan().add(etiquette_label);
@@ -42,7 +54,8 @@ public class CreationTransition extends FenetrePopup implements ActionListener{
         this.valider.addActionListener(this);
         getPan().add(valider);
 
-        this.add(getPan(), g);
+        getPan().setLayout(g);
+        this.add(getPan());
 
     }
 

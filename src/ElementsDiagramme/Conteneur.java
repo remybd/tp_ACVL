@@ -1,5 +1,6 @@
 package ElementsDiagramme;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -14,7 +15,7 @@ import Tools.TableSymboles;
  * @author Thibaut
  *
  */
-public class Conteneur {
+public class Conteneur implements Serializable {
 	
 	private PseudoInitial _etatInit;
 	private HashSet<Element> _elmts = new HashSet<Element>();;
@@ -26,7 +27,6 @@ public class Conteneur {
 	public Conteneur(){
 		super();
 	}
-
 
 	public void supprimer(){
 		if(_etatInit != null)

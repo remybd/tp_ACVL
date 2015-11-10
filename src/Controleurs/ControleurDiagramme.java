@@ -7,6 +7,7 @@ import Erreurs.Erreur;
 import Exceptions.*;
 import Vues.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -44,10 +45,10 @@ public class ControleurDiagramme {
     //TODO A modifier, ajouterTransition doit recevoir des EtatGraph de la Vue et non pas des états
     public Transition ajouterTransition(EnumTransition type, String etiquette, Etat s, Etat d, EtatGraph parent) throws Exception {
         Conteneur conteneurParent;
-        if(parent != null){
-            conteneurParent = getElementFromGraphic(parent).getConteneurParent();
-        } else {
+        if(parent == null){
             conteneurParent = mainConteneur;
+        } else {
+            conteneurParent = ((Composite)getElementFromGraphic(parent)).getFils();
         }
 
         Transition t = Transition.creerTransition(type,etiquette,s,d,conteneurParent);
@@ -55,7 +56,7 @@ public class ControleurDiagramme {
         TransitionGraph tg = ihm.createTransitionGraph(parent,t);
         t.setObservateur(tg);
 
-        mainConteneur.addElmt(t);
+        conteneurParent.addElmt(t);
         correspondance.put(tg,t);
 
         return t;
@@ -63,18 +64,17 @@ public class ControleurDiagramme {
 
     public Etat ajouterEtat(EnumEtat type, String nom, EtatGraph parent) throws Exception {
         Conteneur conteneurParent;
-        if(parent != null){
-            conteneurParent = getElementFromGraphic(parent).getConteneurParent();
-        } else {
+        if(parent == null){
             conteneurParent = mainConteneur;
+        } else {
+            conteneurParent = ((Composite)getElementFromGraphic(parent)).getFils();
         }
-
         Etat e = Etat.creerEtat(type,nom,this,conteneurParent);
 
         EtatGraph eg = ihm.createEtatGraph(parent,e);
         e.setObservateur(eg);
 
-        mainConteneur.addElmt(e);
+        conteneurParent.addElmt(e);
         correspondance.put(eg,e);
 
         if(type == EnumEtat.COMPOSITE){
@@ -98,51 +98,6 @@ public class ControleurDiagramme {
             throw new NameNotModifiableException();
         }
     }
-
-
-
-    /*public void modifierConteneurParent(EtatGraph eg, ElementGraphique parent) throws Exception {
-        Etat e = (Etat)getElementFromGraphic(eg);
-
-        if(!e.isEtatIntermediaire())
-            throw new ParentNotModifiableException();
-        EtatIntermediaire ei = (EtatIntermediaire)e;
-
-        Element p = getElementFromGraphic(parent);
-        Conteneur c;
-        if(p instanceof Composite){
-            c = ((Composite) p).getFils();
-        } else if (p instanceof Conteneur){
-            c = (Conteneur) p;
-        } else {
-            throw new NotAParentException();
-        }
-
-        for(Transition t : ei.getDestinations()){
-            if(t instanceof TransitionFinale){
-                PseudoFinal ef = ((TransitionFinale)(t)).getPseudoFinal();
-                ef.resetTransitions();
-            } else {
-                EtatIntermediaire etatIntermediaire = ((TransitionIntermediaire)(t)).getDestination();
-                etatIntermediaire.unLinkDestination(t);
-            }
-        }
-        for(Transition t : ei.getSources()){
-            if(t instanceof TransitionInitiale){
-                PseudoInitial pi = ((TransitionInitiale)(t)).getPseudoInitial();
-                pi.setTransition(null);
-            } else {
-                EtatIntermediaire etatIntermediaire = ((TransitionIntermediaire)(t)).getSource();
-                etatIntermediaire.unLinkSource(t);
-            }
-        }
-
-        ei.setSources(new HashSet<TransitionIntermediaire>());
-        ei.setDestinations(new HashSet<TransitionIntermediaire>());
-        c.addElmt(ei);
-
-        //TO DO : enlever l'état de son conteneur parent précédent
-    }*/
 
 
 
@@ -227,34 +182,6 @@ public class ControleurDiagramme {
     }
 
 
-    public void changerSource(TransitionGraph transitionGraph, EtatGraph source) throws NotASourceException {
-        Transition t = (Transition)getElementFromGraphic(transitionGraph);
-        Etat e = (Etat)getElementFromGraphic(source);
-
-        if(e instanceof PseudoFinal){
-            throw new NotASourceException();
-        }
-
-        //TODO
-        if(t instanceof TransitionInitiale){
-            PseudoInitial pi = ((TransitionInitiale)(t)).getPseudoInitial();
-            pi.setTransition(null);
-        } else {
-            EtatIntermediaire etatIntermediaire = ((TransitionIntermediaire)(t)).getEtatSource();
-            etatIntermediaire.unLinkSource(t);
-        }
-    }
-
-    public void changerDest(TransitionGraph t, EtatGraph dest){
-
-    }
-
-    public void modifierEtiquette(TransitionGraph t){
-
-    }
-    
-    
-
     public HashSet<Erreur> chercherErreurs(){
     	if(mainConteneur == null)
     		return new HashSet<Erreur>();
@@ -262,13 +189,16 @@ public class ControleurDiagramme {
     	return mainConteneur.chercherErreurs();
     }
 
-    public HashSet<EtatGraph> getStatesFromSameConteneur(EtatGraph etatGraph) throws Exception {
+    public ArrayList<EtatGraph> getStatesFromSameConteneur(EtatGraph etatGraph) throws Exception {
         Etat e = (Etat)getElementFromGraphic(etatGraph);
-        Conteneur c = e.getConteneurParent();
-        HashSet<EtatGraph> result = new HashSet<EtatGraph>();
+        if(e.isEtatPseudoFinal()){
+            throw new CantCreateTransitionOnFinal();
+        }
 
+        Conteneur c = e.getConteneurParent();
+        ArrayList<EtatGraph> result = new ArrayList<EtatGraph>();
         for(Element element : c.getElmts()){
-            if(element.isEtat()){
+            if(element.isEtatIntermediaire() || (!e.isEtatPseudoInitial() && element.isEtatPseudoFinal()) ){
                 result.add((EtatGraph)getEtatGraphFromEtat((Etat)element));
             }
         }
@@ -276,7 +206,7 @@ public class ControleurDiagramme {
     }
 
     //renvoie tous les états simples et composites fils de l'étatGraph père
-    public HashSet<EtatGraph> getSonFromFatherState(EtatGraph father) throws Exception {
+    /*public HashSet<EtatGraph> getSonFromFatherState(EtatGraph father) throws Exception {
     	HashSet<EtatGraph> states = new HashSet<EtatGraph>();
     	
     	if(father == null || !correspondance.containsKey(father))
@@ -289,13 +219,12 @@ public class ControleurDiagramme {
     	HashSet<Element> elmtsFils = ((Composite)composite).getFils().getElmts();
     	for(Element elmt : elmtsFils){
     		if(elmt.isEtat()){
-    			//TODO : ajouter dans states la correspondance graphique de elmt
                 states.add((EtatGraph)getEtatGraphFromEtat((Etat)elmt));
     		}
     	}
     	
     	return states;
-    }
+    }*/
 
     public HashMap<ElementGraphique, Element> getCorrespondance() {
         return correspondance;
