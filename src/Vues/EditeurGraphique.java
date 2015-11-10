@@ -13,7 +13,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Hashtable;
 
 /**
@@ -24,8 +24,6 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
 
     private final static String etatInitialStyle = mxConstants.STYLE_SHAPE + "="+ mxConstants.SHAPE_ELLIPSE;
     private final static String etatFinalStyle = mxConstants.STYLE_SHAPE + "="+ mxConstants.SHAPE_DOUBLE_ELLIPSE;
-
-    private HashSet<ElementGraphique> liste_elements_graphiques = new HashSet();
 
     private ZoneErreur zone_erreur;
     private JPanel content = new JPanel();
