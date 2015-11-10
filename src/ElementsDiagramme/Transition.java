@@ -13,8 +13,8 @@ import Vues.TransitionGraph;
  */
 public abstract class Transition extends Element {
 
-	public Transition(ObservateurVue obs){
-		super(obs);
+	public Transition(Conteneur parent){
+		super(parent);
 	}
 
 	public static Transition creerTransition(EnumTransition type, String etiquette, Etat s, Etat d) throws Exception {
@@ -41,5 +41,42 @@ public abstract class Transition extends Element {
 		}
 
 		return t;
+	}
+	
+	@Override
+	public boolean isEtat(){
+		return false;
+	}
+
+	@Override
+	public boolean isTransition(){
+		return true;
+	}
+	
+
+	@Override
+	public boolean isEtatIntermediaire() {
+		return false;
+	}
+
+
+	@Override
+	public boolean isEtatComposite() {
+		return false;
+	}
+
+	@Override
+	public boolean isEtatSimple() {
+		return false;
+	}
+
+	@Override
+	public boolean isEtatPseudoInitial() {
+		return false;
+	}
+
+	@Override
+	public boolean isEtatPseudoFinal() {
+		return false;
 	}
 }

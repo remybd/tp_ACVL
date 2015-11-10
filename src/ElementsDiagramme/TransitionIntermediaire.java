@@ -12,8 +12,8 @@ public class TransitionIntermediaire extends Transition {
 	private EtatIntermediaire _source;
 	private EtatIntermediaire _dest;
 	
-	public TransitionIntermediaire(ObservateurVue obs, String etiquette, EtatIntermediaire etatSource, EtatIntermediaire etatDest){
-		super(obs);
+	public TransitionIntermediaire(Conteneur parent, String etiquette, EtatIntermediaire etatSource, EtatIntermediaire etatDest){
+		super(parent);
 		this.setEtiquette(etiquette);
 		this.setSource(etatSource);
 		this.setDestination(etatDest);
@@ -96,36 +96,5 @@ public class TransitionIntermediaire extends Transition {
 		
 		if(_dest != null)
 			_dest.addSource(null);
-	}
-
-	@Override
-	public boolean isEtatIntermediaire() {
-		return false;
-	}
-
-	@Override
-	public boolean isTransition() {
-		return true;
-	}
-
-
-	@Override
-	public boolean isEtatComposite() {
-		return false;
-	}
-
-	@Override
-	public boolean isEtatSimple() {
-		return false;
-	}
-
-	@Override
-	public boolean isEtatPseudoInitial() {
-		return false;
-	}
-
-	@Override
-	public boolean isEtatPseudoFinal() {
-		return false;
 	}
 }

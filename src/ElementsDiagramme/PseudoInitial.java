@@ -10,12 +10,12 @@ import Vues.ObservateurVue;
 public class PseudoInitial extends Etat {
 	private TransitionInitiale _trans;
 
-	public PseudoInitial(ObservateurVue obs, String nom){
-		super(obs, nom);
+	public PseudoInitial(Conteneur parent, String nom){
+		super(parent, nom);
 	}
 	
-	public PseudoInitial(ObservateurVue obs, String nom, TransitionInitiale transition){
-		super(obs, nom);
+	public PseudoInitial(Conteneur parent, String nom, TransitionInitiale transition){
+		super(parent, nom);
 		this.setTransition(transition);
 	}
 	

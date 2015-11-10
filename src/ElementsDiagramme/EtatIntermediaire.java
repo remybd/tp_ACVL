@@ -19,8 +19,8 @@ public abstract class EtatIntermediaire extends Etat{
 	//transitions dont la source est this
 	private HashSet<TransitionIntermediaire> _sources = new HashSet<TransitionIntermediaire>();
 	
-	public EtatIntermediaire(ObservateurVue obs, String nom){
-		super(obs, nom);
+	public EtatIntermediaire(Conteneur parent, String nom){
+		super(parent, nom);
 	}
 	
 	public HashSet<TransitionIntermediaire> getDestinations() {

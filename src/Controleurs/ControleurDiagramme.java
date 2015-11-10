@@ -158,12 +158,28 @@ public class ControleurDiagramme {
     }
 
     public HashSet<EtatGraph> getStatesFromSameConteneur(EtatGraph etatGraph){
-
+    	
     }
 
     //renvoie tous les états simples et composites fils de l'étatGraph père
     public HashSet<EtatGraph> getSonFromFatherState(EtatGraph father){
-
+    	HashSet<EtatGraph> states = new HashSet<EtatGraph>();
+    	
+    	if(father == null || !correspondance.containsKey(father))
+    		return states;
+    	
+    	Element composite = correspondance.get(father);
+    	if(!composite.isEtatComposite())
+    		return states;
+    	
+    	HashSet<Element> elmtsFils = ((Composite)composite).getFils().getElmts();
+    	for(Element elmt : elmtsFils){
+    		if(elmt.isEtat()){
+    			//TODO : ajouter dans states la correspondance graphique de elmt
+    		}
+    	}
+    	
+    	return states;
     }
 
     public HashMap<ElementGraphique, Element> getCorrespondance() {

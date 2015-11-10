@@ -18,8 +18,8 @@ import Erreurs.NonUnicite;
 public class Composite extends EtatIntermediaire {
 	private Conteneur _fils;
 
-	public Composite(ObservateurVue obs, String nom, Conteneur fils){
-		super(obs, nom);
+	public Composite(Conteneur parent, String nom, Conteneur fils){
+		super(parent, nom);
 		this.setFils(fils);
 	}
 	

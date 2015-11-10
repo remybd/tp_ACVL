@@ -13,8 +13,8 @@ public class TransitionFinale extends Transition {
 	private String _etiquette;
 	private PseudoFinal _etatFinal;
 	
-	public TransitionFinale(ObservateurVue obs, String etiquette){
-		super(obs);
+	public TransitionFinale(Conteneur parent, String etiquette){
+		super(parent);
 		this.setEtiquette(etiquette);
 	}
 	
@@ -42,33 +42,4 @@ public class TransitionFinale extends Transition {
 		_etatFinal.addTransition(null);
 	}
 
-	@Override
-	public boolean isEtatIntermediaire() {
-		return false;
-	}
-
-	@Override
-	public boolean isTransition() {
-		return true;
-	}
-
-	@Override
-	public boolean isEtatComposite() {
-		return false;
-	}
-
-	@Override
-	public boolean isEtatSimple() {
-		return false;
-	}
-
-	@Override
-	public boolean isEtatPseudoInitial() {
-		return false;
-	}
-
-	@Override
-	public boolean isEtatPseudoFinal() {
-		return false;
-	}
 }
