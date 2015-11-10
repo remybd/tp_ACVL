@@ -3,7 +3,9 @@ package Vues;
 import Controleurs.ControleurDiagramme;
 import ElementsDiagramme.EnumEtat;
 
+import ElementsDiagramme.EnumTransition;
 import ElementsDiagramme.Etat;
+import ElementsDiagramme.Transition;
 import com.mxgraph.model.mxCell;
 import com.mxgraph.model.mxGeometry;
 import com.mxgraph.swing.mxGraphComponent;
@@ -102,7 +104,6 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
             graph.getModel().endUpdate();
         }
         graphComponent = new mxGraphComponent(graph);
-        graph.setS
         graphComponent.setBackground(Color.black);
         graphComponent.setAutoExtend(false);
         // graph.getModel().get
@@ -213,12 +214,12 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
     public EtatGraph ajouterEtatPseudoInitial(EtatGraph parent, String label, EnumEtat type){
         this.getGraphComponent().getGraph().getModel().beginUpdate();
         Object newEtatParent = ((parent == null) ? graph.getDefaultParent() : parent.getObjet_graphique());
-        mxCell etat_graph = null;
+        mxCell etat_mxcell = null;
         EtatGraph eg;
         try {
-            etat_graph = (mxCell)this.getGraphComponent().getGraph().insertVertex(newEtatParent, null, label, 50, 50, 80, 30, etatInitialStyle);
-            eg = new EtatGraph(parent, (mxCell) etat_graph, type);
-            this.getListe_elements_graphiques().put(etat_graph, eg);
+            etat_mxcell = (mxCell)this.getGraphComponent().getGraph().insertVertex(newEtatParent, null, label, 50, 50, 80, 30, etatInitialStyle);
+            eg = new EtatGraph(parent, (mxCell) etat_mxcell, type);
+            this.getListe_elements_graphiques().put(etat_mxcell, eg);
         } finally {
             graph.getModel().endUpdate();
         }
@@ -228,12 +229,12 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
     public EtatGraph ajouterEtatPseudoFinal(EtatGraph parent, String label, EnumEtat type){
         this.getGraphComponent().getGraph().getModel().beginUpdate();
         Object newEtatParent = ((parent == null) ? graph.getDefaultParent() : parent.getObjet_graphique());
-        mxCell etat_graph;
+        mxCell etat_mxcell;
         EtatGraph eg;
         try {
-            etat_graph = (mxCell)this.getGraphComponent().getGraph().insertVertex(newEtatParent, null, label, 50, 50, 80, 30, etatFinalStyle);
-            eg = new EtatGraph(parent,etat_graph, type);
-            this.getListe_elements_graphiques().put(etat_graph, eg);
+            etat_mxcell = (mxCell)this.getGraphComponent().getGraph().insertVertex(newEtatParent, null, label, 50, 50, 80, 30, etatFinalStyle);
+            eg = new EtatGraph(parent,etat_mxcell, type);
+            this.getListe_elements_graphiques().put(etat_mxcell, eg);
         } finally {
             graph.getModel().endUpdate();
         }
@@ -243,16 +244,32 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
     public EtatGraph ajouterEtatComposite(EtatGraph parent, String label, EnumEtat type){
         this.getGraphComponent().getGraph().getModel().beginUpdate();
         Object newEtatParent = ((parent == null) ? graph.getDefaultParent() : parent.getObjet_graphique());
-        mxCell etat_graph;
+        mxCell etat_mxcell;
         EtatGraph eg;
         try {
-            etat_graph = (mxCell)this.getGraphComponent().getGraph().insertVertex(newEtatParent, null, label, 50, 50, 80, 30);
-            eg = new EtatGraph(parent,etat_graph, type);
-            this.getListe_elements_graphiques().put(etat_graph,eg);
+            etat_mxcell = (mxCell)this.getGraphComponent().getGraph().insertVertex(newEtatParent, null, label, 50, 50, 80, 30);
+            eg = new EtatGraph(parent,etat_mxcell, type);
+            this.getListe_elements_graphiques().put(etat_mxcell,eg);
         } finally {
             graph.getModel().endUpdate();
         }
         return eg;
+    }
+
+    public TransitionGraph ajouterTransitionInitiale(EtatGraph parent, EtatGraph source, EtatGraph destination, String etiquette, EnumTransition type){
+        this.getGraphComponent().getGraph().getModel().beginUpdate();
+        Object newEtatParent = ((parent == null) ? graph.getDefaultParent() : parent.getObjet_graphique());
+        mxCell transition_mxcell;
+        TransitionGraph tg;
+        try {
+            transition_mxcell = (mxCell)this.getGraphComponent().getGraph().insertEdge(newEtatParent, null, etiquette,
+                    (Object)source.getObjet_graphique(),(Object)destination.getObjet_graphique());
+            tg = new TransitionGraph(parent,transition_mxcell, type);
+            this.getListe_elements_graphiques().put(transition_mxcell,tg);
+        } finally {
+            graph.getModel().endUpdate();
+        }
+        return tg;
     }
 
 	/*	JPanel mainPanel = new JPanel();
