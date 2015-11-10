@@ -6,11 +6,11 @@ import ElementsDiagramme.Sujet;
 /**
  * Created by rémy on 05/11/2015.
  */
-public abstract class ErreurEtat extends Erreur{
+public class ErreurEtat extends Erreur{
     private Etat etatParent;
 
-    public ErreurEtat(String nom, Etat etat, int importance){
-        super(nom,importance);
+    public ErreurEtat(String err, Etat etat, int importance){
+        super(err,importance);
         this.etatParent = etatParent;
     }
 

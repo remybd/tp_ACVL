@@ -1,14 +1,11 @@
 package Controleurs;
 
-import ElementsDiagramme.Conteneur;
-import ElementsDiagramme.Element;
+import ElementsDiagramme.*;
 import ElementsDiagramme.Etat;
 import ElementsDiagramme.Transition;
 import Erreurs.Erreur;
-import Vues.ElementGraphique;
-import Vues.EtatGraph;
-import Vues.Ihm;
-import Vues.TransitionGraph;
+import Exceptions.*;
+import Vues.*;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,32 +23,150 @@ public class ControleurDiagramme {
         this.ihm = ihm;
     }
 
-    public void ajouterTransition(String type, String etiquette, Etat s, Etat d){
-        mainConteneur.addElmt(t);
+    //TODO A modifier, ajouterTransition doit recevoir des EtatGraph de la Vue et non pas des états
+    public Transition ajouterTransition(EnumTransition type, String etiquette, Etat s, Etat d) throws Exception {
+        Transition t;
+
+        //TO DO : peut être modifier les constructeurs pour ne pas avoir à mettre null pour l'Observateur
+        if(type == EnumTransition.INTER){
+            if(!s.isEtatIntermediaire() || !d.isEtatIntermediaire())
+                throw new NoIntermediaryStateException();
+
+            t = new TransitionIntermediaire(null,etiquette,(EtatIntermediaire)s,(EtatIntermediaire)d);
+        }
+        else if(type == EnumTransition.FINAL){
+            if(!s.isEtatIntermediaire() || !(d instanceof PseudoFinal))
+                throw new NoIntermediaryAndFinalStateException();
+            //TO DO : peut être modifier le constructeur pour avoir à remplir les états
+            t = new TransitionFinale(null,etiquette);
+        }
+        else{//transition initiale
+            if(!(s instanceof PseudoInitial) || !d.isEtatIntermediaire())
+                throw new NoIntermediaryAndInitialStateException();
+            //TO DO : peut être modifier le constructeur pour avoir à remplir l'état de destination ?
+            t = new TransitionInitiale(null,(PseudoInitial)s);
+        }
+
         TransitionGraph tg = ihm.createTransitionGraph(t);
+        t.setObservateur(tg);
+
+        mainConteneur.addElmt(t);
         correspondance.put(tg,t);
+
+        return t;
     }
 
-    public void ajouterEtat(String type, String nom){
-        mainConteneur.addElmt(e);
+    public Etat ajouterEtat(EnumEtat type, String nom){
+        Etat e;
+
+        //TO DO : peut être modifier les constructeurs pour ne pas avoir à mettre null pour l'Observateur
+        if(type == EnumEtat.COMPOSITE){
+            PseudoInitial init = (PseudoInitial)ajouterEtat(EnumEtat.INIT,nom);
+            e = new Composite(null,nom, new Conteneur(init));
+        }
+        else if(type == EnumEtat.INIT){
+            e = new PseudoInitial(null,"init_"+nom);
+        }
+        else if(type == EnumEtat.SIMPLE){
+            e = new Simple(null,nom);
+        }
+        else{//état final
+            //TO DO : peut être modifier le constructeur pour ne pas avoir à mettre null pour la transition
+            e = new PseudoFinal(null,"final_"+nom,null);
+        }
+
         EtatGraph eg = ihm.createEtatGraph(e);
+        e.setObservateur(eg);
+
+        mainConteneur.addElmt(e);
         correspondance.put(eg,e);
+
+        return e;
     }
 
-    public void renommerEtat(EtatGraph eg, String nom){
 
+    public void renommerEtat(EtatGraph eg, EnumEtat nom) throws NameNotModifiableException {
+        Etat e = (Etat)getElementFromGraphic(eg);
+
+        if(e.isEtatIntermediaire()){
+            e.setNom(nom);
+        } else {
+            throw new NameNotModifiableException();
+        }
     }
 
-    public void modifierConteneurParent(EtatGraph eg, EtatGraph parent){
 
+
+    public void modifierConteneurParent(EtatGraph eg, ElementGraphique parent) throws Exception {
+        Etat e = (Etat)getElementFromGraphic(eg);
+
+        if(!e.isEtatIntermediaire())
+            throw new ParentNotModifiableException();
+        EtatIntermediaire ei = (EtatIntermediaire)e;
+
+        Element p = getElementFromGraphic(parent);
+        Conteneur c;
+        if(p instanceof Composite){
+            c = ((Composite) p).getFils();
+        } else if (p instanceof Conteneur){
+            c = (Conteneur) p;
+        } else {
+            throw new NotAParentException();
+        }
+
+        for(Transition t : ei.getDestinations()){
+            if(t instanceof TransitionFinale){
+                PseudoFinal ef = ((TransitionFinale)(t)).getPseudoFinal();
+                ef.setTransition(null);
+            } else {
+                EtatIntermediaire etatIntermediaire = ((TransitionIntermediaire)(t)).getDestination();
+                etatIntermediaire.unLinkDestination(t);
+            }
+        }
+        for(Transition t : ei.getSources()){
+            if(t instanceof TransitionInitiale){
+                PseudoInitial pi = ((TransitionInitiale)(t)).getPseudoInitial();
+                pi.setTransition(null);
+            } else {
+                EtatIntermediaire etatIntermediaire = ((TransitionIntermediaire)(t)).getSource();
+                etatIntermediaire.unLinkSource(t);
+            }
+        }
+
+        ei.setSources(new HashSet<TransitionIntermediaire>());
+        ei.setDestinations(new HashSet<TransitionIntermediaire>());
+        c.addElmt(ei);
+
+        //TO DO : enlever l'état de son conteneur parent précédent
     }
 
-    public void supprimerElement(ElementGraphique e){
 
+
+    public void supprimerElement(ElementGraphique elem){
+        Element e = getElementFromGraphic(elem);
+        if(e.isEtatIntermediaire()){
+
+        } else if(e instanceof PseudoFinal){
+            //TO DO : pas sur de pouvoir faire ce instanceof
+        }
     }
 
-    public void changerSource(TransitionGraph t, EtatGraph source){
+    public void changerSource(TransitionGraph transitionGraph, EtatGraph source) throws NotASourceException {
+        Transition t = (Transition)getElementFromGraphic(transitionGraph);
+        Etat e = (Etat)getElementFromGraphic(source);
 
+        if(e instanceof PseudoFinal){
+            throw new NotASourceException();
+        }
+
+        //TO DO
+        if(t instanceof TransitionInitiale){
+            PseudoInitial pi = ((TransitionInitiale)(t)).getPseudoInitial();
+            pi.setTransition(null);
+        } else {
+            EtatIntermediaire etatIntermediaire = ((TransitionIntermediaire)(t)).getSource();
+            etatIntermediaire.unLinkSource(t);
+        }
     }
 
     public void changerDest(TransitionGraph t, EtatGraph dest){
@@ -63,8 +178,10 @@ public class ControleurDiagramme {
     }
 
     public HashSet<Erreur> chercherErreurs(){
-
-        return new HashSet<Erreur>();
+    	if(mainConteneur == null)
+    		return new HashSet<Erreur>();
+    	
+    	return mainConteneur.chercherErreurs();
     }
 
     public HashMap<ElementGraphique, Element> getCorrespondance() {
@@ -73,5 +190,9 @@ public class ControleurDiagramme {
 
     public Conteneur getMainConteneur() {
         return mainConteneur;
+    }
+
+    private Element getElementFromGraphic(ElementGraphique eg){
+        return correspondance.get(eg);
     }
 }

@@ -1,8 +1,9 @@
 package Vues;
 
+import com.mxgraph.model.mxCell;
+
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 
 /**
  * Created by Jerem on 03/11/2015.
@@ -27,83 +28,54 @@ public class MenuContextuel extends JPopupMenu {
 
     private JMenuItem modifier_conteneur = new JMenuItem("Modifier le conteneur parent");
 
-    public MenuContextuel(EnumObjetSelectionne objSelectionne){
-        creationMenu();
-        
-        if(objSelectionne.equals(EnumObjetSelectionne.AUCUN)) {
-        	ajouter_transition.setEnabled(false);
-        	modifier.setEnabled(false);
-        	supprimer.setEnabled(false);
-        	modifier_conteneur.setEnabled(false);
-        } else if(objSelectionne.equals(EnumObjetSelectionne.ETAT)) {
-        	modifier_transition.setEnabled(false);
-        } else if(objSelectionne.equals(EnumObjetSelectionne.TRANSITION)) {
-        	ajouter.setEnabled(false);
-        	modifier_etat.setEnabled(false);
-        	modifier_conteneur.setEnabled(false);
-        } 
+    private mxCell child;
+
+    public MenuContextuel(EnumObjetSelectionne objSelectionne, ElementGraphique element) {
+
+        creationMenu(element);
+
+        if (objSelectionne.equals(EnumObjetSelectionne.AUCUN)) {
+            ajouter_transition.setEnabled(false);
+            modifier.setEnabled(false);
+            supprimer.setEnabled(false);
+            modifier_conteneur.setEnabled(false);
+        } else if (objSelectionne.equals(EnumObjetSelectionne.ETAT)) {
+            modifier_transition.setEnabled(false);
+        } else if (objSelectionne.equals(EnumObjetSelectionne.TRANSITION)) {
+            ajouter.setEnabled(false);
+            modifier_etat.setEnabled(false);
+            modifier_conteneur.setEnabled(false);
+        }
     }
 
-	private void creationMenu() {
-		etat_simple.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new CreationEtat(EnumEtat.SIMPLE);
-            }
-        });
+    private void creationMenu(ElementGraphique element) {
+        etat_simple.addActionListener(new MenuContextuelItemListener.CreationEtatSimpleListener());
 
-        etat_final.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new CreationEtat(EnumEtat.FINAL);
-            }
-        });
+        etat_final.addActionListener(new MenuContextuelItemListener.CreationEtatFinalListener());
 
-        etat_composite.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new CreationEtat(EnumEtat.COMPOSITE);
-            }
-        });
+        etat_composite.addActionListener(new MenuContextuelItemListener.CreationEtatCompositeListener());
         etat.add(etat_simple);
         etat.add(etat_final);
         etat.add(etat_composite);
         ajouter.add(etat);
 
-        ajouter_transition.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new CreationTransition();
-            }
-        });
+        ajouter_transition.addActionListener(new MenuContextuelItemListener.AjouterTransitionListener(element));
         ajouter.add(ajouter_transition);
         add(ajouter);
 
-        modifier_etat.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new EditionEtat("");
-            }
-        });
+        if (element != null) {
+            modifier_etat.addActionListener(new MenuContextuelItemListener.ModifierEtatListener(element));
+            modifier_transition.addActionListener(new MenuContextuelItemListener.ModifierTransitionListener(element));
+        }
         modifier.add(modifier_etat);
 
-        modifier_transition.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new EditionTransition();
-            }
-        });
         modifier.add(modifier_transition);
 
         add(modifier);
         add(supprimer);
 
-        modifier_conteneur.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new ChoixConteneur();
-            }
-        });
+        modifier_conteneur.addActionListener(new MenuContextuelItemListener.ChoixConteneurListener(element));
         add(modifier_conteneur);
-	}
+
+    }
 }

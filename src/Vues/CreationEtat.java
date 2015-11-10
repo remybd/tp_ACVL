@@ -1,16 +1,9 @@
 package Vues;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-
-import Controleurs.ControleurDiagramme;
 
 /**
  * Created by Jerem on 03/11/2015.
@@ -40,7 +33,9 @@ public class CreationEtat extends FenetrePopup implements ActionListener{
     }
 
     public void actionPerformed(ActionEvent arg0){
-        //Ihm.instance().getControleur().create_etat(text_etat.getText(), this.type);
+        //Ihm.instance().getControleur().ajouterEtat(this.type, text_etat.getText());
+        //TODO Test, à changer
+        Ihm.instance().getEdGraphique().ajouterEtatSimple(text_etat.getText(), this.type);
         this.dispose();
     }
 }

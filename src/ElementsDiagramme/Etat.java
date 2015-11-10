@@ -23,4 +23,9 @@ public abstract class Etat extends Sujet implements Element {
 		_nom = nom;
 	}
 
+	@Override
+	public boolean isTransition() {
+		return false;
+	}
+
 }

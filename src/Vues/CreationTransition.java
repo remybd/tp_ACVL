@@ -1,15 +1,11 @@
 package Vues;
 
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import ElementsDiagramme.EnumTransition;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 /**
  * Created by Jerem on 03/11/2015.
@@ -22,8 +18,14 @@ public class CreationTransition extends FenetrePopup implements ActionListener{
     private JTextField etiquette_transition = new JTextField();
     private JButton valider = new JButton("Valider");
 
-    public CreationTransition(){
+    private EnumTransition type;
+    private String etat_source;
+
+    public CreationTransition(String etat_source, EnumTransition type){
         super();
+        this.type = type;
+        this.etat_source = etat_source;
+
         JPanel centered = new JPanel();
         etiquette_transition.setPreferredSize(new Dimension(150, 30));
 
@@ -44,7 +46,13 @@ public class CreationTransition extends FenetrePopup implements ActionListener{
     }
 
     public void actionPerformed(ActionEvent arg0){
-        //Ihm.instance().getControleur().create_transition(, this.type);
+        EnumEtat type_etat = ((EtatGraph) Ihm.instance().getEdGraphique().getElement_from_liste(etat_source)).getType();
+        if(type_etat == EnumEtat.INIT)
+            Ihm.instance().getControleur().ajouterTransition(this.type, this.etiquette_transition.getText(),etat_source,(String)liste_etats.getSelectedItem());
+        else if(type_etat == EnumEtat.SIMPLE)
+            Ihm.instance().getControleur().ajouterTransition(this.type, this.etiquette_transition.getText(), etat_source, (String) liste_etats.getSelectedItem());
+        else
+            Ihm.instance().getControleur().ajouterTransition(this.type, this.etiquette_transition.getText(), etat_source, (String) liste_etats.getSelectedItem());
         this.dispose();
     }
 }

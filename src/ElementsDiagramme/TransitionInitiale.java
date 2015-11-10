@@ -21,6 +21,22 @@ public class TransitionInitiale extends Transition {
 
 	public void setPseudoInitial(PseudoInitial _etatInit) {
 		this._etatInit = _etatInit;
+	}
+
+	@Override
+	public void supprimer() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean isEtatIntermediaire() {
+		return false;
+	}
+
+	@Override
+	public boolean isTransition() {
+		return true;
 	}	
 	
 }
