@@ -209,7 +209,7 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
         Object newEtatParent = ((parent == null) ? graph.getDefaultParent() : parent);
         mxCell etat_graph = null;
         try {
-            etat_graph = (mxCell)this.getGraphComponent().getGraph().insertVertex(parent, null, label, 50, 50, 80, 30);
+            etat_graph = (mxCell)this.getGraphComponent().getGraph().insertVertex(parent, null, label, 50, 50, 80, 30, etatInitialStyle);
             this.getListe_elements_graphiques().put(etat_graph, new EtatGraph(null,etat_graph, EnumEtat.INIT));
         } finally {
             graph.getModel().endUpdate();
