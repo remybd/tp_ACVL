@@ -30,7 +30,7 @@ public class Ihm {
         return null;
     }
 
-    public EtatGraph createEtatGraph(Etat e){
+    public EtatGraph createEtatGraph(EtatGraph e){
 
         return null;
     }

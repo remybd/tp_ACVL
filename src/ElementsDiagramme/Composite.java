@@ -3,12 +3,8 @@ package ElementsDiagramme;
 import java.util.HashMap;
 import java.util.HashSet;
 
-<<<<<<< HEAD
-import Vues.ObservateurVue;
-=======
 import Erreurs.NonUnicite;
-import Vues.Observateur;
->>>>>>> 0169b07351ea42846724c1442dce3dcdee6664c6
+import Vues.ObservateurVue;
 
 /**
  *  TODO
@@ -33,7 +29,7 @@ public class Composite extends EtatIntermediaire {
 
 	/**
 	 * 
-	 * @return la liste des états qui sont bloquants au sein de cet état composite
+	 * @return la liste des ï¿½tats qui sont bloquants au sein de cet ï¿½tat composite
 	 */
 	public HashSet<EtatIntermediaire> chercherEtatsBloquants(){
 		if(_fils != null)
@@ -44,8 +40,8 @@ public class Composite extends EtatIntermediaire {
 	
 
 	/**
-	 * Gestion erreur d'unicité des états
-	 * @return la liste des etats qui ont le même nom au sein d'un conteneur
+	 * Gestion erreur d'unicitï¿½ des ï¿½tats
+	 * @return la liste des etats qui ont le mï¿½me nom au sein d'un conteneur
 	 */
 	public HashMap<Conteneur,HashSet<NonUnicite>> chercherPluriciteEtats(){
 		if(this._fils==null)
@@ -58,5 +54,17 @@ public class Composite extends EtatIntermediaire {
 	public void supprimer() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public boolean isEtatIntermediaire() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isTransition() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
