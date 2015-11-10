@@ -11,7 +11,7 @@ import Vues.TransitionGraph;
  * @author Thibaut
  *
  */
-public abstract class Transition extends Sujet implements Element {
+public abstract class Transition extends Element {
 
 	public Transition(ObservateurVue obs){
 		super(obs);

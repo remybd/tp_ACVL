@@ -9,7 +9,7 @@ import Vues.ObservateurVue;
  * @author Thibaut
  *
  */
-public abstract class Etat extends Sujet implements Element {
+public abstract class Etat extends Element {
 	private String _nom;
 	
 	public Etat(ObservateurVue obs, String nom){

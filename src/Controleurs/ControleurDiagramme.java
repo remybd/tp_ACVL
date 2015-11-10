@@ -26,7 +26,7 @@ public class ControleurDiagramme {
 
 
     //TODO A modifier, ajouterTransition doit recevoir des EtatGraph de la Vue et non pas des états
-    public Transition ajouterTransition(EnumTransition type, String etiquette, Etat s, Etat d) throws Exception {
+    public Transition ajouterTransition(EnumTransition type, String etiquette, Etat s, Etat d, EtatGraph parent) throws Exception {
         Transition t = Transition.creerTransition(type,etiquette,s,d);
 
         TransitionGraph tg = ihm.createTransitionGraph(t);
@@ -38,10 +38,10 @@ public class ControleurDiagramme {
         return t;
     }
 
-    public Etat ajouterEtat(EnumEtat type, String nom){
+    public Etat ajouterEtat(EnumEtat type, String nom, EtatGraph parent){
         Etat e = Etat.creerEtat(type,nom,this);
 
-        EtatGraph eg = ihm.createEtatGraph(e);
+        EtatGraph eg = ihm.createEtatGraph(e,parent);
         e.setObservateur(eg);
 
         mainConteneur.addElmt(e);
@@ -51,7 +51,7 @@ public class ControleurDiagramme {
     }
 
 
-    public void renommerEtat(EtatGraph eg, EnumEtat nom) throws NameNotModifiableException {
+    public void renommerEtat(EtatGraph eg, String nom) throws NameNotModifiableException {
         Etat e = (Etat)getElementFromGraphic(eg);
 
         if(e.isEtatIntermediaire()){
@@ -63,7 +63,7 @@ public class ControleurDiagramme {
 
 
 
-    public void modifierConteneurParent(EtatGraph eg, ElementGraphique parent) throws Exception {
+    /*public void modifierConteneurParent(EtatGraph eg, ElementGraphique parent) throws Exception {
         Etat e = (Etat)getElementFromGraphic(eg);
 
         if(!e.isEtatIntermediaire())
@@ -104,7 +104,7 @@ public class ControleurDiagramme {
         c.addElmt(ei);
 
         //TO DO : enlever l'état de son conteneur parent précédent
-    }
+    }*/
 
 
 
@@ -157,7 +157,12 @@ public class ControleurDiagramme {
     	return mainConteneur.chercherErreurs();
     }
 
-    public HashSet<Element> getStatesFromSameConteneur(EtatGraph etatGraph){
+    public HashSet<EtatGraph> getStatesFromSameConteneur(EtatGraph etatGraph){
+
+    }
+
+    //renvoie tous les états simples et composites fils de l'étatGraph père
+    public HashSet<EtatGraph> getSonFromFatherState(EtatGraph father){
 
     }
 
