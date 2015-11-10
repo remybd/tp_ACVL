@@ -15,8 +15,8 @@ public class TransitionIntermediaire extends Transition {
 	public TransitionIntermediaire(Conteneur parent, String etiquette, EtatIntermediaire etatSource, EtatIntermediaire etatDest){
 		super(parent);
 		this.setEtiquette(etiquette);
-		this.setSource(etatSource);
-		this.setDestination(etatDest);
+		this.setEtatSource(etatSource);
+		this.setEtatDest(etatDest);
 	}
 	
 	public String getEtiquette(){
@@ -27,21 +27,7 @@ public class TransitionIntermediaire extends Transition {
 		_etiquette = etiquette;
 	}
 
-	public EtatIntermediaire getSource() {
-		return _source;
-	}
 
-	public void setSource(EtatIntermediaire _source) {
-		this._source = _source;
-	}
-
-	public EtatIntermediaire getDestination() {
-		return _dest;
-	}
-
-	public void setDestination(EtatIntermediaire _dest) {
-		this._dest = _dest;
-	}
 	
 	/**
 	 * Retourne la garde indiquée dans l'étiquette
@@ -96,5 +82,42 @@ public class TransitionIntermediaire extends Transition {
 		
 		if(_dest != null)
 			_dest.unLinkSource(this);
+	}
+	
+
+
+	@Override
+	public boolean isTransitionFinale() {
+		return false;
+	}
+
+	@Override
+	public boolean isTransitionInitiale() {
+		return false;
+	}
+
+	@Override
+	public boolean isTransitionIntermediaire() {
+		return true;
+	}
+
+	@Override
+	public void setEtatSource(Etat etat) {
+		this._source = etat;
+	}
+
+	@Override
+	public void setEtatDest(Etat etat) {
+		this._dest = etat;		
+	}
+
+	@Override
+	public Etat getEtatSource() {
+		return _source;
+	}
+
+	@Override
+	public Etat getEtatDest() {
+		return _dest;
 	}
 }

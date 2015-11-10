@@ -23,6 +23,25 @@ public abstract class EtatIntermediaire extends Etat{
 		super(parent, nom);
 	}
 	
+	/**
+	 * Converti le pseudo intial spécifié en EtatIntermediaire
+	 * @param init
+	 */
+	public EtatIntermediaire(PseudoInitial init){
+		super(init.getConteneurParent(), init.getNom());
+		this.addDestination(init.getTransition());
+	}
+	
+
+	/**
+	 * Converti le pseudo final spécifié en EtatIntermediaire
+	 * @param init
+	 */
+	public EtatIntermediaire(PseudoFinal init){
+		super(init.getConteneurParent(), init.getNom());
+		_dest = init.getTransitions();
+	}
+	
 	public HashSet<TransitionIntermediaire> getDestinations() {
 		return _dest;
 	}

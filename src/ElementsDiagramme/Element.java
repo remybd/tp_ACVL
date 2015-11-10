@@ -25,9 +25,13 @@ public abstract class Element extends Sujet{
 
     public abstract boolean isEtat();
     public abstract boolean isEtatIntermediaire();
-    public abstract boolean isTransition();
     public abstract boolean isEtatComposite();
     public abstract boolean isEtatSimple();
     public abstract boolean isEtatPseudoInitial();
     public abstract boolean isEtatPseudoFinal();
+    
+    public abstract boolean isTransition();
+    public abstract boolean isTransitionFinale();
+    public abstract boolean isTransitionInitiale();
+    public abstract boolean isTransitionIntermediaire();
 }
