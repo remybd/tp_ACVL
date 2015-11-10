@@ -33,7 +33,9 @@ public class CreationEtat extends FenetrePopup implements ActionListener{
     }
 
     public void actionPerformed(ActionEvent arg0){
-        Ihm.instance().getControleur().ajouterEtat(this.type, text_etat.getText());
+        //Ihm.instance().getControleur().ajouterEtat(this.type, text_etat.getText());
+        //TODO Test, à changer
+        Ihm.instance().getEdGraphique().ajouterEtatSimple(text_etat.getText(), this.type);
         this.dispose();
     }
 }

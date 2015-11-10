@@ -1,5 +1,7 @@
 package Vues;
 
+import Exceptions.NameNotModifiableException;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -35,7 +37,13 @@ public class EditionEtat extends FenetrePopup implements ActionListener{
     }
 
     public void actionPerformed(ActionEvent arg0){
-        //Ihm.instance().getControleur().modifier_etat(text_etat.getText(), this.type);
+        ElementGraphique etat_courant = Ihm.instance().getEdGraphique().getElement_from_liste(text_etat.getText());
+        try{
+            Ihm.instance().getControleur().renommerEtat((EtatGraph)etat_courant, this.type);
+        } catch(NameNotModifiableException e){
+            //TODO Voir les traitements à effectuer
+            e.printStackTrace();
+        }
         this.dispose();
     }
 }

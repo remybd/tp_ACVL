@@ -23,6 +23,7 @@ public class ControleurDiagramme {
         this.ihm = ihm;
     }
 
+    //TODO A modifier, ajouterTransition doit recevoir des EtatGraph de la Vue et non pas des états
     public Transition ajouterTransition(EnumTransition type, String etiquette, Etat s, Etat d) throws Exception {
         Transition t;
 
@@ -84,7 +85,7 @@ public class ControleurDiagramme {
     }
 
 
-    public void renommerEtat(EtatGraph eg, String nom) throws NameNotModifiableException {
+    public void renommerEtat(EtatGraph eg, EnumEtat nom) throws NameNotModifiableException {
         Etat e = (Etat)getElementFromGraphic(eg);
 
         if(e.isEtatIntermediaire()){
