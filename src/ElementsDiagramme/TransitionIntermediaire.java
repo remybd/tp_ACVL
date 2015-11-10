@@ -89,7 +89,6 @@ public class TransitionIntermediaire extends Transition {
 		return _etiquette.substring(slash, _etiquette.length());
 	}
 
-<<<<<<< HEAD
 	@Override
 	public void supprimer() {
 		if(_source != null)
@@ -108,9 +107,6 @@ public class TransitionIntermediaire extends Transition {
 	public boolean isTransition() {
 		return true;
 	}
-=======
->>>>>>> 0a9004d522a943776ae1c164cbcf5f2e9b668ae9
-
 
 
 	@Override

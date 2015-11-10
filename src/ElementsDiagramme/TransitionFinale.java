@@ -26,7 +26,7 @@ public class TransitionFinale extends Transition {
 		_etiquette = etiquette;
 	}
 	
-	public PseudoFinal getEtatFinal(){
+	public PseudoFinal getPseudoFinal(){
 		return this._etatFinal;
 	}
 	

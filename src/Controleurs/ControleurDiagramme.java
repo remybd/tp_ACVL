@@ -83,7 +83,7 @@ public class ControleurDiagramme {
         for(Transition t : ei.getDestinations()){
             if(t instanceof TransitionFinale){
                 PseudoFinal ef = ((TransitionFinale)(t)).getPseudoFinal();
-                ef.setTransition(null);
+                ef.resetTransitions();
             } else {
                 EtatIntermediaire etatIntermediaire = ((TransitionIntermediaire)(t)).getDestination();
                 etatIntermediaire.unLinkDestination(t);

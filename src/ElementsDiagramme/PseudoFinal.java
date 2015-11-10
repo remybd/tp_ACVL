@@ -27,12 +27,18 @@ public class PseudoFinal  extends Etat {
 			
 		this._trans.add(trans);
 	}
-
-	@Override
-	public void supprimer() {
+	
+	public void resetTransitions(){
 		for(TransitionFinale trans : _trans){
 			trans.setPseudoFinal(null);
 		}
+		
+		_trans = new HashSet<TransitionFinale>();
+	}
+
+	@Override
+	public void supprimer() {
+		this.resetTransitions();
 	}
 
 	@Override
