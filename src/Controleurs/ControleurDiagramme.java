@@ -17,17 +17,33 @@ public class ControleurDiagramme {
     private Conteneur mainConteneur;
     private Ihm ihm;
     private HashMap<ElementGraphique,Element> correspondance;
+    final private static ControleurDiagramme instanceUnique = new ControleurDiagramme();
 
-    public ControleurDiagramme(Conteneur mainConteneur, Ihm ihm){
-        this.mainConteneur = mainConteneur;
-        this.ihm = ihm;
+    private ControleurDiagramme(){
+        this.ihm = Ihm.instance();
+        PseudoInitial pi = null;
+
+        try {
+            pi = (PseudoInitial)ajouterEtat(EnumEtat.INIT,"",null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        this.mainConteneur = new Conteneur(pi);
+        pi.setConteneurParent(mainConteneur);
     }
 
-
+    static public ControleurDiagramme instance() {
+        return instanceUnique;
+    }
 
     //TODO A modifier, ajouterTransition doit recevoir des EtatGraph de la Vue et non pas des états
-    public Transition ajouterTransition(EnumTransition type, String etiquette, Etat s, Etat d) throws Exception {
-        Transition t = Transition.creerTransition(type,etiquette,s,d);
+    public Transition ajouterTransition(EnumTransition type, String etiquette, Etat s, Etat d, EtatGraph parent) throws Exception {
+        Conteneur conteneurParent = null;
+        if(parent != null){
+            conteneurParent = getElementFromGraphic(parent).getConteneurParent();
+        }
+
+        Transition t = Transition.creerTransition(type,etiquette,s,d,conteneurParent);
 
         TransitionGraph tg = ihm.createTransitionGraph(parent,t);
         t.setObservateur(tg);
@@ -38,14 +54,24 @@ public class ControleurDiagramme {
         return t;
     }
 
-    public Etat ajouterEtat(EnumEtat type, String nom, EtatGraph parent){
-        Etat e = Etat.creerEtat(type,nom,this);
+    public Etat ajouterEtat(EnumEtat type, String nom, EtatGraph parent) throws Exception {
+        Conteneur conteneurParent = null;
+        if(parent != null){
+            conteneurParent = getElementFromGraphic(parent).getConteneurParent();
+        }
+
+        Etat e = Etat.creerEtat(type,nom,this,conteneurParent);
 
         EtatGraph eg = ihm.createEtatGraph(parent,e);
         e.setObservateur(eg);
 
         mainConteneur.addElmt(e);
         correspondance.put(eg,e);
+
+        if(type == EnumEtat.COMPOSITE){
+            PseudoInitial psi = ((Composite) e).getFils().getPseudoInitial();
+            getEtatGraphFromEtat(psi).setParent(eg);
+        }
 
         return e;
     }
@@ -197,12 +223,7 @@ public class ControleurDiagramme {
 
         for(Element element : c.getElmts()){
             if(element.isEtat()){
-                ObservateurVue obs = element.getObservateur();
-                if(obs instanceof EtatGraph){
-                    result.add((EtatGraph)obs);
-                } else {
-                    throw new BadCorrespondanceBetweenObservateurAndSubjectType();
-                }
+                result.add((EtatGraph)getEtatGraphFromEtat((Etat)element));
             }
         }
         return result;
@@ -223,12 +244,7 @@ public class ControleurDiagramme {
     	for(Element elmt : elmtsFils){
     		if(elmt.isEtat()){
     			//TODO : ajouter dans states la correspondance graphique de elmt
-                ObservateurVue obs = elmt.getObservateur();
-                if(obs instanceof EtatGraph){
-                    states.add((EtatGraph)obs);
-                } else {
-                    throw new BadCorrespondanceBetweenObservateurAndSubjectType();
-                }
+                states.add((EtatGraph)getEtatGraphFromEtat((Etat)elmt));
     		}
     	}
     	
@@ -245,5 +261,14 @@ public class ControleurDiagramme {
 
     private Element getElementFromGraphic(ElementGraphique eg){
         return correspondance.get(eg);
+    }
+
+    private EtatGraph getEtatGraphFromEtat(Etat e) throws Exception {
+        ObservateurVue obs = e.getObservateur();
+        if(obs instanceof EtatGraph){
+            return (EtatGraph)obs;
+        } else {
+            throw new BadCorrespondanceBetweenObservateurAndSubjectType();
+        }
     }
 }

@@ -37,7 +37,7 @@ public class CreationEtat extends FenetrePopup implements ActionListener{
     }
 
     public void actionPerformed(ActionEvent arg0){
-        Ihm.instance().getControleur().ajouterEtat(this.type, text_etat.getText(), (EtatGraph)this.element_graphique);
+        //Ihm.instance().getControleur().ajouterEtat(this.type, text_etat.getText(), (EtatGraph)this.element_graphique);
         String nom_etat = text_etat.getText();
         //TODO Test, à changer
         if(nom_etat.isEmpty()){
@@ -45,6 +45,11 @@ public class CreationEtat extends FenetrePopup implements ActionListener{
             message_erreur.showMessageDialog(null, "Un etat doit avoir un nom", "Erreur", JOptionPane.ERROR_MESSAGE);
         } else {
             //Ihm.instance().getEdGraphique().ajouterEtatSimple(text_etat.getText(), this.type);
+            try {
+                Ihm.instance().getControleur().ajouterEtat(this.type, text_etat.getText(), (EtatGraph) this.element_graphique);
+            } catch (Exception e){
+                e.printStackTrace();
+            }
             this.dispose();
         }
     }

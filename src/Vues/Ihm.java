@@ -6,6 +6,8 @@ import ElementsDiagramme.EnumEtat;
 import ElementsDiagramme.Etat;
 import ElementsDiagramme.Transition;
 
+import javax.naming.ldap.Control;
+
 
 /**
  * Created by r�my on 06/11/2015.
@@ -31,7 +33,6 @@ public class Ihm {
     }
 	
     public TransitionGraph createTransitionGraph(EtatGraph parent, Transition t){
-
         return null;
     }
 
@@ -50,6 +51,10 @@ public class Ihm {
     }
 
     public static void main(String[] args){
-        Ihm frame = Ihm.instance();
+        try {
+            ControleurDiagramme con = new ControleurDiagramme();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

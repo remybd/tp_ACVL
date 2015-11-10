@@ -6,5 +6,7 @@ package Vues;
 public class TransitionGraph extends ElementGraphique {
     public TransitionGraph(){
         super(null, null);
+        this.supprimable = true;
     }
+
 }
