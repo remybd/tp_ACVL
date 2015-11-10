@@ -43,9 +43,11 @@ public class ControleurDiagramme {
 
     //TODO A modifier, ajouterTransition doit recevoir des EtatGraph de la Vue et non pas des états
     public Transition ajouterTransition(EnumTransition type, String etiquette, Etat s, Etat d, EtatGraph parent) throws Exception {
-        Conteneur conteneurParent = null;
+        Conteneur conteneurParent;
         if(parent != null){
             conteneurParent = getElementFromGraphic(parent).getConteneurParent();
+        } else {
+            conteneurParent = mainConteneur;
         }
 
         Transition t = Transition.creerTransition(type,etiquette,s,d,conteneurParent);
@@ -60,9 +62,11 @@ public class ControleurDiagramme {
     }
 
     public Etat ajouterEtat(EnumEtat type, String nom, EtatGraph parent) throws Exception {
-        Conteneur conteneurParent = null;
+        Conteneur conteneurParent;
         if(parent != null){
             conteneurParent = getElementFromGraphic(parent).getConteneurParent();
+        } else {
+            conteneurParent = mainConteneur;
         }
 
         Etat e = Etat.creerEtat(type,nom,this,conteneurParent);
