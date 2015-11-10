@@ -74,6 +74,9 @@ public class ControleurDiagramme {
         correspondance.put(eg,e);
 
         if(type == EnumEtat.COMPOSITE){
+            PseudoInitial init = (PseudoInitial)this.ajouterEtat(EnumEtat.INIT, nom, eg);
+            ((Composite)e).getFils().setPseudoInital(init);
+
             PseudoInitial psi = ((Composite) e).getFils().getPseudoInitial();
             psi.setConteneurParent(((Composite) e).getFils());
             getEtatGraphFromEtat(psi).setParent(eg);
