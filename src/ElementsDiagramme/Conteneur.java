@@ -23,7 +23,9 @@ public class Conteneur {
 	public Conteneur(PseudoInitial etatInit){
 		this.setPseudoInital(etatInit);
 	}
-
+	public Conteneur(){
+		super();
+	}
 
 	public void supprimer(){
 		if(_etatInit != null)

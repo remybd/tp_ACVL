@@ -15,10 +15,39 @@ public class TransitionIntermediaire extends Transition {
 	public TransitionIntermediaire(Conteneur parent, String etiquette, EtatIntermediaire etatSource, EtatIntermediaire etatDest){
 		super(parent);
 		this.setEtiquette(etiquette);
-		this.setSource(etatSource);
-		this.setDestination(etatDest);
+		this.setEtatSource(etatSource);
+		this.setEtatDest(etatDest);
 	}
 	
+	/**
+	 * Converti le TransitionInitiale spécifié en TransitionIntermediaire
+	 * @param transInit
+	 * @param EtatIntermediaire : la source
+	 */
+	public TransitionIntermediaire(TransitionInitiale transInit, EtatIntermediaire etatSource) {
+		super(transInit.getConteneurParent());
+		this.setObservateur(transInit.getObservateur());
+		
+		this.setEtiquette("");
+		this.setEtatSource(etatSource);
+		this.setEtatDest(transInit.getEtatDest());
+	}
+
+	/**
+	 * Converti le TransitionFinale spécifié en TransitionIntermediaire
+	 * @param trans
+	 * @param etatIntermediaire : la destination
+	 */
+	public TransitionIntermediaire(TransitionFinale trans, EtatIntermediaire etatIntermediaire) {
+		super(trans.getConteneurParent());
+		this.setObservateur(trans.getObservateur());
+		
+		this.setEtiquette(trans.getEtiquette());
+		this.setEtatSource(trans.getEtatSource());
+		this.setEtatDest(etatIntermediaire);
+	}
+
+
 	public String getEtiquette(){
 		return _etiquette;
 	}
@@ -27,21 +56,7 @@ public class TransitionIntermediaire extends Transition {
 		_etiquette = etiquette;
 	}
 
-	public EtatIntermediaire getSource() {
-		return _source;
-	}
 
-	public void setSource(EtatIntermediaire _source) {
-		this._source = _source;
-	}
-
-	public EtatIntermediaire getDestination() {
-		return _dest;
-	}
-
-	public void setDestination(EtatIntermediaire _dest) {
-		this._dest = _dest;
-	}
 	
 	/**
 	 * Retourne la garde indiquée dans l'étiquette
@@ -92,9 +107,42 @@ public class TransitionIntermediaire extends Transition {
 	@Override
 	public void supprimer() {
 		if(_source != null)
-			_source.addDestination(null);
+			_source.unLinkDestination(this);
 		
 		if(_dest != null)
-			_dest.addSource(null);
+			_dest.unLinkSource(this);
+	}
+	
+
+
+	@Override
+	public boolean isTransitionFinale() {
+		return false;
+	}
+
+	@Override
+	public boolean isTransitionInitiale() {
+		return false;
+	}
+
+	@Override
+	public boolean isTransitionIntermediaire() {
+		return true;
+	}
+
+	public void setEtatSource(EtatIntermediaire etat) {
+		this._source = etat;
+	}
+
+	public void setEtatDest(EtatIntermediaire etat) {
+		this._dest = etat;		
+	}
+
+	public EtatIntermediaire getEtatSource() {
+		return _source;
+	}
+
+	public EtatIntermediaire getEtatDest() {
+		return _dest;
 	}
 }

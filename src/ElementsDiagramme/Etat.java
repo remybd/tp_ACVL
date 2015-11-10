@@ -31,27 +31,40 @@ public abstract class Etat extends Element {
 	}
 
 	@Override
+	public boolean isTransitionFinale() {
+		return false;
+	}
+
+	@Override
+	public boolean isTransitionInitiale() {
+		return false;
+	}
+
+	@Override
+	public boolean isTransitionIntermediaire() {
+		return false;
+	}
+
+	@Override
 	public boolean isEtat() {
 		return true;
 	}
 	
-	public static Etat creerEtat(EnumEtat type, String nom, ControleurDiagramme c){
+	public static Etat creerEtat(EnumEtat type, String nom, ControleurDiagramme c, Conteneur parent) throws Exception {
 		Etat e;
 
-		//TO DO : peut être modifier les constructeurs pour ne pas avoir à mettre null pour l'Observateur
 		if(type == EnumEtat.COMPOSITE){
-			PseudoInitial init = (PseudoInitial)c.ajouterEtat(EnumEtat.INIT,nom);
-			e = new Composite(null,nom, new Conteneur(init));
+			e = new Composite(parent ,"compo_"+nom, new Conteneur());
 		}
 		else if(type == EnumEtat.INIT){
-			e = new PseudoInitial(null,"init_"+nom);
+			e = new PseudoInitial(parent,"init_"+nom);
 		}
 		else if(type == EnumEtat.SIMPLE){
-			e = new Simple(null,nom);
+			e = new Simple(parent,nom);
 		}
 		else{//état final
-			//TO DO : peut être modifier le constructeur pour ne pas avoir à mettre null pour la transition
-			e = new PseudoFinal(null,"final_"+nom,null);
+			//TODO : peut être modifier le constructeur pour ne pas avoir à mettre null pour la transition
+			e = new PseudoFinal(parent,"final_"+nom,null);
 		}
 
 		return e;

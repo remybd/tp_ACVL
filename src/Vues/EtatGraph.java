@@ -15,6 +15,10 @@ public class EtatGraph extends ElementGraphique {
     public EtatGraph(EtatGraph parent, mxCell objet_graphique, EnumEtat type){
         super(parent, objet_graphique);
         this.type = type;
+        if(this.type.equals(EnumEtat.INIT))
+            super.supprimable = false;
+        else
+            super.supprimable = true;
     }
 
     public EnumEtat getType() {
@@ -27,6 +31,6 @@ public class EtatGraph extends ElementGraphique {
 
 	@Override
 	public void miseAJour() {
-		// TODO Auto-generated method stub
+        //Ihm.instance().getControleur();
 	}
 }

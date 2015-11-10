@@ -2,6 +2,7 @@ package ElementsDiagramme;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 
 import Erreurs.Erreur;
 import Erreurs.TransitionNonDeterministe;
@@ -21,6 +22,40 @@ public abstract class EtatIntermediaire extends Etat{
 	
 	public EtatIntermediaire(Conteneur parent, String nom){
 		super(parent, nom);
+	}
+	
+	/**
+	 * Converti le pseudo initial spécifié en EtatIntermediaire
+	 * @param init
+	 */
+	public EtatIntermediaire(PseudoInitial init){
+		super(init.getConteneurParent(), init.getNom());
+		this.setObservateur(init.getObservateur());
+		
+		TransitionInitiale transInit = init.getTransition();
+		
+		if(transInit != null)
+			this.addDestination(new TransitionIntermediaire(transInit, this));
+	}
+
+
+	/**
+	 * Converti le pseudo final spécifié en EtatIntermediaire
+	 * @param init
+	 */
+	public EtatIntermediaire(PseudoFinal etat){
+		super(etat.getConteneurParent(), etat.getNom());
+		this.setObservateur(etat.getObservateur());
+		
+		HashSet<TransitionFinale> transFin = etat.getTransitions();
+		
+		if(transFin != null){
+			Iterator<TransitionFinale> it = transFin.iterator();
+			
+			while(it.hasNext()){
+				this.addDestination(new TransitionIntermediaire(it.next(), this));				
+			}
+		}
 	}
 	
 	public HashSet<TransitionIntermediaire> getDestinations() {
@@ -45,25 +80,11 @@ public abstract class EtatIntermediaire extends Etat{
 			
 		this._sources.add(source);
 	}
+	
 	public void setSources(HashSet<TransitionIntermediaire> sources){
         _sources = sources;
     }
 	
-	public void resetTransitionsSources(){
-		for(TransitionIntermediaire trans : _sources){
-			trans.setSource(null);
-		}
-		
-		_sources = new HashSet<TransitionIntermediaire>();
-	}
-
-	public void resetTransitionsDest(){
-		for(TransitionIntermediaire trans : _dest){
-			trans.setDestination(null);
-		}	
-		
-		_dest = new HashSet<TransitionIntermediaire>();
-	}
 	
 	public void unLinkSource(Transition t){
 		if(_sources == null)
@@ -78,10 +99,18 @@ public abstract class EtatIntermediaire extends Etat{
 		
 		_dest.remove(t);
 	}
+	
+	
 	@Override
 	public void supprimer() {
-		this.resetTransitionsSources();
-		this.resetTransitionsDest();
+		for(TransitionIntermediaire trans : _sources){
+			trans.supprimer();
+		}
+		
+		for(TransitionIntermediaire trans : _dest){
+			trans.supprimer();
+		}	
+		
 	} 
 
 	/**
@@ -91,7 +120,7 @@ public abstract class EtatIntermediaire extends Etat{
 	 */
 	public boolean estBloquant(){
 		for(TransitionIntermediaire source : _sources){
-			if(source.getDestination() != this)
+			if(source.getEtatDest() != this)
 				return true;
 		}
 		
@@ -101,6 +130,16 @@ public abstract class EtatIntermediaire extends Etat{
 	@Override
 	public boolean isEtatIntermediaire() {
 		return true;
+	}
+
+	@Override
+	public boolean isEtatPseudoInitial() {
+		return false;
+	}
+
+	@Override
+	public boolean isEtatPseudoFinal() {
+		return false;
 	}
 	
 

@@ -17,7 +17,7 @@ public abstract class Transition extends Element {
 		super(parent);
 	}
 
-	public static Transition creerTransition(EnumTransition type, String etiquette, Etat s, Etat d) throws Exception {
+	public static Transition creerTransition(EnumTransition type, String etiquette, Etat s, Etat d, Conteneur parent) throws Exception {
 		Transition t;
 
 		//TO DO : peut être modifier les constructeurs pour ne pas avoir à mettre null pour l'Observateur
@@ -25,23 +25,24 @@ public abstract class Transition extends Element {
 			if(!s.isEtatIntermediaire() || !d.isEtatIntermediaire())
 				throw new NoIntermediaryStateException();
 
-			t = new TransitionIntermediaire(null,etiquette,(EtatIntermediaire)s,(EtatIntermediaire)d);
+			t = new TransitionIntermediaire(parent,etiquette,(EtatIntermediaire)s,(EtatIntermediaire)d);
 		}
 		else if(type == EnumTransition.FINAL){
-			if(!s.isEtatIntermediaire() || !(d instanceof PseudoFinal))
+			if(!s.isEtatIntermediaire() || !d.isEtatPseudoFinal())
 				throw new NoIntermediaryAndFinalStateException();
 			//TO DO : peut être modifier le constructeur pour avoir à remplir les états
-			t = new TransitionFinale(null,etiquette);
+			t = new TransitionFinale(parent,etiquette);
 		}
 		else{//transition initiale
-			if(!(s instanceof PseudoInitial) || !d.isEtatIntermediaire())
+			if(!(s.isEtatPseudoInitial()) || !d.isEtatIntermediaire())
 				throw new NoIntermediaryAndInitialStateException();
 			//TO DO : peut être modifier le constructeur pour avoir à remplir l'état de destination ?
-			t = new TransitionInitiale(null,(PseudoInitial)s);
+			t = new TransitionInitiale(parent,(PseudoInitial)s, (EtatIntermediaire)d);
 		}
 
 		return t;
 	}
+	
 	
 	@Override
 	public boolean isEtat(){

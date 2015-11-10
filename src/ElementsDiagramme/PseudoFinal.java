@@ -17,6 +17,30 @@ public class PseudoFinal  extends Etat {
 		this.addTransition(transitionFinale);
 	}
 	
+
+	/**
+	 * Converti le pseudo intial spécifié en PseudoFinal ; la transition associée est perdue
+	 * @param 
+	 */
+	public PseudoFinal(PseudoInitial init){
+		super(init.getConteneurParent(), init.getNom());
+		this.setObservateur(init.getObservateur());
+	}
+	
+
+	/**
+	 * Converti le EtatIntermediaire spécifié en PseudoFinal
+	 * @param 
+	 */
+	public PseudoFinal(EtatIntermediaire etat){
+		super(etat.getConteneurParent(), etat.getNom());
+		this.setObservateur(etat.getObservateur());
+		
+		for(TransitionIntermediaire trans : etat.getDestinations()){
+			this.addTransition(new TransitionFinale(trans, this));			
+		}
+	}
+	
 	public HashSet<TransitionFinale> getTransitions() {
 		return _trans;
 	}
@@ -27,18 +51,17 @@ public class PseudoFinal  extends Etat {
 			
 		this._trans.add(trans);
 	}
-	
-	public void resetTransitions(){
-		for(TransitionFinale trans : _trans){
-			trans.setPseudoFinal(null);
-		}
-		
-		_trans = new HashSet<TransitionFinale>();
-	}
 
+	public void unLinkTransition(TransitionFinale transitionFinale) {
+		if(_trans != null)
+			_trans.remove(transitionFinale);	
+	}
+	
 	@Override
 	public void supprimer() {
-		this.resetTransitions();
+		for(TransitionFinale trans : _trans){
+			trans.supprimer();
+		}
 	}
 
 	@Override
@@ -65,4 +88,6 @@ public class PseudoFinal  extends Etat {
 	public boolean isEtatPseudoFinal() {
 		return true;
 	}
+
+
 }
