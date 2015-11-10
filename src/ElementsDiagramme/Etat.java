@@ -1,5 +1,7 @@
 package ElementsDiagramme;
 
+import Controleurs.ControleurDiagramme;
+import Vues.EtatGraph;
 import Vues.ObservateurVue;
 
 /**
@@ -26,6 +28,28 @@ public abstract class Etat extends Sujet implements Element {
 	@Override
 	public boolean isTransition() {
 		return false;
+	}
+
+	public static Etat creerEtat(EnumEtat type, String nom, ControleurDiagramme c){
+		Etat e;
+
+		//TO DO : peut être modifier les constructeurs pour ne pas avoir à mettre null pour l'Observateur
+		if(type == EnumEtat.COMPOSITE){
+			PseudoInitial init = (PseudoInitial)c.ajouterEtat(EnumEtat.INIT,nom);
+			e = new Composite(null,nom, new Conteneur(init));
+		}
+		else if(type == EnumEtat.INIT){
+			e = new PseudoInitial(null,"init_"+nom);
+		}
+		else if(type == EnumEtat.SIMPLE){
+			e = new Simple(null,nom);
+		}
+		else{//état final
+			//TO DO : peut être modifier le constructeur pour ne pas avoir à mettre null pour la transition
+			e = new PseudoFinal(null,"final_"+nom,null);
+		}
+
+		return e;
 	}
 
 }
