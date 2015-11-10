@@ -3,19 +3,12 @@ package ElementsDiagramme;
 import java.util.HashMap;
 import java.util.HashSet;
 
-<<<<<<< HEAD
-=======
 import Erreurs.ErreurEtat;
->>>>>>> branch 'master' of https://github.com/remybd/tp_ACVL.git
 import Erreurs.NonUnicite;
-<<<<<<< HEAD
-import Vues.ObservateurVue;
-=======
 import Erreurs.TransitionNonDeterministe;
-
 import Vues.ObservateurVue;
-import Erreurs.NonUnicite;
->>>>>>> branch 'master' of https://github.com/remybd/tp_ACVL.git
+
+
 
 /**
  *  TODO
@@ -64,8 +57,8 @@ public class Composite extends EtatIntermediaire {
 
 
 	/**
-	 * Retourne les erreurs de transition non déterministes liés à cet état
-	 * 2 transitions sont non déterministes si elles ont le même événement et la même condition
+	 * Retourne les erreurs de transition non dï¿½terministes liï¿½s ï¿½ cet ï¿½tat
+	 * 2 transitions sont non dï¿½terministes si elles ont le mï¿½me ï¿½vï¿½nement et la mï¿½me condition
 	 * @return
 	 */
 	public HashSet<TransitionNonDeterministe> chercherTransNnDeterm(){
@@ -83,7 +76,6 @@ public class Composite extends EtatIntermediaire {
 		// TODO Auto-generated method stub
 		
 	}
-<<<<<<< HEAD
 
 	@Override
 	public boolean isEtatIntermediaire() {
@@ -96,15 +88,5 @@ public class Composite extends EtatIntermediaire {
 		// TODO Auto-generated method stub
 		return false;
 	}
-=======
-	
-	public boolean isEtatIntermediaire(){
-		return true;
-	}
-	
-	public boolean isTransition(){
-    	return false;
-    }
 
->>>>>>> branch 'master' of https://github.com/remybd/tp_ACVL.git
 }
