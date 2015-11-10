@@ -23,7 +23,8 @@ public class ControleurFichier {
     }
 
     public void creerFichier(Conteneur c){
-        fichierDeSauvegarde = new Fichier(c);
+
+        fichierDeSauvegarde = new Fichier(c,path);
     }
 
     public void chargerFichier(String path){
@@ -34,7 +35,7 @@ public class ControleurFichier {
         if(fichierDeSauvegarde != null)
             fichierDeSauvegarde.sauvegarderFichier();
         else {
-            fichierDeSauvegarde = new Fichier(c);
+            creerFichier(c);
         }
     }
 

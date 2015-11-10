@@ -13,10 +13,9 @@ public class Fichier {
     private Conteneur mainConteneur;
 
     //création d'un fichier
-    public Fichier (Conteneur mainConteneur){
+    public Fichier (Conteneur mainConteneur, String path){
         this.mainConteneur = mainConteneur;
-
-
+        this.path = path;
         sauvegarderFichier();
     }
 
