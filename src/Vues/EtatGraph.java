@@ -1,8 +1,9 @@
 package Vues;
 
+import ElementsDiagramme.EnumEtat;
+
 import com.mxgraph.model.mxCell;
 
-import ElementsDiagramme.EnumTransition;
 
 /**
  * Created by Jerem on 03/11/2015.

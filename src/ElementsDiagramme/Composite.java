@@ -89,4 +89,24 @@ public class Composite extends EtatIntermediaire {
 		return false;
 	}
 
+	@Override
+	public boolean isEtatComposite() {
+		return true;
+	}
+
+	@Override
+	public boolean isEtatSimple() {
+		return false;
+	}
+
+	@Override
+	public boolean isEtatPseudoInitial() {
+		return false;
+	}
+
+	@Override
+	public boolean isEtatPseudoFinal() {
+		return false;
+	}
+
 }

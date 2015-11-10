@@ -2,6 +2,7 @@ package Vues;
 
 import Controleurs.ControleurDiagramme;
 import ElementsDiagramme.Conteneur;
+import ElementsDiagramme.EnumEtat;
 import ElementsDiagramme.Etat;
 import ElementsDiagramme.Transition;
 
@@ -36,7 +37,7 @@ public class Ihm {
 
     public EtatGraph createEtatGraph(EtatGraph parent, Etat e) {
         if(e.isEtatSimple()){
-            edGraphique.ajouterEtatSimple(e.getNom(),EnumEtat.SIMPLE);
+            edGraphique.ajouterEtatSimple(e.getNom(), EnumEtat.SIMPLE);
         } else if(e.isEtatPseudoInitial()){
             edGraphique.ajouterEtatPseudoInitial(e.getNom(),EnumEtat.INIT);
         } else if (e.isEtatPseudoFinal()){
