@@ -43,6 +43,12 @@ public abstract class Transition extends Element {
 		return t;
 	}
 	
+	public abstract void setEtatSource(Etat etat);
+	public abstract void setEtatDest(Etat etat);
+
+	public abstract Etat getEtatSource();
+	public abstract Etat getEtatDest();
+	
 	@Override
 	public boolean isEtat(){
 		return false;

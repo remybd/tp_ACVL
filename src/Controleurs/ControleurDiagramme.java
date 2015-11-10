@@ -118,8 +118,40 @@ public class ControleurDiagramme {
 
 
 
-    public void modifierTransition(TransitionGraph transitionGraph, EtatGraph source, EtatGraph dest,String etiquette){
+    public void modifierTransition(TransitionGraph transitionGraph, EtatGraph source, EtatGraph dest,String etiquette) throws Exception{
+    	/* Get les correspondances dans le modèle */
+    	if(!correspondance.containsKey(transitionGraph))
+    		throw new Exception("La transition spécifiée n'existe pas");
+    	
+    	if(!correspondance.containsKey(source))
+    		throw new Exception("L'état source spécifié n'existe pas");
+    	
+    	if(!correspondance.containsKey(dest))
+    		throw new Exception("L'état destination spécifié n'existe pas");
+    	
+    	Element modelTrans = correspondance.get(transitionGraph);
+    	if(!modelTrans.isTransition())
+    		throw new Exception("La transition spécifiée n'est pas une transition");
+    	
 
+    	Element modelSource = correspondance.get(source);
+    	if(!modelSource.isEtat())
+    		throw new Exception("L'état source spécifié n'est pas un état");
+    	    	
+    	Element modelDest = correspondance.get(dest);
+    	if(!modelDest.isEtat())
+    		throw new Exception("L'état destination spécifié n'est pas un état");
+    	
+    	
+    	if(modelSource.isEtatPseudoInitial()){
+    		
+    	}
+    	
+    	if(modelDest.isEtatPseudoFinal()){
+    		
+    	}
+    	
+    	
     }
 
 
@@ -148,6 +180,8 @@ public class ControleurDiagramme {
     public void modifierEtiquette(TransitionGraph t){
 
     }
+    
+    
 
     public HashSet<Erreur> chercherErreurs(){
     	if(mainConteneur == null)

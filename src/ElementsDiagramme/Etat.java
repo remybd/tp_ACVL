@@ -31,6 +31,21 @@ public abstract class Etat extends Element {
 	}
 
 	@Override
+	public boolean isTransitionFinale() {
+		return false;
+	}
+
+	@Override
+	public boolean isTransitionInitiale() {
+		return false;
+	}
+
+	@Override
+	public boolean isTransitionIntermediaire() {
+		return false;
+	}
+
+	@Override
 	public boolean isEtat() {
 		return true;
 	}
