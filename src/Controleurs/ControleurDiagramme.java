@@ -231,7 +231,7 @@ public class ControleurDiagramme {
             throw new NotASourceException();
         }
 
-        //TO DO
+        //TODO
         if(t instanceof TransitionInitiale){
             PseudoInitial pi = ((TransitionInitiale)(t)).getPseudoInitial();
             pi.setTransition(null);
