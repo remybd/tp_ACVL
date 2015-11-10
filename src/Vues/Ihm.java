@@ -5,6 +5,7 @@ import ElementsDiagramme.Conteneur;
 import ElementsDiagramme.EnumEtat;
 import ElementsDiagramme.Etat;
 import ElementsDiagramme.Transition;
+import com.mxgraph.model.mxCell;
 
 import javax.naming.ldap.Control;
 
@@ -16,7 +17,6 @@ public class Ihm {
 	final private static Ihm instanceUnique = new Ihm();
 	private EditeurGraphique edGraphique = EditeurGraphique.instance();
     private ControleurDiagramme controleur;
-    private Conteneur conteneur_principal;
 
 	private Ihm() {	}
 	
@@ -52,5 +52,9 @@ public class Ihm {
            	res = edGraphique.ajouterEtatComposite(parent, e.getNom(), EnumEtat.COMPOSITE);
         }
         return res;
+    }
+
+    public void removeElem(mxCell m){
+        EditeurGraphique.instance().getListe_elements_graphiques().remove(m);
     }
 }
