@@ -8,8 +8,8 @@ import Vues.ObservateurVue;
 public abstract class Element extends Sujet{
     private Conteneur conteneurParent;
 
-    public Element(ObservateurVue o, Conteneur c){
-        super(o);
+    public Element(Conteneur c){
+        super();
         this.conteneurParent = c;
     }
 
@@ -18,6 +18,8 @@ public abstract class Element extends Sujet{
     }
 
     public abstract void supprimer(); //suppression de l'élément this
+
+    public abstract boolean isEtat();
     public abstract boolean isEtatIntermediaire();
     public abstract boolean isTransition();
     public abstract boolean isEtatComposite();

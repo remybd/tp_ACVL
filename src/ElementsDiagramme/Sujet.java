@@ -8,8 +8,7 @@ import Vues.ObservateurVue;
 public abstract class Sujet {
 	private ObservateurVue _obs;
 	
-	public Sujet(ObservateurVue obs){
-		this.setObservateur(obs);
+	public Sujet(){
 	}
 
 	public ObservateurVue getObservateur() {

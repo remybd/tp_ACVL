@@ -36,16 +36,17 @@ public class Ihm {
     }
 
     public EtatGraph createEtatGraph(EtatGraph parent, Etat e) {
+    	EtatGraph res = null;
         if(e.isEtatSimple()){
-            edGraphique.ajouterEtatSimple(e.getNom(), EnumEtat.SIMPLE);
+        	res = edGraphique.ajouterEtatSimple(parent, e.getNom(), EnumEtat.SIMPLE);
         } else if(e.isEtatPseudoInitial()){
-            edGraphique.ajouterEtatPseudoInitial(e.getNom(),EnumEtat.INIT);
+           	res = edGraphique.ajouterEtatPseudoInitial(parent, e.getNom(),EnumEtat.INIT);
         } else if (e.isEtatPseudoFinal()){
-            edGraphique.ajouterEtatPseudoFinal(e.getNom(), EnumEtat.FINAL);
+           	res = edGraphique.ajouterEtatPseudoFinal(parent, e.getNom(), EnumEtat.FINAL);
         } else {
-            edGraphique.ajouterEtatComposite(e.getNom(), EnumEtat.COMPOSITE);
+           	res = edGraphique.ajouterEtatComposite(parent, e.getNom(), EnumEtat.COMPOSITE);
         }
-        return null;
+        return res;
     }
 
     public static void main(String[] args){
