@@ -26,7 +26,7 @@ public class ControleurDiagramme {
 
 
     //TODO A modifier, ajouterTransition doit recevoir des EtatGraph de la Vue et non pas des états
-    public Transition ajouterTransition(EnumTransition type, String etiquette, Etat s, Etat d, EtatGraph parent) throws Exception {
+    public Transition ajouterTransition(EnumTransition type, String etiquette, Etat s, Etat d) throws Exception {
         Transition t = Transition.creerTransition(type,etiquette,s,d);
 
         TransitionGraph tg = ihm.createTransitionGraph(parent,t);
@@ -156,12 +156,27 @@ public class ControleurDiagramme {
     	return mainConteneur.chercherErreurs();
     }
 
-    public HashSet<EtatGraph> getStatesFromSameConteneur(EtatGraph etatGraph){
+    public HashSet<EtatGraph> getStatesFromSameConteneur(EtatGraph etatGraph) throws Exception {
+        Etat e = (Etat)getElementFromGraphic(etatGraph);
+        Conteneur c = e.getConteneurParent();
+        HashSet<EtatGraph> result = new HashSet<EtatGraph>();
 
+        for(Element element : c.getElmts()){
+            if(element.isEtat()){
+                ObservateurVue obs = element.getObservateur();
+                if(obs instanceof EtatGraph){
+                    result.add((EtatGraph)obs);
+                } else {
+                    throw new BadCorrespondanceBetweenObservateurAndSubjectType();
+                }
+            }
+        }
+        return result;
     }
 
     //renvoie tous les états simples et composites fils de l'étatGraph père
     public HashSet<EtatGraph> getSonFromFatherState(EtatGraph father){
+
 
     }
 
