@@ -2,10 +2,12 @@ package ElementsDiagramme;
 
 import Vues.ObservateurVue;
 
+import java.io.Serializable;
+
 /**
  * Created by rémy on 04/11/2015.
  */
-public abstract class Element extends Sujet{
+public abstract class Element extends Sujet implements Serializable {
     private Conteneur conteneurParent;
 
     public Element(Conteneur c){
