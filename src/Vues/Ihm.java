@@ -31,6 +31,10 @@ public class Ihm {
     public ControleurDiagramme getControleur(){
         return controleur;
     }
+
+    public void setControleur(ControleurDiagramme controleur){
+        this.controleur = controleur;
+    }
 	
     public TransitionGraph createTransitionGraph(EtatGraph parent, Transition t){
         return null;
@@ -52,7 +56,9 @@ public class Ihm {
 
     public static void main(String[] args){
         try {
-            ControleurDiagramme con = new ControleurDiagramme();
+            ControleurDiagramme con = ControleurDiagramme.instance();
+            con.init();
+            Ihm.instance().setControleur(con);
         } catch (Exception e){
             e.printStackTrace();
         }

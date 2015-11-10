@@ -47,7 +47,7 @@ public abstract class Etat extends Element {
 			e = new PseudoInitial(parent,"init_"+nom);
 		}
 		else if(type == EnumEtat.SIMPLE){
-			e = new Simple(null,nom);
+			e = new Simple(parent,nom);
 		}
 		else{//état final
 			//TO DO : peut être modifier le constructeur pour ne pas avoir à mettre null pour la transition

@@ -21,6 +21,15 @@ public class ControleurDiagramme {
 
     private ControleurDiagramme(){
         this.ihm = Ihm.instance();
+        this.mainConteneur = new Conteneur();
+        this.correspondance = new HashMap<ElementGraphique,Element>();
+    }
+
+    static public ControleurDiagramme instance() {
+        return instanceUnique;
+    }
+
+    public void init(){
         PseudoInitial pi = null;
 
         try {
@@ -28,12 +37,8 @@ public class ControleurDiagramme {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        this.mainConteneur = new Conteneur(pi);
         pi.setConteneurParent(mainConteneur);
-    }
 
-    static public ControleurDiagramme instance() {
-        return instanceUnique;
     }
 
     //TODO A modifier, ajouterTransition doit recevoir des EtatGraph de la Vue et non pas des états
@@ -70,6 +75,7 @@ public class ControleurDiagramme {
 
         if(type == EnumEtat.COMPOSITE){
             PseudoInitial psi = ((Composite) e).getFils().getPseudoInitial();
+            psi.setConteneurParent(((Composite) e).getFils());
             getEtatGraphFromEtat(psi).setParent(eg);
         }
 
