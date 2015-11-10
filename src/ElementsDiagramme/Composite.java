@@ -78,12 +78,6 @@ public class Composite extends EtatIntermediaire {
 	}
 
 	@Override
-	public boolean isEtatIntermediaire() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	public boolean isTransition() {
 		// TODO Auto-generated method stub
 		return false;

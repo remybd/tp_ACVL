@@ -22,15 +22,5 @@ public class Simple extends EtatIntermediaire{
 	public boolean isEtatSimple() {
 		return true;
 	}
-
-	@Override
-	public boolean isEtatPseudoInitial() {
-		return false;
-	}
-
-	@Override
-	public boolean isEtatPseudoFinal() {
-		return false;
-	}
 	
 }

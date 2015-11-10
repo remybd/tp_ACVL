@@ -27,7 +27,6 @@ public class Conteneur {
 		super();
 	}
 
-
 	public void supprimer(){
 		if(_etatInit != null)
 			_etatInit.supprimer();

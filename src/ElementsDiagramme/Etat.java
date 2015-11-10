@@ -54,7 +54,7 @@ public abstract class Etat extends Element {
 		Etat e;
 
 		if(type == EnumEtat.COMPOSITE){
-			e = new Composite(parent ,nom, new Conteneur());
+			e = new Composite(parent ,"compo_"+nom, new Conteneur());
 		}
 		else if(type == EnumEtat.INIT){
 			e = new PseudoInitial(parent,"init_"+nom);
