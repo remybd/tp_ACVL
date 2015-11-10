@@ -77,15 +77,6 @@ public class Composite extends EtatIntermediaire {
 			_fils.supprimer();		
 	}
 
-	@Override
-<<<<<<< HEAD
-	public boolean isEtatIntermediaire() {
-		return false;
-	}
-
-	@Override
-=======
->>>>>>> aa8919ad538445ac0c758ec8095904a243d48c6a
 	public boolean isTransition() {
 		return false;
 	}
