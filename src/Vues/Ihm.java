@@ -1,10 +1,7 @@
 package Vues;
 
 import Controleurs.ControleurDiagramme;
-import ElementsDiagramme.Conteneur;
-import ElementsDiagramme.EnumEtat;
-import ElementsDiagramme.Etat;
-import ElementsDiagramme.Transition;
+import ElementsDiagramme.*;
 
 import javax.naming.ldap.Control;
 
@@ -39,13 +36,13 @@ public class Ihm {
     public TransitionGraph createTransitionGraph(EtatGraph s, EtatGraph d, Transition t){
         TransitionGraph res = null;
         if(t.isTransitionInitiale()){
-            res = edGraphique.
+            res = edGraphique.ajouterTransitionInitiale(s.getParent(), s, d, "", EnumTransition.INIT);
         } else if (t.isTransitionIntermediaire()){
-            res = edGraphique.
+            //res = edGraphique.
         } else {
-            res = edGraphique.
+            //res = edGraphique.
         }
-
+        return res;
     }
 
     public EtatGraph createEtatGraph(EtatGraph parent, Etat e) {
