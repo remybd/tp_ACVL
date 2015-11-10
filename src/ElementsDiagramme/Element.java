@@ -17,6 +17,10 @@ public abstract class Element extends Sujet{
         return conteneurParent;
     }
 
+    public void setConteneurParent(Conteneur conteneurParent) {
+        this.conteneurParent = conteneurParent;
+    }
+
     public abstract void supprimer(); //suppression de l'élément this
 
     public abstract boolean isEtat();
