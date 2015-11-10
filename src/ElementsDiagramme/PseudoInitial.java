@@ -27,16 +27,13 @@ public class PseudoInitial extends Etat {
 		this._trans = _trans;
 	}
 	
-	public void resetTransition(){
-		if(_trans == null)
-			return;
-		
-		_trans.setPseudoInitial(null);			
-	}
 
 	@Override
 	public void supprimer() {
-		this.resetTransition();
+		if(_trans == null)
+			return;
+		
+		_trans.supprimer();	
 	}
 
 	@Override

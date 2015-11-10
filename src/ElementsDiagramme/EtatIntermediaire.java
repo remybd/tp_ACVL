@@ -45,25 +45,11 @@ public abstract class EtatIntermediaire extends Etat{
 			
 		this._sources.add(source);
 	}
+	
 	public void setSources(HashSet<TransitionIntermediaire> sources){
         _sources = sources;
     }
 	
-	public void resetTransitionsSources(){
-		for(TransitionIntermediaire trans : _sources){
-			trans.setSource(null);
-		}
-		
-		_sources = new HashSet<TransitionIntermediaire>();
-	}
-
-	public void resetTransitionsDest(){
-		for(TransitionIntermediaire trans : _dest){
-			trans.setDestination(null);
-		}	
-		
-		_dest = new HashSet<TransitionIntermediaire>();
-	}
 	
 	public void unLinkSource(Transition t){
 		if(_sources == null)
@@ -78,10 +64,18 @@ public abstract class EtatIntermediaire extends Etat{
 		
 		_dest.remove(t);
 	}
+	
+	
 	@Override
 	public void supprimer() {
-		this.resetTransitionsSources();
-		this.resetTransitionsDest();
+		for(TransitionIntermediaire trans : _sources){
+			trans.supprimer();
+		}
+		
+		for(TransitionIntermediaire trans : _dest){
+			trans.supprimer();
+		}	
+		
 	} 
 
 	/**

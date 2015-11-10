@@ -39,7 +39,7 @@ public class TransitionFinale extends Transition {
 		if(_etatFinal == null)
 			return;
 		
-		_etatFinal.addTransition(null);
+		_etatFinal.unLinkTransition(this);
 	}
 
 }
