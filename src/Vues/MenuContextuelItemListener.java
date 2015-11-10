@@ -25,19 +25,19 @@ public class MenuContextuelItemListener{
 
         }
         public void actionPerformed(ActionEvent e) {
-            new CreationEtat(EnumEtat.SIMPLE);
+            new CreationEtat(element, EnumEtat.SIMPLE);
         }
     }
 
     public static class CreationEtatCompositeListener implements ActionListener{
         public void actionPerformed(ActionEvent e) {
-            new CreationEtat(EnumEtat.COMPOSITE);
+            new CreationEtat(element, EnumEtat.COMPOSITE);
         }
     }
 
     public static class CreationEtatFinalListener implements ActionListener{
         public void actionPerformed(ActionEvent e) {
-            new CreationEtat(EnumEtat.FINAL);
+            new CreationEtat(element, EnumEtat.FINAL);
         }
     }
 
@@ -48,7 +48,7 @@ public class MenuContextuelItemListener{
         }
 
         public void actionPerformed(ActionEvent e) {
-            new EditionEtat(super.element.getNom());
+            new EditionEtat((EtatGraph)super.element);
         }
     }
 
@@ -60,13 +60,13 @@ public class MenuContextuelItemListener{
 
         public void actionPerformed(ActionEvent e) {
             if(((EtatGraph)element).getType() == EnumEtat.INIT)
-                new CreationTransition(super.element.getNom(), EnumTransition.INIT);
+                new CreationTransition((EtatGraph)element, EnumTransition.INIT);
             else if(((EtatGraph)element).getType() == EnumEtat.FINAL) {
                 JOptionPane message_erreur = new JOptionPane();
                 message_erreur.showMessageDialog(null, "Impossible d'ajouter une transition à un état pseudo-final", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
             else
-                new CreationTransition(super.element.getNom(), EnumTransition.INTER);
+                new CreationTransition((EtatGraph)element, EnumTransition.INTER);
         }
     }
 
@@ -77,7 +77,7 @@ public class MenuContextuelItemListener{
         }
 
         public void actionPerformed(ActionEvent e) {
-            new EditionTransition(super.element.getNom());
+            new EditionTransition((TransitionGraph)super.element);
         }
     }
 

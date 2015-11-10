@@ -16,11 +16,13 @@ public class CreationEtat extends FenetrePopup implements ActionListener{
     private JLabel nom_etat = new JLabel("Nom de l'etat");
     private JButton valider = new JButton("Valider");
 
-    EnumEtat type;
+    private ElementGraphique element_graphique;
+    private EnumEtat type;
 
-    public CreationEtat(EnumEtat type){
+    public CreationEtat(ElementGraphique element_graphique, EnumEtat type){
         super();
         this.type = type;
+        this.element_graphique = element_graphique;
         JPanel centered = new JPanel();
         text_etat.setPreferredSize(new Dimension(150,30));
         centered.add(nom_etat);
@@ -35,9 +37,15 @@ public class CreationEtat extends FenetrePopup implements ActionListener{
     }
 
     public void actionPerformed(ActionEvent arg0){
-        //Ihm.instance().getControleur().ajouterEtat(this.type, text_etat.getText());
+        Ihm.instance().getControleur().ajouterEtat(this.type, text_etat.getText(), (EtatGraph)this.element_graphique);
+        String nom_etat = text_etat.getText();
         //TODO Test, à changer
-        Ihm.instance().getEdGraphique().ajouterEtatSimple(text_etat.getText(), this.type);
-        this.dispose();
+        if(nom_etat.isEmpty()){
+            JOptionPane message_erreur = new JOptionPane();
+            message_erreur.showMessageDialog(null, "Un etat doit avoir un nom", "Erreur", JOptionPane.ERROR_MESSAGE);
+        } else {
+            //Ihm.instance().getEdGraphique().ajouterEtatSimple(text_etat.getText(), this.type);
+            this.dispose();
+        }
     }
 }

@@ -29,7 +29,7 @@ public class ControleurDiagramme {
     public Transition ajouterTransition(EnumTransition type, String etiquette, Etat s, Etat d, EtatGraph parent) throws Exception {
         Transition t = Transition.creerTransition(type,etiquette,s,d);
 
-        TransitionGraph tg = ihm.createTransitionGraph(t);
+        TransitionGraph tg = ihm.createTransitionGraph(parent,t);
         t.setObservateur(tg);
 
         mainConteneur.addElmt(t);
@@ -41,7 +41,7 @@ public class ControleurDiagramme {
     public Etat ajouterEtat(EnumEtat type, String nom, EtatGraph parent){
         Etat e = Etat.creerEtat(type,nom,this);
 
-        EtatGraph eg = ihm.createEtatGraph(e,parent);
+        EtatGraph eg = ihm.createEtatGraph(parent,e);
         e.setObservateur(eg);
 
         mainConteneur.addElmt(e);
@@ -49,7 +49,6 @@ public class ControleurDiagramme {
 
         return e;
     }
-
 
     public void renommerEtat(EtatGraph eg, String nom) throws NameNotModifiableException {
         Etat e = (Etat)getElementFromGraphic(eg);

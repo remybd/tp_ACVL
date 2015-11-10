@@ -20,9 +20,9 @@ public class CreationTransition extends FenetrePopup implements ActionListener{
     private JButton valider = new JButton("Valider");
 
     private EnumTransition type;
-    private String etat_source;
+    private EtatGraph etat_source;
 
-    public CreationTransition(String etat_source, EnumTransition type){
+    public CreationTransition(EtatGraph etat_source, EnumTransition type){
         super();
         this.type = type;
         this.etat_source = etat_source;
@@ -47,7 +47,7 @@ public class CreationTransition extends FenetrePopup implements ActionListener{
     }
 
     public void actionPerformed(ActionEvent arg0){
-        EnumEtat type_etat = ((EtatGraph) Ihm.instance().getEdGraphique().getElement_from_liste(etat_source)).getType();
+        EnumEtat type_etat = etat_source.getType();
         if(type_etat == EnumEtat.INIT)
             Ihm.instance().getControleur().ajouterTransition(this.type, this.etiquette_transition.getText(),etat_source,(String)liste_etats.getSelectedItem());
         else if(type_etat == EnumEtat.SIMPLE)

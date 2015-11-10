@@ -6,9 +6,9 @@ import java.util.HashSet;
 import Erreurs.ErreurEtat;
 import Erreurs.NonUnicite;
 import Erreurs.TransitionNonDeterministe;
-
 import Vues.ObservateurVue;
-import Erreurs.NonUnicite;
+
+
 
 /**
  *  TODO
@@ -33,7 +33,7 @@ public class Composite extends EtatIntermediaire {
 
 	/**
 	 * 
-	 * @return la liste des états qui sont bloquants au sein de cet état composite
+	 * @return la liste des ï¿½tats qui sont bloquants au sein de cet ï¿½tat composite
 	 */
 	public HashSet<ErreurEtat> chercherEtatsBloquants(){
 		if(_fils != null)
@@ -44,8 +44,8 @@ public class Composite extends EtatIntermediaire {
 	
 
 	/**
-	 * Gestion erreur d'unicité des états
-	 * @return la liste des etats qui ont le même nom au sein d'un conteneur
+	 * Gestion erreur d'unicitï¿½ des ï¿½tats
+	 * @return la liste des etats qui ont le mï¿½me nom au sein d'un conteneur
 	 */
 	public HashMap<Conteneur,HashSet<NonUnicite>> chercherPluriciteEtats(){
 		if(this._fils==null)
@@ -57,8 +57,8 @@ public class Composite extends EtatIntermediaire {
 
 
 	/**
-	 * Retourne les erreurs de transition non déterministes liés à cet état
-	 * 2 transitions sont non déterministes si elles ont le même événement et la même condition
+	 * Retourne les erreurs de transition non dï¿½terministes liï¿½s ï¿½ cet ï¿½tat
+	 * 2 transitions sont non dï¿½terministes si elles ont le mï¿½me ï¿½vï¿½nement et la mï¿½me condition
 	 * @return
 	 */
 	public HashSet<TransitionNonDeterministe> chercherTransNnDeterm(){
@@ -76,14 +76,18 @@ public class Composite extends EtatIntermediaire {
 		// TODO Auto-generated method stub
 		
 	}
-	
-	public boolean isEtatIntermediaire(){
-		return true;
+
+	@Override
+	public boolean isEtatIntermediaire() {
+		// TODO Auto-generated method stub
+		return false;
 	}
-	
-	public boolean isTransition(){
-    	return false;
-    }
+
+	@Override
+	public boolean isTransition() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 	@Override
 	public boolean isEtatComposite() {

@@ -16,16 +16,18 @@ public class EditionEtat extends FenetrePopup implements ActionListener{
     private JLabel nom_etat = new JLabel("Nouveau nom");
     private JButton valider = new JButton("Valider");
 
-    EnumEtat type;
+    private EtatGraph etat_courant;
+    private EnumEtat type;
 
-    public EditionEtat(String nom_element){
+    public EditionEtat(EtatGraph etat_courant){
         super();
-        //this.type = getParent();
+        this.etat_courant = etat_courant;
+        this.type = etat_courant.getType();
         System.out.println();
 
         JPanel centered = new JPanel();
         text_etat.setPreferredSize(new Dimension(150,30));
-        text_etat.setText(nom_element);
+        text_etat.setText(etat_courant.getNom());
         centered.add(nom_etat);
         centered.add(text_etat);
 
@@ -38,9 +40,8 @@ public class EditionEtat extends FenetrePopup implements ActionListener{
     }
 
     public void actionPerformed(ActionEvent arg0){
-        ElementGraphique etat_courant = Ihm.instance().getEdGraphique().getElement_from_liste(text_etat.getText());
         try{
-            Ihm.instance().getControleur().renommerEtat((EtatGraph)etat_courant, this.type);
+            Ihm.instance().getControleur().renommerEtat(etat_courant, text_etat.getText());
         } catch(NameNotModifiableException e){
             //TODO Voir les traitements à effectuer
             e.printStackTrace();

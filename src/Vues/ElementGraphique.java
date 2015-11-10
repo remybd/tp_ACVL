@@ -3,13 +3,15 @@ package Vues;
 import com.mxgraph.model.mxCell;
 
 /**
- * Created by rémy on 06/11/2015.
+ * Created by rï¿½my on 06/11/2015.
  */
-public class ElementGraphique{
-    private ElementGraphique parent = null;
+public abstract class ElementGraphique implements ObservateurVue {
+ 
+
+	private EtatGraph parent = null;
     private mxCell objet_graphique;
 
-    public ElementGraphique(ElementGraphique parent, mxCell objet_graphique) {
+    public ElementGraphique(EtatGraph parent, mxCell objet_graphique) {
         this.parent = parent;
         this.objet_graphique = objet_graphique;
     }
@@ -29,4 +31,14 @@ public class ElementGraphique{
     public void setObjet_Graphique(mxCell objet_graphique){
         this.objet_graphique = objet_graphique;
     }
+    
+    public EtatGraph getParent() {
+ 		return parent;
+ 	}
+
+ 	public void setParent(EtatGraph parent) {
+ 		this.parent = parent;
+    	this.getObjet_graphique().setParent(parent.getObjet_graphique());
+ 	}
+
 }

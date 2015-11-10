@@ -30,12 +30,12 @@ public class Ihm {
         return controleur;
     }
 	
-    public TransitionGraph createTransitionGraph(Transition t){
+    public TransitionGraph createTransitionGraph(EtatGraph parent, Transition t){
 
         return null;
     }
 
-    public EtatGraph createEtatGraph(Etat e){
+    public EtatGraph createEtatGraph(EtatGraph parent, Etat e) {
         if(e.isEtatSimple()){
             edGraphique.ajouterEtatSimple(e.getNom(), EnumEtat.SIMPLE);
         } else if(e.isEtatPseudoInitial()){
