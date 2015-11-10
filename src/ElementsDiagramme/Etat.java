@@ -12,8 +12,8 @@ import Vues.ObservateurVue;
 public abstract class Etat extends Element {
 	private String _nom;
 	
-	public Etat(ObservateurVue obs, String nom){
-		super(obs);
+	public Etat(Conteneur parent, String nom){
+		super(parent);
 		this.setNom(nom);
 	}
 	
@@ -30,6 +30,11 @@ public abstract class Etat extends Element {
 		return false;
 	}
 
+	@Override
+	public boolean isEtat() {
+		return true;
+	}
+	
 	public static Etat creerEtat(EnumEtat type, String nom, ControleurDiagramme c){
 		Etat e;
 

@@ -12,8 +12,8 @@ import Vues.ObservateurVue;
 public class PseudoFinal  extends Etat {
 	private HashSet<TransitionFinale> _trans = new HashSet<TransitionFinale>();
 
-	public PseudoFinal(ObservateurVue obs, String nom, TransitionFinale transitionFinale){
-		super(obs, nom);
+	public PseudoFinal(Conteneur parent, String nom, TransitionFinale transitionFinale){
+		super(parent, nom);
 		this.addTransition(transitionFinale);
 	}
 	

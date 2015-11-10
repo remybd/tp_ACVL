@@ -29,7 +29,7 @@ public class ControleurDiagramme {
     public Transition ajouterTransition(EnumTransition type, String etiquette, Etat s, Etat d, EtatGraph parent) throws Exception {
         Transition t = Transition.creerTransition(type,etiquette,s,d);
 
-        TransitionGraph tg = ihm.createTransitionGraph(t);
+        TransitionGraph tg = ihm.createTransitionGraph(parent,t);
         t.setObservateur(tg);
 
         mainConteneur.addElmt(t);
@@ -41,7 +41,7 @@ public class ControleurDiagramme {
     public Etat ajouterEtat(EnumEtat type, String nom, EtatGraph parent){
         Etat e = Etat.creerEtat(type,nom,this);
 
-        EtatGraph eg = ihm.createEtatGraph(e,parent);
+        EtatGraph eg = ihm.createEtatGraph(parent,e);
         e.setObservateur(eg);
 
         mainConteneur.addElmt(e);
@@ -157,12 +157,28 @@ public class ControleurDiagramme {
     }
 
     public HashSet<EtatGraph> getStatesFromSameConteneur(EtatGraph etatGraph){
-
+    	
     }
 
     //renvoie tous les états simples et composites fils de l'étatGraph père
     public HashSet<EtatGraph> getSonFromFatherState(EtatGraph father){
-
+    	HashSet<EtatGraph> states = new HashSet<EtatGraph>();
+    	
+    	if(father == null || !correspondance.containsKey(father))
+    		return states;
+    	
+    	Element composite = correspondance.get(father);
+    	if(!composite.isEtatComposite())
+    		return states;
+    	
+    	HashSet<Element> elmtsFils = ((Composite)composite).getFils().getElmts();
+    	for(Element elmt : elmtsFils){
+    		if(elmt.isEtat()){
+    			//TODO : ajouter dans states la correspondance graphique de elmt
+    		}
+    	}
+    	
+    	return states;
     }
 
     public HashMap<ElementGraphique, Element> getCorrespondance() {

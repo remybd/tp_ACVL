@@ -37,7 +37,7 @@ public class CreationEtat extends FenetrePopup implements ActionListener{
     }
 
     public void actionPerformed(ActionEvent arg0){
-        Ihm.instance().getControleur().ajouterEtat(this.type, text_etat.getText(), this.element_graphique);
+        Ihm.instance().getControleur().ajouterEtat(this.type, text_etat.getText(), (EtatGraph)this.element_graphique);
         String nom_etat = text_etat.getText();
         //TODO Test, à changer
         if(nom_etat.isEmpty()){

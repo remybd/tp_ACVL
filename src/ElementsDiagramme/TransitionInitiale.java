@@ -10,8 +10,8 @@ import Vues.ObservateurVue;
 public class TransitionInitiale extends Transition {
 	private PseudoInitial _etatInit;
 	
-	public TransitionInitiale(ObservateurVue obs, PseudoInitial etatInitial){
-		super(obs);
+	public TransitionInitiale(Conteneur parent, PseudoInitial etatInitial){
+		super(parent);
 		this.setPseudoInitial(etatInitial);
 	}
 
@@ -30,35 +30,5 @@ public class TransitionInitiale extends Transition {
 		
 		_etatInit.setTransition(null);
 	}
-
-	@Override
-	public boolean isEtatIntermediaire() {
-		return false;
-	}
-
-	@Override
-	public boolean isTransition() {
-		return true;
-	}
-
-	@Override
-	public boolean isEtatComposite() {
-		return false;
-	}
-
-	@Override
-	public boolean isEtatSimple() {
-		return false;
-	}
-
-	@Override
-	public boolean isEtatPseudoInitial() {
-		return false;
-	}
-
-	@Override
-	public boolean isEtatPseudoFinal() {
-		return false;
-	}	
 	
 }

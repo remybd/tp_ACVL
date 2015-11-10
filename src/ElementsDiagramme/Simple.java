@@ -9,8 +9,8 @@ import Vues.ObservateurVue;
  */
 public class Simple extends EtatIntermediaire{
 
-	public Simple(ObservateurVue obs, String nom){
-		super(obs, nom);
+	public Simple(Conteneur parent, String nom){
+		super(parent, nom);
 	}
 
 	@Override

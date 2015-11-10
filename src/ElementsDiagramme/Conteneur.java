@@ -26,9 +26,14 @@ public class Conteneur {
 
 
 	public void supprimer(){
+		if(_etatInit != null)
+			_etatInit.supprimer();
+		
 		for(Element elmt : this._elmts){
 			elmt.supprimer();
 		}
+		
+		_erreurs = null;
 	}
 	
 	
