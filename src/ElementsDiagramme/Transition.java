@@ -28,26 +28,21 @@ public abstract class Transition extends Element {
 			t = new TransitionIntermediaire(parent,etiquette,(EtatIntermediaire)s,(EtatIntermediaire)d);
 		}
 		else if(type == EnumTransition.FINAL){
-			if(!s.isEtatIntermediaire() || !(d instanceof PseudoFinal))
+			if(!s.isEtatIntermediaire() || !d.isEtatPseudoFinal())
 				throw new NoIntermediaryAndFinalStateException();
 			//TO DO : peut être modifier le constructeur pour avoir à remplir les états
 			t = new TransitionFinale(parent,etiquette);
 		}
 		else{//transition initiale
-			if(!(s instanceof PseudoInitial) || !d.isEtatIntermediaire())
+			if(!(s.isEtatPseudoInitial()) || !d.isEtatIntermediaire())
 				throw new NoIntermediaryAndInitialStateException();
 			//TO DO : peut être modifier le constructeur pour avoir à remplir l'état de destination ?
-			t = new TransitionInitiale(parent,(PseudoInitial)s);
+			t = new TransitionInitiale(parent,(PseudoInitial)s, (EtatIntermediaire)d);
 		}
 
 		return t;
 	}
 	
-	public abstract void setEtatSource(Etat etat);
-	public abstract void setEtatDest(Etat etat);
-
-	public abstract Etat getEtatSource();
-	public abstract Etat getEtatDest();
 	
 	@Override
 	public boolean isEtat(){

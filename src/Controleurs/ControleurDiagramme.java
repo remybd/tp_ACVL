@@ -145,7 +145,7 @@ public class ControleurDiagramme {
 
 
     public void modifierTransition(TransitionGraph transitionGraph, EtatGraph source, EtatGraph dest,String etiquette) throws Exception{
-    	/* Get les correspondances dans le modèle */
+    	/* Check les préconditions */
     	if(!correspondance.containsKey(transitionGraph))
     		throw new Exception("La transition spécifiée n'existe pas");
     	
@@ -155,11 +155,13 @@ public class ControleurDiagramme {
     	if(!correspondance.containsKey(dest))
     		throw new Exception("L'état destination spécifié n'existe pas");
     	
+    	
+    	
+    	/* Get les correspondances dans le modèle */
     	Element modelTrans = correspondance.get(transitionGraph);
     	if(!modelTrans.isTransition())
     		throw new Exception("La transition spécifiée n'est pas une transition");
     	
-
     	Element modelSource = correspondance.get(source);
     	if(!modelSource.isEtat())
     		throw new Exception("L'état source spécifié n'est pas un état");
@@ -168,16 +170,47 @@ public class ControleurDiagramme {
     	if(!modelDest.isEtat())
     		throw new Exception("L'état destination spécifié n'est pas un état");
     	
+    	/* Check logique */
+    	if(modelSource.isEtatPseudoFinal())
+    		throw new Exception("Un état final ne peut pas être utilisé comme état source d'une transition");
     	
+    	if(modelDest.isEtatPseudoInitial())
+    		throw new Exception("Un état initial ne peut pas être utilisé comme état destination d'une transition");
+    	
+    	
+    	
+    	/* On ne peut pas lier un état initial à un état final*/
+    	if(modelSource.isEtatPseudoInitial() && modelDest.isEtatPseudoFinal()){
+    		throw new Exception("Une transition ne peut pas relier un état initial à un état final");
+    	}
+    	
+    	
+    	/* Converti la transition suivant les nouveaux états associés */
     	if(modelSource.isEtatPseudoInitial()){
-    		
+    		if(modelTrans.isTransitionIntermediaire()){
+    			modelTrans = new TransitionInitiale((TransitionIntermediaire)modelTrans, (PseudoInitial)modelSource);
+    		}
+    		else if(modelTrans.isTransitionFinale()){
+    			modelTrans = new TransitionInitiale((TransitionFinale)modelTrans, (PseudoInitial)modelSource);
+    		}
     	}
-    	
-    	if(modelDest.isEtatPseudoFinal()){
+    	else if(modelDest.isEtatPseudoFinal()){
+    		if(modelTrans.isTransitionInitiale()){
+    			modelTrans = new TransitionFinale((TransitionInitiale)modelTrans, (PseudoFinal)modelDest);
+    		}
+    		else if(modelTrans.isTransitionIntermediaire()){
+    			modelTrans = new TransitionFinale((TransitionIntermediaire)modelTrans, (PseudoFinal)modelDest);
+    		}
     		
+    		((TransitionFinale)modelTrans).setEtiquette(etiquette);
     	}
-    	
-    	
+    	else{ //modelSource : EtatIntermediaire ; modelDest : EtatIntermediaire
+    		if(!modelTrans.isTransitionIntermediaire()){
+    			modelTrans = new TransitionIntermediaire((TransitionInitiale)modelTrans, (EtatIntermediaire)modelSource);
+    		}
+    		
+    		((TransitionIntermediaire)modelTrans).setEtiquette(etiquette);
+    	}
     }
 
 
@@ -194,7 +227,7 @@ public class ControleurDiagramme {
             PseudoInitial pi = ((TransitionInitiale)(t)).getPseudoInitial();
             pi.setTransition(null);
         } else {
-            EtatIntermediaire etatIntermediaire = ((TransitionIntermediaire)(t)).getSource();
+            EtatIntermediaire etatIntermediaire = ((TransitionIntermediaire)(t)).getEtatSource();
             etatIntermediaire.unLinkSource(t);
         }
     }

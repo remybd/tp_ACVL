@@ -16,6 +16,21 @@ public class TransitionInitiale extends Transition {
 		this.setPseudoInitial(etatInitial);
 	}
 
+	public TransitionInitiale(TransitionIntermediaire trans, PseudoInitial pseudoInitial) {
+		super(trans.getConteneurParent());
+		this.setObservateur(trans.getObservateur());
+		
+		this.setPseudoInitial(pseudoInitial);
+		this.setEtatDest(trans.getEtatDest());
+	}
+	
+	public TransitionInitiale(TransitionFinale trans, PseudoInitial pseudoInitial) {
+		super(trans.getConteneurParent());
+		this.setObservateur(trans.getObservateur());
+		
+		this.setPseudoInitial(pseudoInitial);
+	}
+
 	public PseudoInitial getPseudoInitial() {
 		return _etatInit;
 	}
@@ -50,23 +65,19 @@ public class TransitionInitiale extends Transition {
 	}
 
 
-	@Override
-	public void setEtatSource(Etat etat) {
+	public void setEtatSource(PseudoInitial etat) {
 		this._etatInit = etat;
 	}
 
-	@Override
-	public void setEtatDest(Etat etat) {
+	public void setEtatDest(EtatIntermediaire etat) {
 		this._etatDest = etat;		
 	}
 
-	@Override
-	public Etat getEtatSource() {
+	public PseudoInitial getEtatSource() {
 		return _etatInit;
 	}
 
-	@Override
-	public Etat getEtatDest() {
+	public EtatIntermediaire getEtatDest() {
 		return _etatDest;
 	}
 }
