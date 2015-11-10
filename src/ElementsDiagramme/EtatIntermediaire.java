@@ -1,5 +1,6 @@
 package ElementsDiagramme;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -102,15 +103,21 @@ public abstract class EtatIntermediaire extends Etat{
 	
 	
 	@Override
-	public void supprimer() {
+	public ArrayList<Element> supprimer() {
+		ArrayList<Element> elmtsSupr = new ArrayList<Element>();
+		elmtsSupr.add(this);
+		
 		for(TransitionIntermediaire trans : _sources){
 			trans.supprimer();
+			elmtsSupr.add(trans);
 		}
 		
 		for(TransitionIntermediaire trans : _dest){
 			trans.supprimer();
+			elmtsSupr.add(trans);
 		}	
 		
+		return elmtsSupr;
 	} 
 
 	/**

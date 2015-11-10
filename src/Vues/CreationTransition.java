@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
@@ -24,6 +25,8 @@ public class CreationTransition extends FenetrePopup implements ActionListener{
     private EnumTransition type;
     private EtatGraph etat_source;
 
+    private ArrayList<EtatGraph> liste_elements;
+
     public CreationTransition(EtatGraph etat_source, EnumTransition type) throws Exception {
         super();
         this.type = type;
@@ -36,7 +39,7 @@ public class CreationTransition extends FenetrePopup implements ActionListener{
         g.setHgap(15);
         g.setVgap(15);
 
-        HashSet<EtatGraph> liste_elements = Ihm.instance().getControleur().getStatesFromSameConteneur(etat_source);
+        ArrayList<EtatGraph> liste_elements = Ihm.instance().getControleur().getStatesFromSameConteneur(etat_source);
         String[] liste_noms_etats = new String[liste_elements.size()];
 
         int i=0;
@@ -61,12 +64,12 @@ public class CreationTransition extends FenetrePopup implements ActionListener{
 
     public void actionPerformed(ActionEvent arg0){
         EnumEtat type_etat = etat_source.getType();
-        if(type_etat == EnumEtat.INIT)
-            Ihm.instance().getControleur().ajouterTransition(this.type, this.etiquette_transition.getText(),etat_source,(String)liste_etats.getSelectedItem());
-        else if(type_etat == EnumEtat.SIMPLE)
-            Ihm.instance().getControleur().ajouterTransition(this.type, this.etiquette_transition.getText(), etat_source, (String) liste_etats.getSelectedItem());
-        else
-            Ihm.instance().getControleur().ajouterTransition(this.type, this.etiquette_transition.getText(), etat_source, (String) liste_etats.getSelectedItem());
+        int index = liste_etats.getSelectedIndex();
+        try {
+            Ihm.instance().getControleur().ajouterTransition(this.type, this.etiquette_transition.getText(),etat_source, liste_elements.get(index));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         this.dispose();
     }
 }

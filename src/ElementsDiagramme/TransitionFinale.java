@@ -1,5 +1,6 @@
 package ElementsDiagramme;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 import Vues.ObservateurVue;
@@ -65,11 +66,15 @@ public class TransitionFinale extends Transition {
 	}
 
 	@Override
-	public void supprimer() {
+	public ArrayList<Element> supprimer() {
+		ArrayList<Element> elmtsSupr = new ArrayList<Element>();
+		elmtsSupr.add(this);
+		
 		if(_etatFinal == null)
-			return;
+			return elmtsSupr;
 		
 		_etatFinal.unLinkTransition(this);
+		return elmtsSupr;
 	}
 
 

@@ -1,5 +1,6 @@
 package ElementsDiagramme;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -72,14 +73,23 @@ public class Composite extends EtatIntermediaire {
 	}
 	
 	@Override
-	public void supprimer() {
-		// TODO Auto-generated method stub
+	public ArrayList<Element> supprimer() {
+		ArrayList<Element> elmtsSupr = super.supprimer(); //TODO : fonctionnel ?
 		
+		if(_fils == null)
+			return elmtsSupr;
+		
+		elmtsSupr.add(this);
+		return elmtsSupr;
+	}
+
+	@Override
+	public boolean isEtatIntermediaire() {
+		return false;
 	}
 
 	@Override
 	public boolean isTransition() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

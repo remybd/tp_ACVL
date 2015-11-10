@@ -43,7 +43,6 @@ public class EditionEtat extends FenetrePopup implements ActionListener{
         try{
             Ihm.instance().getControleur().renommerEtat(etat_courant, text_etat.getText());
         } catch(NameNotModifiableException e){
-            //TODO Voir les traitements à effectuer
             e.printStackTrace();
         }
         this.dispose();

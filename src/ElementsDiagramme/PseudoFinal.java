@@ -1,5 +1,6 @@
 package ElementsDiagramme;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 import Vues.ObservateurVue;
@@ -58,10 +59,16 @@ public class PseudoFinal  extends Etat {
 	}
 	
 	@Override
-	public void supprimer() {
+	public ArrayList<Element> supprimer() {
+		ArrayList<Element> elmtsSupr = new ArrayList<Element>();
+		elmtsSupr.add(this);
+		
 		for(TransitionFinale trans : _trans){
 			trans.supprimer();
+			elmtsSupr.add(trans);
 		}
+		
+		return elmtsSupr;
 	}
 
 	@Override
