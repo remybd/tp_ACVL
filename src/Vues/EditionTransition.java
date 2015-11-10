@@ -23,9 +23,11 @@ public class EditionTransition extends FenetrePopup implements ActionListener{
     private JPanel line_3 = new JPanel();
     private JPanel line_4 = new JPanel();
 
+    private TransitionGraph transition_graph;
 
-    public EditionTransition(String etiquette){
+    public EditionTransition(TransitionGraph transition_graph){
         super();
+        this.transition_graph = transition_graph;
         //etiquette_transition.setPreferredSize(new Dimension(150, 30));
 
         line_1.setLayout(new BoxLayout(line_1, BoxLayout.LINE_AXIS));
@@ -38,7 +40,7 @@ public class EditionTransition extends FenetrePopup implements ActionListener{
 
         line_3.setLayout(new BoxLayout(line_3, BoxLayout.LINE_AXIS));
         line_3.add(etiquette_label);
-        etiquette_transition.setText(etiquette);
+        etiquette_transition.setText(transition_graph.getNom());
         line_3.add(etiquette_transition);
         this.valider.addActionListener(this);
 
@@ -56,7 +58,7 @@ public class EditionTransition extends FenetrePopup implements ActionListener{
     }
 
     public void actionPerformed(ActionEvent arg0){
-        Ihm.instance().getControleur().create_transition(, this.type);
+        //Ihm.instance().getControleur().create_transition(, this.type);
         this.dispose();
     }
 

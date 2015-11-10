@@ -20,9 +20,9 @@ public class CreationTransition extends FenetrePopup implements ActionListener{
     private JButton valider = new JButton("Valider");
 
     private EnumTransition type;
-    private String etat_source;
+    private EtatGraph etat_source;
 
-    public CreationTransition(String etat_source, EnumTransition type){
+    public CreationTransition(EtatGraph etat_source, EnumTransition type){
         super();
         this.type = type;
         this.etat_source = etat_source;

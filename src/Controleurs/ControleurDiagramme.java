@@ -50,7 +50,6 @@ public class ControleurDiagramme {
         return e;
     }
 
-
     public void renommerEtat(EtatGraph eg, String nom) throws NameNotModifiableException {
         Etat e = (Etat)getElementFromGraphic(eg);
 
