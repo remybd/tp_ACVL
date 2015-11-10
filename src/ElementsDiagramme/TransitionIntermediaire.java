@@ -89,21 +89,6 @@ public class TransitionIntermediaire extends Transition {
 		return _etiquette.substring(slash, _etiquette.length());
 	}
 
-	@Override
-	public void supprimer() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public boolean isEtatIntermediaire() {
-		return false;
-	}
-
-	@Override
-	public boolean isTransition() {
-		return true;
-	}
 
 	@Override
 	public void supprimer() {
