@@ -92,9 +92,9 @@ public class TransitionIntermediaire extends Transition {
 	@Override
 	public void supprimer() {
 		if(_source != null)
-			_source.addDestination(null);
+			_source.unLinkDestination(this);
 		
 		if(_dest != null)
-			_dest.addSource(null);
+			_dest.unLinkSource(this);
 	}
 }
