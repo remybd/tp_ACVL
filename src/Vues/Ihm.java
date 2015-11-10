@@ -6,6 +6,8 @@ import ElementsDiagramme.EnumEtat;
 import ElementsDiagramme.Etat;
 import ElementsDiagramme.Transition;
 
+import javax.naming.ldap.Control;
+
 
 /**
  * Created by r�my on 06/11/2015.
@@ -50,6 +52,6 @@ public class Ihm {
     }
 
     public static void main(String[] args){
-        Ihm frame = Ihm.instance();
+        ControleurDiagramme con = new ControleurDiagramme();
     }
 }
