@@ -104,6 +104,9 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
             graph.getModel().endUpdate();
         }
         graphComponent = new mxGraphComponent(graph);
+        graph.setS
+        graphComponent.setBackground(Color.black);
+        graphComponent.setAutoExtend(false);
         // graph.getModel().get
         //  graphComponent.getCellAt(MouseEvent.gCursor.getDefaultCursor().g, arg1)
         graphComponent.getGraphControl().addMouseListener(new MenuContextuelListener(graphComponent));
