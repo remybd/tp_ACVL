@@ -46,7 +46,9 @@ public class CreationEtat extends FenetrePopup implements ActionListener{
         } else {
             //Ihm.instance().getEdGraphique().ajouterEtatSimple(text_etat.getText(), this.type);
             try {
-                Ihm.instance().getControleur().ajouterEtat(this.type, text_etat.getText(), (EtatGraph) this.element_graphique);
+                System.out.println(this.type);
+                System.out.println(text_etat.getText());
+                Ihm.instance().getControleur().ajouterEtat(this.type, text_etat.getText(), (EtatGraph)this.element_graphique);
             } catch (Exception e){
                 e.printStackTrace();
             }
