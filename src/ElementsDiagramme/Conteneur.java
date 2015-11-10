@@ -17,6 +17,7 @@ import Tools.TableSymboles;
  *
  */
 public class Conteneur implements Serializable {
+	private static final long serialVersionUID = 42L;
 	
 	private PseudoInitial _etatInit;
 	private HashSet<Element> _elmts = new HashSet<Element>();;

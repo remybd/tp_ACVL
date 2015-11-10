@@ -1,42 +1,49 @@
 package RessourcesExternes;
 
-import ElementsDiagramme.Conteneur;
 
-import java.io.*;
-
-/**
- * Created by rémy on 05/11/2015.
- */
 public class Fichier {
     private String nom;
     private String extension;
     private String chemin;
-    private Conteneur mainConteneur;
-
-    public Fichier (String nom, String extension, String chemin, Conteneur mainConteneur){
-        this.nom = nom;
-        this.extension = extension;
-        this.chemin = chemin;
-        this.mainConteneur = mainConteneur;
+	
+    public Fichier (String nom, String extension, String chemin){
+        this.setNom(nom);
+        this.setExtension(extension);
+        this.setChemin(chemin);
     }
 
-    public void sauvegarderFichier(){
-        ObjectOutputStream oos;
+	public String getNom() {
+		return nom;
+	}
 
-        try {
-            oos = new ObjectOutputStream(
-                    new BufferedOutputStream(
-                            new FileOutputStream(
-                                    new File(chemin+nom+extension))));
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
 
-            //écriture du mainconteneur dans le fichier
-            oos.writeObject(mainConteneur);
-            oos.close();
+	public String getExtension() {
+		return extension;
+	}
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+	public void setExtension(String extension) {
+		this.extension = extension;
+	}
+
+	public String getChemin() {
+		return chemin;
+	}
+
+	public void setChemin(String chemin) {
+		if(chemin.charAt(chemin.length()-1) != '/')
+			chemin += '/';
+		
+		this.chemin = chemin;
+	}
+
+	public String getCheminAbsolu(){
+		return getChemin()+getNom()+"."+getExtension();
+	}
+	
+	public String getCheminRelatif(){
+		return getNom()+"."+getExtension();
+	}
 }
