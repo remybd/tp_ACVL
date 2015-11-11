@@ -166,7 +166,7 @@ public class Conteneur implements Serializable {
 		return _elmts;
 	}
 	
-	public HashSet<Element> getAllElemets() {
+	public HashSet<Element> getAllElements() {
 		HashSet<Element> elmts = new HashSet<Element>(); 
 		
 		if(_elmts == null)
