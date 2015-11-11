@@ -33,13 +33,17 @@ public class Conteneur implements Serializable {
 
 	public ArrayList<Element> supprimer(){
 		ArrayList<Element> elmtsSupr = new ArrayList<Element>();
+		ArrayList<Element> elmtsDuConteneur = new ArrayList<Element>();
+		for(Element elmt : this._elmts){
+			elmtsDuConteneur.add(elmt);
+		}
 		
 		if(_etatInit != null){
 			_etatInit.supprimer();
 			elmtsSupr.add(_etatInit);
 		}
 		
-		for(Element elmt : this._elmts){
+		for(Element elmt : elmtsDuConteneur){
 			elmt.supprimer();
 			elmtsSupr.add(elmt);
 		}

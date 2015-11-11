@@ -11,9 +11,8 @@ import java.util.HashSet;
 public class PseudoFinal  extends Etat {
 	private HashSet<TransitionFinale> _trans = new HashSet<TransitionFinale>();
 
-	public PseudoFinal(Conteneur parent, String nom, TransitionFinale transitionFinale){
+	public PseudoFinal(Conteneur parent, String nom){
 		super(parent, nom);
-		this.addTransition(transitionFinale);
 	}
 	
 
