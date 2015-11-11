@@ -34,7 +34,7 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
 
     private static HashMap<mxCell, ElementGraphique> liste_elements_graphiques = new HashMap<>();
 
-    private ZoneErreur zone_erreur;
+    private ZoneErreur zone_erreur = new ZoneErreur();
     private JPanel content = new JPanel();
 
     final private static EditeurGraphique instanceUnique = new EditeurGraphique();
@@ -72,10 +72,14 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
 
         createMenu();
 
-        JPanel mainPanel = new JPanel(); //Panel
+        JPanel mainPanel = new JPanel();
+        JPanel panelGraph = new JPanel(); //Panel
 
-        BorderLayout bl = new BorderLayout();   //layoutManager
-        mainPanel.setLayout(bl);    //attache le layoutManager au panel           
+        BorderLayout bl = new BorderLayout();
+        BorderLayout b2 = new BorderLayout();
+
+        mainPanel.setLayout(bl);
+        panelGraph.setLayout(b2);
 
         Object parent = graph.getDefaultParent();
         Object v1 = null;
@@ -125,7 +129,7 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
      //   graphComponent.getGraphHandler().set;
         graphComponent.getGraph().setDropEnabled(false);
      //   graphComponent.setImportEnabled(false);
-        
+
     //    graphComponent.getGraph().setExtendParents(false);
 
        // graphComponent.getGraphHandler().set;
@@ -143,18 +147,21 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
         stylesheet.putCellStyle("ROUNDED", style);
 
         //System.out.println("hsit" + graphComponent.getCellAt(19,19));
-        System.out.println("hzesit");
         //System.out.println(graphComponent.getCellAt(20,20).equals(vertex) + "HOURAAAA");
-        mainPanel.add(graphComponent);
 
-        mainPanel.setSize(800, 420);
-        setContentPane(mainPanel);  //defini le panel de la JFrame
-        setVisible(true);  //affiche la JFrame
+        graphComponent.setMaximumSize(new Dimension(400,400));
 
-        setVisible(true);
+        panelGraph.setMaximumSize(new Dimension(400, 400));
+        panelGraph.add(graphComponent);
+
+        mainPanel.setMaximumSize(new Dimension(400, 400));
+        mainPanel.add(panelGraph);
+        mainPanel.add(zone_erreur, BorderLayout.NORTH);
+
+        this.setContentPane(mainPanel);
+        setVisible(true); //affiche la JFrame
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //  mxConstants.STYLE_SOURCE_PORT;
-
     }
 
     private void createMenu() {
@@ -163,7 +170,7 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFileChooser c = new JFileChooser();
-                int rVal = c.showSaveDialog(EditeurGraphique.this);
+                int rVal = c.showOpenDialog(EditeurGraphique.this);
                 if (rVal == JFileChooser.APPROVE_OPTION) {
                     filename.setText(c.getSelectedFile().getName());
                     dir.setText(c.getCurrentDirectory().toString());
@@ -211,6 +218,10 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
         menu.add(aide);
 
         this.setJMenuBar(menu);
+    }
+
+    public ZoneErreur getZoneErreur(){
+        return zone_erreur;
     }
 
     @Override
