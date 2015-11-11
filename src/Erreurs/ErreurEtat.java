@@ -1,5 +1,6 @@
 package Erreurs;
 
+import Vues.ObservateurVue;
 import ElementsDiagramme.Etat;
 import ElementsDiagramme.Sujet;
 
@@ -9,8 +10,8 @@ import ElementsDiagramme.Sujet;
 public class ErreurEtat extends Erreur{
     private Etat etatParent;
 
-    public ErreurEtat(String err, Etat etat, int importance){
-        super(err,importance);
+    public ErreurEtat(String err, Etat etat, int importance, ObservateurVue zoneErreur){
+        super(err,importance, zoneErreur);
         this.etatParent = etatParent;
     }
 

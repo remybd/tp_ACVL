@@ -24,9 +24,8 @@ public class ControleurFichier {
     public static ControleurFichier instance(){
         return instanceUnique;
     }
-
     
-    public void creerFichier(String name, String path, Conteneur c) {
+    private void creerFichier(String path, String name, Conteneur c) {
         try {
             fichierDeSauvegarde = new FichierSauvegarde(name, FichierSauvegarde.FICHIER_EXTENSION, path, c);
         } catch (FileNotFoundException e) {
@@ -38,19 +37,22 @@ public class ControleurFichier {
         }
     }
 
-    public Conteneur chargerFichier(String path){ 	
+    public void chargerFichier(String path, String name){
         try {
-			return fichierDeSauvegarde.chargerFichier();
+            fichierDeSauvegarde = new FichierSauvegarde(name, FichierSauvegarde.FICHIER_EXTENSION, path);
+            Conteneur mainConteneur = fichierDeSauvegarde.getMainConteneur();
+            ControleurDiagramme.instance().chargerMainConteneur(mainConteneur);
+            
 		} catch (ClassNotFoundException | IOException e) {
 			//TODO : propager l'erreur dans l'IHM
 			e.printStackTrace();
-			return null;
 		}
     }
 
-    public void sauvegarderFichier(Conteneur mainCont){
+    public void sauvegarderFichier(String path, String name){
+        Conteneur mainCont = ControleurDiagramme.instance().getMainConteneur();
         if(fichierDeSauvegarde == null)
-            creerFichier("new_diag", "", mainCont);
+            creerFichier(name, path, mainCont);
         
         try {
 			fichierDeSauvegarde.sauvegarderFichier();

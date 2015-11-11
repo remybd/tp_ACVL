@@ -36,9 +36,9 @@ public class Composite extends EtatIntermediaire {
 	 * 
 	 * @return la liste des �tats qui sont bloquants au sein de cet �tat composite
 	 */
-	public HashSet<ErreurEtat> chercherEtatsBloquants(){
+	public HashSet<ErreurEtat> chercherEtatsBloquants(ObservateurVue zoneErreur){
 		if(_fils != null)
-			return _fils.chercherEtatsBloquants();
+			return _fils.chercherEtatsBloquants(zoneErreur);
 		else
 			return new HashSet<ErreurEtat>();
 	}
@@ -48,11 +48,11 @@ public class Composite extends EtatIntermediaire {
 	 * Gestion erreur d'unicit� des �tats
 	 * @return la liste des etats qui ont le m�me nom au sein d'un conteneur
 	 */
-	public HashMap<Conteneur,HashSet<NonUnicite>> chercherPluriciteEtats(){
+	public HashMap<Conteneur,HashSet<NonUnicite>> chercherPluriciteEtats(ObservateurVue zoneErreur){
 		if(this._fils==null)
 			return new HashMap<Conteneur,HashSet<NonUnicite>>();
 		
-		return this._fils.chercherPluriciteEtats();
+		return this._fils.chercherPluriciteEtats(zoneErreur);
 	}
 	
 
@@ -62,13 +62,13 @@ public class Composite extends EtatIntermediaire {
 	 * 2 transitions sont non d�terministes si elles ont le m�me �v�nement et la m�me condition
 	 * @return
 	 */
-	public HashSet<TransitionNonDeterministe> chercherTransNnDeterm(){
-		HashSet<TransitionNonDeterministe> transNnDeterm = super.chercherTransNnDeterm();
+	public HashSet<TransitionNonDeterministe> chercherTransNnDeterm(ObservateurVue zoneErreur){
+		HashSet<TransitionNonDeterministe> transNnDeterm = super.chercherTransNnDeterm(zoneErreur);
 		
 		if(this._fils==null)
 			return transNnDeterm;
 		
-		transNnDeterm.addAll(this._fils.chercherTransNnDeterm());
+		transNnDeterm.addAll(this._fils.chercherTransNnDeterm(zoneErreur));
 		return transNnDeterm;			
 	}
 	
@@ -79,7 +79,7 @@ public class Composite extends EtatIntermediaire {
 		if(_fils == null)
 			return elmtsSupr;
 		
-		elmtsSupr.add(this);
+		elmtsSupr.addAll(_fils.supprimer());
 		return elmtsSupr;
 	}
 

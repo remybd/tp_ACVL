@@ -1,5 +1,6 @@
 package Erreurs;
 
+import Vues.ObservateurVue;
 import ElementsDiagramme.Sujet;
 
 /**
@@ -13,9 +14,10 @@ public abstract class Erreur extends Sujet{
     private String nom;
     private int importance;
 
-    public Erreur(String nom, int importance){
+    public Erreur(String nom, int importance, ObservateurVue zoneErreur){
         this.nom = nom;
         this.importance = importance;
+        this.attache(zoneErreur);
     }
     public String getNom() {
         return nom;

@@ -57,7 +57,7 @@ public class Fichier {
 	}
 
 	public void setChemin(String chemin) {
-		if(chemin.charAt(chemin.length()-1) != '/')
+		if(chemin.length()>1 && chemin.charAt(chemin.length()-1) != '/')
 			chemin += '/';
 		
 		this.chemin = chemin;

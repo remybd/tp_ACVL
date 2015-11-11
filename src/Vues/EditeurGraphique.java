@@ -21,6 +21,7 @@ import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.WeakHashMap;
 
 /**
  * Created by Jerem on 11/10/2015.
@@ -166,6 +167,7 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
                 if (rVal == JFileChooser.APPROVE_OPTION) {
                     filename.setText(c.getSelectedFile().getName());
                     dir.setText(c.getCurrentDirectory().toString());
+                    Ihm.instance().getControleurFichier().chargerFichier(filename.getText(), dir.getText());
                 }
                 if (rVal == JFileChooser.CANCEL_OPTION) {
                     filename.setText("");
@@ -182,6 +184,7 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
                 if (rVal == JFileChooser.APPROVE_OPTION) {
                     filename.setText(c.getSelectedFile().getName());
                     dir.setText(c.getCurrentDirectory().toString());
+                    Ihm.instance().getControleurFichier().sauvegarderFichier(filename.getText(),dir.getText());
                 }
                 if (rVal == JFileChooser.CANCEL_OPTION) {
                     filename.setText("You pressed cancel");

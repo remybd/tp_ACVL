@@ -1,11 +1,13 @@
 package Vues;
 
 import Controleurs.ControleurDiagramme;
+import Controleurs.ControleurFichier;
 import ElementsDiagramme.*;
 import com.mxgraph.model.mxCell;
 
 import javax.naming.ldap.Control;
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,6 +19,7 @@ public class Ihm {
 	final private static Ihm instanceUnique = new Ihm();
 	private EditeurGraphique edGraphique = EditeurGraphique.instance();
     private ControleurDiagramme controleur;
+    private ControleurFichier controleur_fichier;
 
 	private Ihm() {	}
 	
@@ -32,10 +35,18 @@ public class Ihm {
         return controleur;
     }
 
+    public ControleurFichier getControleurFichier(){
+        return controleur_fichier;
+    }
+
     public void setControleur(ControleurDiagramme controleur){
         this.controleur = controleur;
     }
-	
+
+    public void setControleurFichier(ControleurFichier controleur_fichier){
+        this.controleur_fichier = controleur_fichier;
+    }
+
     public TransitionGraph createTransitionGraph(EtatGraph s, EtatGraph d, Transition t){
         TransitionGraph res = null;
         if(t.isTransitionInitiale()){
@@ -68,19 +79,8 @@ public class Ihm {
 
         if (eg.isSupprimable()){
             HashMap<mxCell, ElementGraphique> liste_elements_graphiques = EditeurGraphique.instance().getListe_elements_graphiques();
-       
-            //A MODIFIER
-            for (Map.Entry<mxCell, ElementGraphique> entry : liste_elements_graphiques.entrySet()) {
-            	if(entry.getKey().isEdge() && ( ((TransitionGraph)entry.getValue()).getDestinationTransition().equals(eg) || ((TransitionGraph)entry.getValue()).getSourceTransition().equals(eg)) ) {
-            		liste_elements_graphiques.remove(entry.getKey());
-            	}
-                System.out.println(entry.getKey() + " " + entry.getValue().getNom());
-            }
-            
             removeElemFromListeEditeurGraphique(m);
             removeElemFromGraph(m);
-
-
         } else {
             JOptionPane message_erreur = new JOptionPane();
             message_erreur.showMessageDialog(null, "On ne peut pas supprimé un etat initial", "Erreur", JOptionPane.ERROR_MESSAGE);
@@ -92,6 +92,16 @@ public class Ihm {
         Object[] tabCells = {(Object)m};
 
         System.out.println("Element supprimé :"  + liste_elements_graphiques.get(m).getNom());
+
+        ElementGraphique eg = this.getEdGraphique().getElement_from_liste(m);
+
+        //A MODIFIER
+        for (Map.Entry<mxCell, ElementGraphique> entry : liste_elements_graphiques.entrySet()) {
+            if(entry.getKey().isEdge() && ( ((TransitionGraph)entry.getValue()).getDestinationTransition().equals(eg) || ((TransitionGraph)entry.getValue()).getSourceTransition().equals(eg)) ) {
+                liste_elements_graphiques.remove(entry.getKey());
+            }
+            System.out.println(entry.getKey() + " " + entry.getValue().getNom());
+        }
 
         if (m.getChildCount() > 0)
         for(int i=0; i<m.getChildCount(); i++){
