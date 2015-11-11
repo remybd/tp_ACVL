@@ -19,7 +19,7 @@ public class ControleurDiagramme {
     private Ihm ihm;
 
     private HashMap<ElementGraphique,Element> correspondance;
-    private HashSet<Erreur> erreurs;
+    private HashSet<Erreur> erreurs = new HashSet<Erreur>();
     final private static ControleurDiagramme instanceUnique = new ControleurDiagramme();
 
     private ControleurDiagramme(){
