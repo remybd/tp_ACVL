@@ -34,6 +34,7 @@ public class EtatGraph extends ElementGraphique {
         try {
             EditeurGraphique.instance().getGraph().getModel().beginUpdate();
             this.getObjet_graphique().setValue(Ihm.instance().getControleur().getNom(this));
+            EditeurGraphique.instance().getGraph().refresh();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

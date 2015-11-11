@@ -67,13 +67,19 @@ public class Ihm {
 
         if (eg.isSupprimable()){
             HashMap<mxCell, ElementGraphique> liste_elements_graphiques = EditeurGraphique.instance().getListe_elements_graphiques();
-
+       
+            //A MODIFIER
+            for (Map.Entry<mxCell, ElementGraphique> entry : liste_elements_graphiques.entrySet()) {
+            	if(entry.getKey().isEdge() && ( ((TransitionGraph)entry.getValue()).getDestinationTransition().equals(eg) || ((TransitionGraph)entry.getValue()).getSourceTransition().equals(eg)) ) {
+            		liste_elements_graphiques.remove(entry.getKey());
+            	}
+                System.out.println(entry.getKey() + " " + entry.getValue().getNom());
+            }
+            
             removeElemFromListeEditeurGraphique(m);
             removeElemFromGraph(m);
 
-            for (Map.Entry<mxCell, ElementGraphique> entry : liste_elements_graphiques.entrySet()) {
-                System.out.println(entry.getKey() + " " + entry.getValue().getNom());
-            }
+
         } else {
             JOptionPane message_erreur = new JOptionPane();
             message_erreur.showMessageDialog(null, "On ne peut pas supprimé un etat initial", "Erreur", JOptionPane.ERROR_MESSAGE);
