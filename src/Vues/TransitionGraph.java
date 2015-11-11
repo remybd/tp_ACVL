@@ -39,11 +39,14 @@ public class TransitionGraph extends ElementGraphique {
     public void miseAJour() {
         try {
             ArrayList<EtatGraph> etats_source_dest = Ihm.instance().getControleur().getSourceAndDestination(this);
+            EditeurGraphique.instance().getGraph().getModel().beginUpdate();
             this.getObjet_graphique().setSource(etats_source_dest.get(0).getObjet_graphique());
             this.getObjet_graphique().setTarget(etats_source_dest.get(1).getObjet_graphique());
             this.getObjet_graphique().setValue(Ihm.instance().getControleur().getEtiquette(this));
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            EditeurGraphique.instance().getGraph().getModel().endUpdate();
         }
         //this.getObjet_graphique().setValue();
     }

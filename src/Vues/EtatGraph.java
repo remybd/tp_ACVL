@@ -32,9 +32,12 @@ public class EtatGraph extends ElementGraphique {
 	@Override
 	public void miseAJour() {
         try {
+            EditeurGraphique.instance().getGraph().getModel().beginUpdate();
             this.getObjet_graphique().setValue(Ihm.instance().getControleur().getNom(this));
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            EditeurGraphique.instance().getGraph().getModel().endUpdate();
         }
     }
 }

@@ -46,8 +46,6 @@ public class CreationTransition extends FenetrePopup implements ActionListener{
         }
 
         etiquette_transition.setPreferredSize(new Dimension(150, 30));
-        if(etat_source.getType() == EnumEtat.INIT)
-            etiquette_transition.setEnabled(false);
 
         liste_etats = new JComboBox(liste_noms_etats);
 
@@ -57,7 +55,8 @@ public class CreationTransition extends FenetrePopup implements ActionListener{
 
         line_3.setLayout(new BoxLayout(line_3, BoxLayout.LINE_AXIS));
         line_3.add(etiquette_label);
-        line_3.add(etiquette_transition);
+        if(etat_source.getType() != EnumEtat.INIT)
+            line_3.add(etiquette_transition);
         this.valider.addActionListener(this);
 
         getPan().setLayout(new BoxLayout(getPan(), BoxLayout.PAGE_AXIS));

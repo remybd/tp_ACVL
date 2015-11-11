@@ -63,7 +63,7 @@ public class Ihm {
     }
 
     public void removeElem(mxCell m) {
-        ElementGraphique eg = (EtatGraph) this.getEdGraphique().getElement_from_liste(m);
+        ElementGraphique eg = this.getEdGraphique().getElement_from_liste(m);
 
         if (eg.isSupprimable()){
             HashMap<mxCell, ElementGraphique> liste_elements_graphiques = EditeurGraphique.instance().getListe_elements_graphiques();
