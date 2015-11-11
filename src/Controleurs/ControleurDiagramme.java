@@ -104,6 +104,13 @@ public class ControleurDiagramme {
         Element e = getElementFromGraphic(elem);
 
         for(Element element : e.supprimer()){
+        	if(element.isEtat()){
+        		System.out.println("Suppression graphique de "+( (Etat)element).getNom());
+        	}
+        	else if(element.isTransition()){
+        		System.out.println("Suppression graphique de "+( (Transition)element).getEtiquette());	
+        	}
+        	
             ihm.removeElem(getElemGraphFromElem(element).getObjet_graphique());
             correspondance.remove(elem);
         }
@@ -323,6 +330,7 @@ public class ControleurDiagramme {
             correspondance.put(eg,e);
             listAllElementsGraphique.add(eg);
         }
+
 
         EditeurGraphique.instance().updateListeElementGraphiqueAndDisplay(listAllElementsGraphique);
     }

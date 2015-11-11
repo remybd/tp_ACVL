@@ -100,6 +100,12 @@ public class Composite extends EtatIntermediaire {
 	public void applatir() throws Exception {
 		_fils.applatir();
 
+		EtatIntermediaire etatPointeByInit = _fils.getPseudoInitial().getTransition().getEtatDest();
+		for(Transition t : this.getDestinations()){
+			if(t.isTransitionFinale()){
+//TODO ((TransitionFinale)t).setEtatSource();
+			}
+		}
 		//relie toutes les transitions entrantes à l'état initial
 		EtatIntermediaire etatPointedByInit = _fils.getPseudoInitial().getTransition().getEtatDest();
 		for(Transition t : this.getSources()){

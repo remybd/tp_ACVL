@@ -27,7 +27,9 @@ public class ControleurFichier {
     
     private void creerFichier(String path, String name, Conteneur c) {
         try {
-            fichierDeSauvegarde = new FichierSauvegarde(name, FichierSauvegarde.FICHIER_EXTENSION, path, c);
+        	path+="."+FichierSauvegarde.FICHIER_EXTENSION;
+        	
+            fichierDeSauvegarde = new FichierSauvegarde(path, c);
         } catch (FileNotFoundException e) {
             // TODO : propager l'erreur dans l'IHM
             e.printStackTrace();
@@ -37,9 +39,17 @@ public class ControleurFichier {
         }
     }
 
-    public void chargerFichier(String path, String name){
+    public void chargerFichier(String path){
         try {
-            fichierDeSauvegarde = new FichierSauvegarde(name, FichierSauvegarde.FICHIER_EXTENSION, path);
+        	System.out.println("Chargement de : "+path);
+        	//si l'extension n'est pas spécifiée dans le nom, on la met
+        	int point = name.lastIndexOf('.');
+        	if(! (point>-1 && name.substring(point).equals("."+FichierSauvegarde.FICHIER_EXTENSION))){
+        		path+="."+FichierSauvegarde.FICHIER_EXTENSION;
+        	}
+        	System.out.println("Chargement de : "+path);
+        	
+            fichierDeSauvegarde = new FichierSauvegarde(path);
             Conteneur mainConteneur = fichierDeSauvegarde.getMainConteneur();
             ControleurDiagramme.instance().chargerMainConteneur(mainConteneur);
             
@@ -68,7 +78,7 @@ public class ControleurFichier {
     
     public void ouvrirManuel(){
     	try {
-			Desktop.getDesktop().open(new File(getManuel().getCheminRelatif()));
+			Desktop.getDesktop().open(new File(getManuel().getCheminAbsolu()));
 		} catch (IOException e) {
 			//TODO : propager l'erreur dans l'IHM
 			e.printStackTrace();

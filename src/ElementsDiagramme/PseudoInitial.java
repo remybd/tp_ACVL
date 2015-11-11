@@ -40,10 +40,17 @@ public class PseudoInitial extends Etat {
 		super(etat.getConteneurParent(), etat.getNom());
 		this.attache(etat.getObservateur());
 		
-		HashSet<TransitionIntermediaire> trans = etat.getDestinations();
+		HashSet<Transition> trans = etat.getDestinations();
 		
-		if(trans != null && trans.size()>0)
-			this.setTransition(new TransitionInitiale(trans.iterator().next(), this));
+		if(trans != null && trans.size()>0){
+			Transition tr = trans.iterator().next();
+			if(tr.isTransitionFinale())
+				this.setTransition(new TransitionInitiale((TransitionFinale)tr, this));
+			else if(tr.isTransitionIntermediaire())
+				this.setTransition(new TransitionInitiale((TransitionIntermediaire)tr, this));
+			else
+				this.setTransition((TransitionInitiale)tr);
+		}
 	}
 	
 	public TransitionInitiale getTransition() {

@@ -31,8 +31,8 @@ public class Fichier {
     }
     
     public Fichier (String nom, String extension, String chemin){
-        this.setNom(nom);
         this.setExtension(extension);
+        this.setNom(nom);
         this.setChemin(chemin);
     }
 
