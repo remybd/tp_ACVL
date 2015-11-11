@@ -19,6 +19,7 @@ public class ControleurDiagramme {
     private Ihm ihm;
 
     private HashMap<ElementGraphique,Element> correspondance;
+    private HashSet<Erreur> erreurs;
     final private static ControleurDiagramme instanceUnique = new ControleurDiagramme();
 
     private ControleurDiagramme(){
@@ -182,11 +183,16 @@ public class ControleurDiagramme {
     }
 
 
-    public HashSet<Erreur> chercherErreurs(){
+    public void chercherErreurs(){
     	if(mainConteneur == null)
-    		return new HashSet<Erreur>();
+    		return;
     	
-    	return mainConteneur.chercherErreurs();
+    	//get toutes les erreurs
+    	erreurs = mainConteneur.chercherErreurs(ihm.getEdGraphique().getZoneErreur());
+    	
+    	//informe la vue des erreurs
+    	if(erreurs.size()>0)
+    		erreurs.iterator().next().getObservateur().miseAJour();
     }
 
     public ArrayList<EtatGraph> getStatesFromSameConteneur(EtatGraph etatGraph) throws Exception {

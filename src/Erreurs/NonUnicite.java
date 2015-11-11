@@ -1,5 +1,6 @@
 package Erreurs;
 
+import Vues.ObservateurVue;
 import ElementsDiagramme.Etat;
 
 /**
@@ -8,8 +9,8 @@ import ElementsDiagramme.Etat;
 public class NonUnicite extends ErreurEtat{
     private Etat etatMemeNom;
 
-    public NonUnicite(Etat etat, Etat etatMemeNom, int importance){
-        super("Etat Non Unique",etat, importance);
+    public NonUnicite(Etat etat, Etat etatMemeNom, int importance, ObservateurVue zoneErreur){
+        super("Etat Non Unique",etat, importance, zoneErreur);
         this.etatMemeNom = etatMemeNom;
     }
 

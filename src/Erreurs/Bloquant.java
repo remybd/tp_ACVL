@@ -1,5 +1,6 @@
 package Erreurs;
 
+import Vues.ObservateurVue;
 import ElementsDiagramme.Etat;
 
 /**
@@ -7,7 +8,7 @@ import ElementsDiagramme.Etat;
  */
 public abstract class Bloquant extends ErreurEtat{
 
-    public Bloquant(Etat etat, int importance){
-        super("Etat Bloquant",etat, importance);
+    public Bloquant(Etat etat, int importance, ObservateurVue zoneErreur){
+        super("Etat Bloquant",etat, importance, zoneErreur);
     }
 }

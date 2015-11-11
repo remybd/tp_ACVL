@@ -7,6 +7,7 @@ import java.util.Iterator;
 import Erreurs.Erreur;
 import Erreurs.TransitionNonDeterministe;
 import Tools.TableSymboles;
+import Vues.ObservateurVue;
 
 /**
  *  TODO
@@ -153,7 +154,7 @@ public abstract class EtatIntermediaire extends Etat{
 	 * 2 transitions sont non déterministes si elles ont le même événement et la même condition
 	 * @return
 	 */
-	public HashSet<TransitionNonDeterministe> chercherTransNnDeterm(){
+	public HashSet<TransitionNonDeterministe> chercherTransNnDeterm(ObservateurVue zoneErreur){
 		HashSet<String> evtsConds = new HashSet<String>();
 		HashSet<TransitionNonDeterministe> transNonDeterm = new HashSet<TransitionNonDeterministe>();
 		String evtCond; //pr 1 transition, contient evenement+condition sans espaces
@@ -166,7 +167,7 @@ public abstract class EtatIntermediaire extends Etat{
 			//evtsConds contient déjà ces infos -> trans est une transition non déterministe
 			symbol = TableSymboles.get(evtCond);
 			if(evtsConds.contains(symbol)){
-				transNonDeterm.add(new TransitionNonDeterministe(trans, Erreur.ERR_TRANSITION_NON_DETERM));
+				transNonDeterm.add(new TransitionNonDeterministe(trans, Erreur.ERR_TRANSITION_NON_DETERM, zoneErreur));
 			}
 			else{
 				evtsConds.add(symbol);
