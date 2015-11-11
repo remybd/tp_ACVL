@@ -84,11 +84,6 @@ public class Composite extends EtatIntermediaire {
 	}
 
 	@Override
-	public boolean isEtatIntermediaire() {
-		return false;
-	}
-
-	@Override
 	public boolean isTransition() {
 		return false;
 	}
