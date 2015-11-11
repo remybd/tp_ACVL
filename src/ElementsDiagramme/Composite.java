@@ -115,14 +115,17 @@ public class Composite extends EtatIntermediaire {
 		}
 
 		//relie toutes les transitions entrantes à l'état pointé par l'initial
-		EtatIntermediaire etatPointedByInit = _fils.getPseudoInitial().getTransition().getEtatDest();
-		for(Transition t : this.getSources()){
-			if(t.isTransitionIntermediaire()){
-				((TransitionIntermediaire)t).setEtatDest(etatPointedByInit);
-			} else if(t.isTransitionInitiale()){
-				((TransitionInitiale)t).setEtatDest(etatPointedByInit);
+		if(_fils.getPseudoInitial().getTransition() != null){
+			EtatIntermediaire etatPointedByInit = _fils.getPseudoInitial().getTransition().getEtatDest();
+			for(Transition t : this.getSources()){
+				if(t.isTransitionIntermediaire()){
+					((TransitionIntermediaire)t).setEtatDest(etatPointedByInit);
+				} else if(t.isTransitionInitiale()){
+					((TransitionInitiale)t).setEtatDest(etatPointedByInit);
+				}
 			}
 		}
+
 
 
 		//relie toutes les transitions sortantes aux états finaux
@@ -151,7 +154,7 @@ public class Composite extends EtatIntermediaire {
 			ControleurDiagramme.instance().supprimerElement((ElementGraphique)pseudoFinal.getObservateur());
 		}
 		//suprime l'état initial et donc sa transition
-		ControleurDiagramme.instance().supprimerElement((ElementGraphique)_fils.getPseudoInitial().getTransition().getObservateur());
+		ControleurDiagramme.instance().supprimerElement((ElementGraphique)_fils.getPseudoInitial().getObservateur());
 		//vide le conteneur
 		_fils.getElmts().clear();
 	}

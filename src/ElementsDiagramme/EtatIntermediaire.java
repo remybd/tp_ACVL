@@ -129,10 +129,10 @@ public abstract class EtatIntermediaire extends Etat{
 	public boolean estBloquant(){
 		for(Transition source : _sources){
 			if(source.getEtatDestination() != this)
-				return true;
+				return false;
 		}
 		
-		return false;
+		return true;
 	}
 
 	@Override
