@@ -46,10 +46,12 @@ public class FichierSauvegarde extends Fichier{
         ObjectOutputStream oos = null;
 
         try {
+        	System.out.println("Sauvegarder : "+this.getCheminAbsolu());
+        	
             oos = new ObjectOutputStream(
                     new BufferedOutputStream(
                             new FileOutputStream(
-                                    new File(this.getCheminRelatif()))));
+                                    new File(this.getCheminAbsolu()))));
 
             //écriture du mainconteneur dans le fichier
             oos.writeObject(mainConteneur);
@@ -72,7 +74,8 @@ public class FichierSauvegarde extends Fichier{
      * @throws ClassNotFoundException 
      */
     public Conteneur chargerFichier() throws IOException, ClassNotFoundException {
-		FileInputStream fis = new FileInputStream(this.getCheminRelatif());
+    	System.out.println("Charger : "+this.getCheminAbsolu());
+		FileInputStream fis = new FileInputStream(this.getCheminAbsolu());
 		ObjectInputStream ois= new ObjectInputStream(fis);
 		try {	
 			mainConteneur = (Conteneur) ois.readObject(); 
