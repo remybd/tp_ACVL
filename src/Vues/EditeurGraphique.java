@@ -382,7 +382,9 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
 				graph.addCell(e.getObjet_graphique());
 			}
 		} finally {
+			graph.refresh();
 		    graph.getModel().endUpdate();
+			graph.refresh();
 		}
 	}
 	
