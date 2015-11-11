@@ -284,9 +284,9 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
             transition_mxcell = (mxCell)this.getGraphComponent().getGraph().insertEdge(newEtatParent, null, etiquette,
                     (Object)source.getObjet_graphique(),(Object)destination.getObjet_graphique());
             if(parent == null)
-                tg = new TransitionGraph(parent,transition_mxcell, type);
+                tg = new TransitionGraph(parent, source, destination, transition_mxcell, type);
             else
-                tg = new TransitionGraph(parent.getParent(),transition_mxcell, type);
+                tg = new TransitionGraph(parent.getParent(), source, destination, transition_mxcell, type);
             this.getListe_elements_graphiques().put(transition_mxcell,tg);
         } finally {
             graph.getModel().endUpdate();
