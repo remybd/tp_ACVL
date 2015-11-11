@@ -49,7 +49,7 @@ public class TransitionIntermediaire extends Transition {
 		this.setEtatDest(etatIntermediaire);
 	}
 
-
+	@Override
 	public String getEtiquette(){
 		return _etiquette;
 	}

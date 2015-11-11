@@ -48,7 +48,7 @@ public class TransitionFinale extends Transition {
 		this.setPseudoFinal(pseudoFinal);
 	}
 
-
+	@Override
 	public String getEtiquette(){
 		return _etiquette;
 	}
