@@ -88,7 +88,7 @@ public class Ihm {
 	        }
         }
 
-        System.out.print("Elements presents dans l'editeur graphique :");
+        System.out.println("Elements presents dans l'editeur graphique :");
         for (Map.Entry<mxCell, ElementGraphique> entry : liste_elements_graphiques.entrySet()) {
             System.out.println(liste_elements_graphiques.get(entry.getKey()).getNom());
         }

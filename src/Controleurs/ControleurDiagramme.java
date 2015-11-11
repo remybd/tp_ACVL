@@ -321,7 +321,6 @@ public class ControleurDiagramme {
 
     public void applatir(){
         mainConteneur.applatir();
-
     }
 
     public void chargerMainConteneur(Conteneur mainConteneur){

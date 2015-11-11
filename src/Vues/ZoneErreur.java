@@ -1,7 +1,10 @@
 package Vues;
 
+import Erreurs.Erreur;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashSet;
 
 /**
  * Created by Jerem on 06/11/2015.
@@ -17,7 +20,8 @@ public class ZoneErreur extends JPanel implements ObservateurVue {
     }
 
     public void miseAJour(){
-        //updateLabel()
+        HashSet<Erreur> erreurs = Ihm.instance().getControleur().getErreurs();
+        //for(Hash)
     }
 
 }
