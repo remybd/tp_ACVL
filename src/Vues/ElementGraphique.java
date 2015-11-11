@@ -1,5 +1,6 @@
 package Vues;
 
+import Controleurs.ControleurDiagramme;
 import com.mxgraph.model.mxCell;
 
 /**
@@ -40,8 +41,10 @@ public abstract class ElementGraphique implements ObservateurVue {
  		this.parent = parent;
         if(parent != null)
     	    this.getObjet_graphique().setParent(parent.getObjet_graphique());
-        else
+        else{
             this.getObjet_graphique().setParent((mxCell)EditeurGraphique.instance().getGraph().getDefaultParent());
+        }
+
  	}
 
     public boolean isSupprimable(){
