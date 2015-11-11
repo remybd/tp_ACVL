@@ -14,6 +14,6 @@ public abstract class Bloquant extends ErreurEtat{
 
 	@Override
 	public String getMessage() {
-    	return this.getNom()+" - L'état simple suivant doit avoir au moins une transition sortante : "+getEtatParent().getNom();
+    	return this.getNom()+" - L'etat simple suivant doit avoir au moins une transition sortante : "+getEtatParent().getNom();
 	}
 }
