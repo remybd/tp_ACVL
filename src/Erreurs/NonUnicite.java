@@ -11,6 +11,7 @@ public class NonUnicite extends ErreurEtat{
 
     public NonUnicite(Etat etat, Etat etatMemeNom, int importance, ObservateurVue zoneErreur){
         super("Etat Non Unique",etat, importance, zoneErreur);
+        System.out.println("Détails : état problématique : "+etat.getNom());
         this.etatMemeNom = etatMemeNom;
     }
 

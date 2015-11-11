@@ -10,5 +10,6 @@ public abstract class Bloquant extends ErreurEtat{
 
     public Bloquant(Etat etat, int importance, ObservateurVue zoneErreur){
         super("Etat Bloquant",etat, importance, zoneErreur);
+        System.out.println("Détails : état problématique : "+etat.getNom());
     }
 }

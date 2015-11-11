@@ -12,6 +12,8 @@ public class TransitionNonDeterministe extends Erreur{
 
     public TransitionNonDeterministe(Transition transition, int importance, ObservateurVue zoneErreur){
         super("Transition Non Déterministe", importance, zoneErreur);
+        System.out.println("Détails : transition problématique : "+transition.getEtiquette());
+        
         this.transitionParent = transition;
     }
 

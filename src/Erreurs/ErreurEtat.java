@@ -12,6 +12,8 @@ public class ErreurEtat extends Erreur{
 
     public ErreurEtat(String err, Etat etat, int importance, ObservateurVue zoneErreur){
         super(err,importance, zoneErreur);
+        System.out.println("Détails : état problématique : "+etat.getNom());
+        
         this.etatParent = etatParent;
     }
 
