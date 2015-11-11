@@ -335,4 +335,7 @@ public class ControleurDiagramme {
         EditeurGraphique.instance().updateListeElementGraphiqueAndDisplay(listAllElementsGraphique);
     }
 
+    public HashSet<Erreur> getErreurs() {
+        return erreurs;
+    }
 }
