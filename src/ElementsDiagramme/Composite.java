@@ -100,13 +100,10 @@ public class Composite extends EtatIntermediaire {
 	public void applatir() throws Exception {
 		_fils.applatir();
 
-		EtatIntermediaire etatPointeByInit = _fils.getPseudoInitial().getTransition().getEtatDest();
-		for(Transition t : this.getDestinations()){
-			if(t.isTransitionFinale()){
-//TODO ((TransitionFinale)t).setEtatSource();
-			}
-		}
-		//relie toutes les transitions entrantes à l'état initial
+		HashSet<EtatIntermediaire> etatsItermediaires = getEtatsIntermediaires();
+		HashSet<TransitionIntermediaire> transitionIntermediaires = getEtatsIntermediaires()
+
+		//relie toutes les transitions entrantes à l'état pointé par l'initial
 		EtatIntermediaire etatPointedByInit = _fils.getPseudoInitial().getTransition().getEtatDest();
 		for(Transition t : this.getSources()){
 			if(t.isTransitionIntermediaire()){
@@ -117,12 +114,13 @@ public class Composite extends EtatIntermediaire {
 		}
 
 
+		//relie toutes les transitions sortantes aux états finaux
 		HashSet<PseudoFinal> listEtatsFinaux = getEtatsFinaux();
-		if(!listEtatsFinaux.isEmpty()){//il y a des états finaux que l'on relie aux transitions finales
+		if(!listEtatsFinaux.isEmpty()){//il y a des états finaux, on les relie donc aux transitions sortantes
 
 			for(EtatIntermediaire etatIntermediaire : getEtatsPointedByFinal(listEtatsFinaux)){
 				for(Transition t : this.getDestinations()){
-					if(t.isTransitionFinale()){
+					if(t.isTransitionFinale()){//clone les transitions sortantes car peux y avoir plusieurs états finaux et il fuat donc les cloner
 						ControleurDiagramme.instance().ajouterTransition(EnumTransition.FINAL,t.getEtiquette(),(EtatGraph)etatIntermediaire.getObservateur(),(EtatGraph)t.getEtatDestination().getObservateur());
 
 					} else if(t.isTransitionIntermediaire()){
@@ -131,16 +129,18 @@ public class Composite extends EtatIntermediaire {
 				}
 			}
 
-		} else {
-			for(PseudoFinal pf : listEtatsFinaux){
-				for(Transition t : pf.getTransitions()){
-					ControleurDiagramme.instance().supprimerElement((ElementGraphique)t.getObservateur());
-				}
-			}
 		}
 
-
-
+		//supprime les transitions sortantes puisqu'on les as clonées
+		for(Transition t : this.getDestinations()){
+			ControleurDiagramme.instance().supprimerElement((ElementGraphique)t.getObservateur());
+		}
+		//suprime les états finaux et leurs transitions dans l'état composite
+		for(PseudoFinal pseudoFinal : listEtatsFinaux){
+			ControleurDiagramme.instance().supprimerElement((ElementGraphique)pseudoFinal.getObservateur());
+		}
+		//suprime l'état initial et donc sa transition
+		ControleurDiagramme.instance().supprimerElement((ElementGraphique)_fils.getPseudoInitial().getTransition().getObservateur());
 
 	}
 
@@ -169,6 +169,27 @@ public class Composite extends EtatIntermediaire {
 		return listEtatsPointedByFinal;
 	}
 
+	private HashSet<EtatIntermediaire> getEtatsIntermediaires(){
+		HashSet<EtatIntermediaire> listEtatsIntermediaires = new HashSet<EtatIntermediaire>();
+
+		for(Element e:_fils.getElmts()){
+			if(e.isEtatIntermediaire()){
+				listEtatsIntermediaires.add((EtatIntermediaire)e);
+			}
+		}
+		return listEtatsIntermediaires;
+	}
+
+	private HashSet<TransitionIntermediaire> getTransitionsIntermediaires(){
+		HashSet<TransitionIntermediaire> listTransitionsIntermediaires = new HashSet<TransitionIntermediaire>();
+
+		for(Element e:_fils.getElmts()){
+			if(e.isTransitionIntermediaire()){
+				listTransitionsIntermediaires.add((TransitionIntermediaire)e);
+			}
+		}
+		return listTransitionsIntermediaires;
+	}
 
 
 	@Override
