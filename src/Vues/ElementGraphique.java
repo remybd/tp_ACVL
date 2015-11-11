@@ -38,7 +38,10 @@ public abstract class ElementGraphique implements ObservateurVue {
 
  	public void setParent(EtatGraph parent) {
  		this.parent = parent;
-    	this.getObjet_graphique().setParent(parent.getObjet_graphique());
+        if(parent != null)
+    	    this.getObjet_graphique().setParent(parent.getObjet_graphique());
+        else
+            this.getObjet_graphique().setParent((mxCell)EditeurGraphique.instance().getGraph().getDefaultParent());
  	}
 
     public boolean isSupprimable(){

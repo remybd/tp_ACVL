@@ -197,8 +197,9 @@ public class Conteneur implements Serializable {
 	}
 
 	public void applatir() throws Exception {
+		HashSet<Element> temp = (HashSet<Element>)_elmts.clone();
 
-		for(Element el: _elmts){
+		for(Element el: temp){
 			if(el.isEtatComposite()){
 				((Composite)el).applatir();
 				ControleurDiagramme.instance().supprimerElement((ElementGraphique)el.getObservateur());
