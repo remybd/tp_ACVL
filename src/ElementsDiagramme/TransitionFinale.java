@@ -31,7 +31,7 @@ public class TransitionFinale extends Transition {
 		this.setObservateur(trans.getObservateur());
 		
 		this.setEtiquette(trans.getEtiquette());
-		this.setEtatSource(trans.getEtatSource());
+		this.setEtatSource((EtatIntermediaire)trans.getEtatSource());
 		this.setPseudoFinal(pseudoFinal);
 	}
 
@@ -93,8 +93,14 @@ public class TransitionFinale extends Transition {
 		return false;
 	}
 
-	public EtatIntermediaire getEtatSource() {
+	@Override
+	public Etat getEtatSource() {
 		return _etatSource;
+	}
+
+	@Override
+	public Etat getEtatDestination() {
+		return _etatFinal;
 	}
 
 

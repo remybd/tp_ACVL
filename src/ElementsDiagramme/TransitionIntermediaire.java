@@ -45,7 +45,7 @@ public class TransitionIntermediaire extends Transition {
 		this.setObservateur(trans.getObservateur());
 		
 		this.setEtiquette(trans.getEtiquette());
-		this.setEtatSource(trans.getEtatSource());
+		this.setEtatSource((EtatIntermediaire)trans.getEtatSource());
 		this.setEtatDest(etatIntermediaire);
 	}
 
@@ -145,8 +145,14 @@ public class TransitionIntermediaire extends Transition {
 		this._dest = etat;		
 	}
 
-	public EtatIntermediaire getEtatSource() {
+	@Override
+	public Etat getEtatSource() {
 		return _source;
+	}
+
+	@Override
+	public Etat getEtatDestination() {
+		return _dest;
 	}
 
 	public EtatIntermediaire getEtatDest() {

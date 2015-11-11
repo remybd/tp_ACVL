@@ -80,4 +80,8 @@ public abstract class Transition extends Element {
 	public boolean isEtatPseudoFinal() {
 		return false;
 	}
+
+	public abstract Etat getEtatSource();
+
+	public abstract Etat getEtatDestination();
 }

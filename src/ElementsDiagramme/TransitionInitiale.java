@@ -79,8 +79,14 @@ public class TransitionInitiale extends Transition {
 		this._etatDest = etat;		
 	}
 
-	public PseudoInitial getEtatSource() {
+	@Override
+	public Etat getEtatSource() {
 		return _etatInit;
+	}
+
+	@Override
+	public Etat getEtatDestination() {
+		return _etatDest;
 	}
 
 	public EtatIntermediaire getEtatDest() {
