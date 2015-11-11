@@ -115,5 +115,6 @@ public class Ihm {
         Object[] tabCells = {(Object)m};
         EditeurGraphique.instance().getGraph().removeCells(tabCells);
     }
+    
 
 }
