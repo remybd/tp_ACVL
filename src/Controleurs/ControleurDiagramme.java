@@ -324,9 +324,8 @@ public class ControleurDiagramme {
         return (ElementGraphique)e.getObservateur();
     }
 
-    public void applatir(){
-       //TODO  mainConteneur.applatir();
-
+    public void applatir() throws Exception {
+        mainConteneur.applatir();
     }
 
     public void chargerMainConteneur(Conteneur mainConteneur){
