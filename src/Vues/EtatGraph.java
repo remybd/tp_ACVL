@@ -31,6 +31,10 @@ public class EtatGraph extends ElementGraphique {
 
 	@Override
 	public void miseAJour() {
-        this.getObjet_graphique().setValue(Ihm.instance().getControleur().getNom(this));
-	}
+        try {
+            this.getObjet_graphique().setValue(Ihm.instance().getControleur().getNom(this));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
