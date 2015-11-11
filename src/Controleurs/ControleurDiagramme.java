@@ -287,4 +287,14 @@ public class ControleurDiagramme {
     private ElementGraphique getElemGraphFromElem(Element e) {
         return (ElementGraphique)e.getObservateur();
     }
+
+
+
+
+
+
+    public void applatir(){
+
+    }
+
 }
