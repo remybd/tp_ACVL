@@ -293,4 +293,8 @@ public class ControleurDiagramme {
 
     }
 
+    public void chargerMainConteneur(Conteneur mainConteneur){
+
+    }
+
 }
