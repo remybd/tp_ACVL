@@ -107,8 +107,24 @@ public class ControleurDiagramme {
             ihm.removeElem(getElemGraphFromElem(element).getObjet_graphique());
             correspondance.remove(elem);
         }
+        
+        DEBUG_displayElmts();
     }
 
+    public void DEBUG_displayElmts(){
+    	System.out.println("Elmts présents dans le controleur :");
+    	
+    	for(ElementGraphique elmtGraph : correspondance.keySet()){
+    		Element elmt = correspondance.get(elmtGraph);
+    		if(elmt.isEtat()){
+    			System.out.println(((Etat)elmt).getNom());
+    		}
+    		else if(elmt.isTransition()){
+    			System.out.println(((Transition)elmt).getEtiquette());
+    		}
+    	}
+    }
+    
     public void modifierTransition(TransitionGraph transitionGraph, EtatGraph source, EtatGraph dest,String etiquette) throws Exception{
     	/* Check les préconditions */
     	if(!correspondance.containsKey(transitionGraph))
@@ -184,7 +200,7 @@ public class ControleurDiagramme {
     		return;
     	
     	//get toutes les erreurs
-    	erreurs = mainConteneur.chercherErreurs(ihm.getEdGraphique().getZoneErreur());
+  //erreurs = mainConteneur.chercherErreurs(ihm.getEdGraphique().getZoneErreur());
     	
     	//informe la vue des erreurs
     	if(erreurs.size()>0)

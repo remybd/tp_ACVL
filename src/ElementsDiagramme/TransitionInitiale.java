@@ -49,6 +49,7 @@ public class TransitionInitiale extends Transition {
 			return elmtsSupr;
 		
 		_etatInit.setTransition(null);
+		this.getConteneurParent().supprimerElmt(this);
 		return elmtsSupr;
 	}
 	
