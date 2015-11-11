@@ -39,6 +39,12 @@ public class ControleurFichier {
 
     public void chargerFichier(String path, String name){
         try {
+        	//si l'extension est spécifiée dans le nom, on la vire
+        	int point = name.lastIndexOf('.');
+        	if(point>-1 && name.substring(point).equals("."+FichierSauvegarde.FICHIER_EXTENSION)){
+        		name = name.substring(0, point);
+        	}
+        	
             fichierDeSauvegarde = new FichierSauvegarde(name, FichierSauvegarde.FICHIER_EXTENSION, path);
             Conteneur mainConteneur = fichierDeSauvegarde.getMainConteneur();
             ControleurDiagramme.instance().chargerMainConteneur(mainConteneur);
