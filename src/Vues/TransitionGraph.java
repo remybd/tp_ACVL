@@ -47,6 +47,7 @@ public class TransitionGraph extends ElementGraphique {
             e.printStackTrace();
         } finally {
             EditeurGraphique.instance().getGraph().getModel().endUpdate();
+            EditeurGraphique.instance().setVisible(true);
         }
         //this.getObjet_graphique().setValue();
     }

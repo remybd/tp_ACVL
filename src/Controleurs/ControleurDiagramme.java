@@ -17,6 +17,7 @@ import java.util.HashSet;
 public class ControleurDiagramme {
     private Conteneur mainConteneur;
     private Ihm ihm;
+
     private HashMap<ElementGraphique,Element> correspondance;
     final private static ControleurDiagramme instanceUnique = new ControleurDiagramme();
 
@@ -236,7 +237,6 @@ public class ControleurDiagramme {
 
     public String getNom(EtatGraph etatGraph) throws Exception {
         Etat e = (Etat)getElementFromGraphic(etatGraph);
-
         return e.getNom();
     }
 

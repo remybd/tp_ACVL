@@ -4,6 +4,8 @@ import ElementsDiagramme.EnumEtat;
 
 import com.mxgraph.model.mxCell;
 
+import javax.swing.*;
+
 
 /**
  * Created by Jerem on 03/11/2015.
@@ -32,12 +34,12 @@ public class EtatGraph extends ElementGraphique {
 	@Override
 	public void miseAJour() {
         try {
-            EditeurGraphique.instance().getGraph().getModel().beginUpdate();
+            EditeurGraphique.instance().getGraphComponent().getGraph().getModel().beginUpdate();
             this.getObjet_graphique().setValue(Ihm.instance().getControleur().getNom(this));
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            EditeurGraphique.instance().getGraph().getModel().endUpdate();
+            EditeurGraphique.instance().getGraphComponent().getGraph().getModel().endUpdate();
         }
     }
 }
