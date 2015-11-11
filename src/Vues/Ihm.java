@@ -83,8 +83,8 @@ public class Ihm {
 	            removeElemFromListeEditeurGraphique(m);
 	            removeElemFromGraph(m);
 	        } else {
-	            JOptionPane message_erreur = new JOptionPane();
-	            message_erreur.showMessageDialog(null, "On ne peut pas supprimé un etat initial", "Erreur", JOptionPane.ERROR_MESSAGE);
+                JOptionPane message_erreur = new JOptionPane();
+                message_erreur.showMessageDialog(null, "On ne peut pas supprimé un etat initial", "Erreur", JOptionPane.ERROR_MESSAGE);
 	        }
         }
 
