@@ -16,9 +16,9 @@ import Vues.ObservateurVue;
  */
 public abstract class EtatIntermediaire extends Etat{
 	//transitions dont la destination est this
-	private HashSet<TransitionIntermediaire> _dest = new HashSet<TransitionIntermediaire>();
+	private HashSet<Transition> _dest = new HashSet<Transition>();
 	//transitions dont la source est this
-	private HashSet<TransitionIntermediaire> _sources = new HashSet<TransitionIntermediaire>();
+	private HashSet<Transition> _sources = new HashSet<Transition>();
 	
 	public EtatIntermediaire(Conteneur parent, String nom){
 		super(parent, nom);
@@ -58,30 +58,30 @@ public abstract class EtatIntermediaire extends Etat{
 		}
 	}
 	
-	public HashSet<TransitionIntermediaire> getDestinations() {
+	public HashSet<Transition> getDestinations() {
 		return _dest;
 	}
-	public void addDestination(TransitionIntermediaire dest) {
+	public void addDestination(Transition dest) {
         if(this._dest == null)
-            this._dest = new HashSet<TransitionIntermediaire>();
+            this._dest = new HashSet<Transition>();
 
         this._dest.add(dest);
     }
-    public void setDestinations(HashSet<TransitionIntermediaire> destinations){
+    public void setDestinations(HashSet<Transition> destinations){
         _dest = destinations;
     }
 	
-	public HashSet<TransitionIntermediaire> getSources() {
+	public HashSet<Transition> getSources() {
 		return _sources;
 	}
 	public void addSource(TransitionIntermediaire source) {
 		if(this._sources == null)
-			this._sources = new HashSet<TransitionIntermediaire>();
+			this._sources = new HashSet<Transition>();
 			
 		this._sources.add(source);
 	}
 	
-	public void setSources(HashSet<TransitionIntermediaire> sources){
+	public void setSources(HashSet<Transition> sources){
         _sources = sources;
     }
 	
@@ -106,12 +106,12 @@ public abstract class EtatIntermediaire extends Etat{
 		ArrayList<Element> elmtsSupr = new ArrayList<Element>();
 		elmtsSupr.add(this);
 		
-		for(TransitionIntermediaire trans : _sources){
+		for(Transition trans : _sources){
 			trans.supprimer();
 			elmtsSupr.add(trans);
 		}
 		
-		for(TransitionIntermediaire trans : _dest){
+		for(Transition trans : _dest){
 			trans.supprimer();
 			elmtsSupr.add(trans);
 		}
@@ -127,8 +127,8 @@ public abstract class EtatIntermediaire extends Etat{
 	 * 			false sinon
 	 */
 	public boolean estBloquant(){
-		for(TransitionIntermediaire source : _sources){
-			if(source.getEtatDest() != this)
+		for(Transition source : _sources){
+			if(source.getEtatDestination() != this)
 				return true;
 		}
 		
@@ -161,7 +161,7 @@ public abstract class EtatIntermediaire extends Etat{
 		HashSet<TransitionNonDeterministe> transNonDeterm = new HashSet<TransitionNonDeterministe>();
 		String evtCond; //pr 1 transition, contient evenement+condition sans espaces
 		String symbol;
-		for(TransitionIntermediaire trans : _sources){
+		for(Transition trans : _sources){
 			evtCond = trans.getEvt()+trans.getAction();
 			evtCond = evtCond.replaceAll("\\s", "");
 			evtCond = evtCond.replaceAll("\\t", "");

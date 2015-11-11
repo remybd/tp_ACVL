@@ -308,13 +308,8 @@ public class ControleurDiagramme {
 
 
     public void applatir(){
-        HashSet<Element> listeEl = mainConteneur.getElmts();
+        mainConteneur.applatir();
 
-        for(Element el: listeEl){
-            if(el.isEtatComposite()){
-                ((Composite)el).applatir();
-            }
-        }
     }
 
     public void chargerMainConteneur(Conteneur mainConteneur){
@@ -329,7 +324,7 @@ public class ControleurDiagramme {
             listAllElementsGraphique.add(eg);
         }
 
-        EditeurGraphique.instance().updateListeElementGraphiqueAndDisplay(listAllElementsGraphique,mainConteneur.getPseudoInitial());
+        EditeurGraphique.instance().updateListeElementGraphiqueAndDisplay(listAllElementsGraphique);
     }
 
 }

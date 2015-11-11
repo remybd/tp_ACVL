@@ -49,7 +49,56 @@ public class TransitionFinale extends Transition {
 	public String getEtiquette(){
 		return _etiquette;
 	}
-	
+
+	/**
+	 * Retourne la garde indiquée dans l'étiquette
+	 * @return
+	 */
+	@Override
+	public String getGarde(){
+		int premCrochet = _etiquette.indexOf('[');
+		if(premCrochet<0) //pas de crochet => pas de garde
+			return "";
+
+		int secCrochet = _etiquette.indexOf(']', premCrochet);
+		if(secCrochet<0) //pas de fermeture de garde => on considère que tout le reste de la chaîne est la garde TODO : Avertir l'utilisateur ?
+			secCrochet = _etiquette.length();
+
+		return _etiquette.substring(premCrochet, secCrochet);
+	}
+
+	/**
+	 * Retourne l'événement indiqué dans l'étiquette
+	 * L'événement se trouve avant le premier '[', à défaut avant le premier '/', sinon ce n'est rien
+	 * @return
+	 */
+	@Override
+	public String getEvt(){
+		int delimiteur = _etiquette.indexOf('[');
+		if(delimiteur<0){
+			delimiteur = _etiquette.indexOf('/');
+
+			if(delimiteur<0)
+				return "";
+		}
+
+		return _etiquette.substring(0, delimiteur);
+	}
+
+	/**
+	 * Retourne l'action indiquée dans l'étiquette
+	 * L'action se trouve après le slash, c'est toute l'étiquette s'il n'y en a pas
+	 * @return
+	 */
+	@Override
+	public String getAction(){
+		int slash = _etiquette.indexOf('/');
+		if(slash<0)
+			return _etiquette;
+
+		return _etiquette.substring(slash, _etiquette.length());
+	}
+
 	public void setEtiquette(String etiquette){
 		_etiquette = etiquette;
 		informe();
@@ -102,7 +151,6 @@ public class TransitionFinale extends Transition {
 	public Etat getEtatDestination() {
 		return _etatFinal;
 	}
-
 
 	public void setEtatSource(EtatIntermediaire etat) {
 		this._etatSource = etat;
