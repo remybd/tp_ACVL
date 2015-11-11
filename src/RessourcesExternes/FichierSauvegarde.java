@@ -20,6 +20,14 @@ public class FichierSauvegarde extends Fichier{
         this.sauvegarderFichier();
     }
     
+    //création d'un fichier
+    public FichierSauvegarde(String chemin, Conteneur mainConteneur) throws FileNotFoundException, IOException{
+        super(chemin);
+
+        this.mainConteneur = mainConteneur;
+        this.sauvegarderFichier();
+    }
+    
     //chargement d'un fichier
     public FichierSauvegarde(String nom, String extension, String chemin) throws FileNotFoundException, IOException, ClassNotFoundException{
         super(nom, extension, chemin);

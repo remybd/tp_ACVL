@@ -27,7 +27,10 @@ public class ControleurFichier {
     
     private void creerFichier(String path, String name, Conteneur c) {
         try {
-            fichierDeSauvegarde = new FichierSauvegarde(name, FichierSauvegarde.FICHIER_EXTENSION, path, c);
+        	path+="."+FichierSauvegarde.FICHIER_EXTENSION;
+        	System.out.println("Sauvegarde en : "+path);
+        	
+            fichierDeSauvegarde = new FichierSauvegarde(path, c);
         } catch (FileNotFoundException e) {
             // TODO : propager l'erreur dans l'IHM
             e.printStackTrace();
@@ -39,13 +42,14 @@ public class ControleurFichier {
 
     public void chargerFichier(String path, String name){
         try {
-        	//si l'extension est spécifiée dans le nom, on la vire
+        	//si l'extension n'est pas spécifiée dans le nom, on la met
         	int point = name.lastIndexOf('.');
-        	if(point>-1 && name.substring(point).equals("."+FichierSauvegarde.FICHIER_EXTENSION)){
-        		name = name.substring(0, point);
+        	if(! (point>-1 && name.substring(point).equals("."+FichierSauvegarde.FICHIER_EXTENSION))){
+        		path+="."+FichierSauvegarde.FICHIER_EXTENSION;
         	}
+        	System.out.println("Chargement de : "+path);
         	
-            fichierDeSauvegarde = new FichierSauvegarde(name, FichierSauvegarde.FICHIER_EXTENSION, path);
+            fichierDeSauvegarde = new FichierSauvegarde(path);
             Conteneur mainConteneur = fichierDeSauvegarde.getMainConteneur();
             ControleurDiagramme.instance().chargerMainConteneur(mainConteneur);
             
