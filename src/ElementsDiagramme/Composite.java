@@ -79,7 +79,7 @@ public class Composite extends EtatIntermediaire {
 		if(_fils == null)
 			return elmtsSupr;
 		
-		elmtsSupr.add(this);
+		elmtsSupr.addAll(_fils.supprimer());
 		return elmtsSupr;
 	}
 
