@@ -2,10 +2,11 @@ package Vues;
 
 import Controleurs.ControleurDiagramme;
 import ElementsDiagramme.EnumEtat;
-
 import ElementsDiagramme.EnumTransition;
 import ElementsDiagramme.Etat;
+import ElementsDiagramme.PseudoInitial;
 import ElementsDiagramme.Transition;
+
 import com.mxgraph.model.mxCell;
 import com.mxgraph.model.mxGeometry;
 import com.mxgraph.swing.mxGraphComponent;
@@ -364,4 +365,23 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
         return graph;
     }
 
+	public void updateListeElementGraphiqueAndDisplay(
+			HashSet<ElementGraphique> listAllElementsGraphique) {
+		reset();
+		
+		graph.getModel().beginUpdate();
+		try {
+			for(ElementGraphique e : listAllElementsGraphique) {
+				liste_elements_graphiques.put(e.getObjet_graphique(), e);
+				graph.addCell(e.getObjet_graphique());
+			}
+		} finally {
+		    graph.getModel().endUpdate();
+		}
+	}
+	
+    private void reset() {
+        liste_elements_graphiques = new HashMap<>();
+        EditeurGraphique.instance().getGraphComponent().removeAll();
+    }
 }

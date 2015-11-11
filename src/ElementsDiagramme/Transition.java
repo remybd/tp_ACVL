@@ -86,4 +86,10 @@ public abstract class Transition extends Element {
 	public abstract Etat getEtatDestination();
 
 	public abstract String getEtiquette();
+
+	public abstract String getEvt();
+
+	public abstract String getGarde();
+
+	public abstract String getAction();
 }

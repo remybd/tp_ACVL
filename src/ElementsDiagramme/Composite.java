@@ -34,7 +34,7 @@ public class Composite extends EtatIntermediaire {
 	
 	/**
 	 * 
-	 * @return Les éléments du fils
+	 * @return Les ï¿½lï¿½ments du fils
 	 */
 	public HashSet<Element> getElements(){
 		if(_fils == null)
@@ -45,7 +45,7 @@ public class Composite extends EtatIntermediaire {
 	
 	/**
 	 * 
-	 * @return Tous les éléments, même les sous-éléments des états composites
+	 * @return Tous les ï¿½lï¿½ments, mï¿½me les sous-ï¿½lï¿½ments des ï¿½tats composites
 	 */
 	public HashSet<Element> getAllElements(){
 		if(_fils == null)
@@ -92,6 +92,26 @@ public class Composite extends EtatIntermediaire {
 		
 		transNnDeterm.addAll(this._fils.chercherTransNnDeterm(zoneErreur));
 		return transNnDeterm;			
+	}
+
+	public void applatir(){
+		_fils.applatir();
+
+		EtatIntermediaire etatPointeByInit = _fils.getPseudoInitial().getTransition().getEtatDest();
+		for(Transition t : this.getDestinations()){
+			if(t.isTransitionFinale()){
+				((TransitionFinale)t).setEtatSource();
+			}
+		}
+		for(Transition t : this.getSources()){
+			if(t.isTransitionIntermediaire()){
+				((TransitionIntermediaire)t).setEtatDest(etatPointeByInit);
+			} else if(t.isTransitionInitiale()){
+				((TransitionInitiale)t).setEtatDest(etatPointeByInit);
+			}
+		}
+
+
 	}
 	
 	@Override

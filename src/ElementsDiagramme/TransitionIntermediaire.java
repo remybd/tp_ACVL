@@ -63,6 +63,7 @@ public class TransitionIntermediaire extends Transition {
 	 * Retourne la garde indiquée dans l'étiquette
 	 * @return
 	 */
+	@Override
 	public String getGarde(){
 		int premCrochet = _etiquette.indexOf('[');
 		if(premCrochet<0) //pas de crochet => pas de garde
@@ -80,6 +81,7 @@ public class TransitionIntermediaire extends Transition {
 	 * L'événement se trouve avant le premier '[', à défaut avant le premier '/', sinon ce n'est rien
 	 * @return
 	 */
+	@Override
 	public String getEvt(){
 		int delimiteur = _etiquette.indexOf('[');
 		if(delimiteur<0){
@@ -97,6 +99,7 @@ public class TransitionIntermediaire extends Transition {
 	 * L'action se trouve après le slash, c'est toute l'étiquette s'il n'y en a pas
 	 * @return
 	 */
+	@Override
 	public String getAction(){
 		int slash = _etiquette.indexOf('/');
 		if(slash<0)
@@ -157,7 +160,4 @@ public class TransitionIntermediaire extends Transition {
 		return _dest;
 	}
 
-	public EtatIntermediaire getEtatDest() {
-		return _dest;
-	}
 }

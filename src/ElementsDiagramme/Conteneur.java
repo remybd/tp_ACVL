@@ -121,7 +121,7 @@ public class Conteneur implements Serializable {
 		for(Element elmt : this._elmts){
 			if(elmt instanceof EtatIntermediaire){
 				if(((EtatIntermediaire)elmt).estBloquant())
-					etatsBloquants.add(new ErreurEtat("Etat bloquant", (Etat)elmt, Erreur.ERR_ETAT_BLOQUANT, zoneErreur));
+					etatsBloquants.add(new ErreurEtat("Etat bloquant", (Etat) elmt, Erreur.ERR_ETAT_BLOQUANT, zoneErreur));
 				
 				//si l'elmt est un état composite : nous devons détecter les erreurs au sein de celui-ci
 				if(elmt instanceof Composite)
@@ -192,5 +192,14 @@ public class Conteneur implements Serializable {
 			this._elmts = new HashSet<Element>();
 			
 		this._elmts.add(_elmts);
-	}	
+	}
+
+	public void applatir(){
+
+		for(Element el: _elmts){
+			if(el.isEtatComposite()){
+				((Composite)el).applatir();
+			}
+		}
+	}
 }
