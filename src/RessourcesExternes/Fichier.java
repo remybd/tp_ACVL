@@ -1,72 +1,73 @@
 package RessourcesExternes;
 
+
 import ElementsDiagramme.Conteneur;
 
-import java.io.*;
-
-/**
- * Created by rémy on 05/11/2015.
- */
 public class Fichier {
-    private String path = "";
-    private String extension = ".diag";
-    private Conteneur mainConteneur;
+    private String nom;
+    private String extension;
+    private String chemin;
+	
+    /**
+     * 
+     * @param chemin : le chemin complet du fichier, incluant nom et (optionnel) l'extension, ou juste le nom
+     */
+    public Fichier (String chemin) {
+        int point = chemin.lastIndexOf('.');
+        if (point < 0) {
+            this.setExtension(FichierSauvegarde.FICHIER_EXTENSION);
+            point = chemin.length();
+        } else
+            this.setExtension(chemin.substring(point + 1, chemin.length()));
 
-    //création d'un fichier
-    public Fichier (Conteneur mainConteneur){
-        this.mainConteneur = mainConteneur;
-
-
-        sauvegarderFichier();
-    }
-
-    //ouverture d'un fichier
-    public Fichier (String path){
-        this.path = path;
-        ObjectInputStream ois;
-        try {
-            //On récupère les données du fichier sérialisé
-            ois = new ObjectInputStream(
-                    new BufferedInputStream(
-                            new FileInputStream(
-                                    new File(path))));
-
-            try {
-                mainConteneur = (Conteneur)ois.readObject();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-
-            ois.close();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        int slash = chemin.lastIndexOf('/');
+        if (slash < 0) {
+            this.setNom(chemin.substring(0, point));
+            this.setChemin("");
+        } else {
+            this.setNom(chemin.substring(slash + 1, point));
+            this.setChemin(chemin.substring(0, slash));
         }
     }
-
-    public void sauvegarderFichier(){
-        ObjectOutputStream oos;
-
-        try {
-            oos = new ObjectOutputStream(
-                    new BufferedOutputStream(
-                            new FileOutputStream(
-                                    new File(path))));
-
-            //écriture du mainconteneur dans le fichier
-            oos.writeObject(mainConteneur);
-            oos.close();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    
+    public Fichier (String nom, String extension, String chemin){
+        this.setNom(nom);
+        this.setExtension(extension);
+        this.setChemin(chemin);
     }
 
-    public Conteneur getMainConteneur() {
-        return mainConteneur;
-    }
+	public String getNom() {
+		return nom;
+	}
+
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+
+	public String getExtension() {
+		return extension;
+	}
+
+	public void setExtension(String extension) {
+		this.extension = extension;
+	}
+
+	public String getChemin() {
+		return chemin;
+	}
+
+	public void setChemin(String chemin) {
+		if(chemin.charAt(chemin.length()-1) != '/')
+			chemin += '/';
+		
+		this.chemin = chemin;
+	}
+
+	public String getCheminAbsolu(){
+		return getChemin()+getNom()+"."+getExtension();
+	}
+	
+	public String getCheminRelatif(){
+		return getNom()+"."+getExtension();
+	}
 }
