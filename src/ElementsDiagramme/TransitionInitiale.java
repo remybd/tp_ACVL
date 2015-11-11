@@ -89,6 +89,11 @@ public class TransitionInitiale extends Transition {
 		return _etatDest;
 	}
 
+	@Override
+	public String getEtiquette() {
+		return "";
+	}
+
 	public EtatIntermediaire getEtatDest() {
 		return _etatDest;
 	}

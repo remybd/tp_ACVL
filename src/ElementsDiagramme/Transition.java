@@ -84,4 +84,6 @@ public abstract class Transition extends Element {
 	public abstract Etat getEtatSource();
 
 	public abstract Etat getEtatDestination();
+
+	public abstract String getEtiquette();
 }

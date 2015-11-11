@@ -228,6 +228,20 @@ public class ControleurDiagramme {
         return sourceAndDestination;
     }
 
+    public String getEtiquette(TransitionGraph transitionGraph) throws Exception {
+        Transition tg = (Transition)getElementFromGraphic(transitionGraph);
+
+        return tg.getEtiquette();
+    }
+
+    public String getNom(EtatGraph etatGraph) throws Exception {
+        Etat e = (Etat)getElementFromGraphic(etatGraph);
+
+        return e.getNom();
+    }
+
+
+
     //renvoie tous les états simples et composites fils de l'étatGraph père
     /*public HashSet<EtatGraph> getSonFromFatherState(EtatGraph father) throws Exception {
     	HashSet<EtatGraph> states = new HashSet<EtatGraph>();
@@ -257,7 +271,7 @@ public class ControleurDiagramme {
         return mainConteneur;
     }
 
-    public Element getElementFromGraphic(ElementGraphique eg){
+    private Element getElementFromGraphic(ElementGraphique eg){
         return correspondance.get(eg);
     }
 
