@@ -15,7 +15,14 @@ public abstract class Sujet {
 		return _obs;
 	}
 
-	public void setObservateur(ObservateurVue _obs) {
+	public void attache(ObservateurVue _obs) {
 		this._obs = _obs;
+	}
+
+	public void detache(ObservateurVue _obs) {this._obs = null;}
+
+	public void informe(){
+		if(_obs != null)
+			this._obs.miseAJour();
 	}
 }

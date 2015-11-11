@@ -52,7 +52,7 @@ public class ControleurDiagramme {
         Transition t = Transition.creerTransition(type,etiquette,sEtat,dEtat,conteneurParent);
 
         TransitionGraph tg = ihm.createTransitionGraph(s,d,t);
-        t.setObservateur(tg);
+        t.attache(tg);
 
         conteneurParent.addElmt(t);
         correspondance.put(tg,t);
@@ -71,7 +71,7 @@ public class ControleurDiagramme {
         Etat e = Etat.creerEtat(type,nom,this,conteneurParent);
 
         EtatGraph eg = ihm.createEtatGraph(parent,e);
-        e.setObservateur(eg);
+        e.attache(eg);
 
         conteneurParent.addElmt(e);
         correspondance.put(eg,e);
@@ -285,6 +285,6 @@ public class ControleurDiagramme {
     }
 
     private ElementGraphique getElemGraphFromElem(Element e) {
-        return (EtatGraph)e.getObservateur();
+        return (ElementGraphique)e.getObservateur();
     }
 }

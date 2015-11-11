@@ -3,8 +3,6 @@ package ElementsDiagramme;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import Vues.ObservateurVue;
-
 /**
  *  TODO
  * @author Thibaut
@@ -25,7 +23,7 @@ public class PseudoFinal  extends Etat {
 	 */
 	public PseudoFinal(PseudoInitial init){
 		super(init.getConteneurParent(), init.getNom());
-		this.setObservateur(init.getObservateur());
+		this.attache(init.getObservateur());
 	}
 	
 
@@ -35,7 +33,7 @@ public class PseudoFinal  extends Etat {
 	 */
 	public PseudoFinal(EtatIntermediaire etat){
 		super(etat.getConteneurParent(), etat.getNom());
-		this.setObservateur(etat.getObservateur());
+		this.attache(etat.getObservateur());
 		
 		for(TransitionIntermediaire trans : etat.getDestinations()){
 			this.addTransition(new TransitionFinale(trans, this));			

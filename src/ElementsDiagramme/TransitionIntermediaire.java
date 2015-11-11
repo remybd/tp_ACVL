@@ -2,8 +2,6 @@ package ElementsDiagramme;
 
 import java.util.ArrayList;
 
-import Vues.ObservateurVue;
-
 /**
  *  TODO : Surveiller la bonne construction de l'étiquette ?
  * @author Thibaut
@@ -28,7 +26,7 @@ public class TransitionIntermediaire extends Transition {
 	 */
 	public TransitionIntermediaire(TransitionInitiale transInit, EtatIntermediaire etatSource) {
 		super(transInit.getConteneurParent());
-		this.setObservateur(transInit.getObservateur());
+		this.attache(transInit.getObservateur());
 		
 		this.setEtiquette("");
 		this.setEtatSource(etatSource);
@@ -42,7 +40,7 @@ public class TransitionIntermediaire extends Transition {
 	 */
 	public TransitionIntermediaire(TransitionFinale trans, EtatIntermediaire etatIntermediaire) {
 		super(trans.getConteneurParent());
-		this.setObservateur(trans.getObservateur());
+		this.attache(trans.getObservateur());
 		
 		this.setEtiquette(trans.getEtiquette());
 		this.setEtatSource((EtatIntermediaire)trans.getEtatSource());
@@ -56,6 +54,7 @@ public class TransitionIntermediaire extends Transition {
 	
 	public void setEtiquette(String etiquette){
 		_etiquette = etiquette;
+		informe();
 	}
 
 
@@ -139,10 +138,12 @@ public class TransitionIntermediaire extends Transition {
 
 	public void setEtatSource(EtatIntermediaire etat) {
 		this._source = etat;
+		informe();
 	}
 
 	public void setEtatDest(EtatIntermediaire etat) {
-		this._dest = etat;		
+		this._dest = etat;
+		informe();
 	}
 
 	@Override
