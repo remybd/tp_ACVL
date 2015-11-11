@@ -271,7 +271,7 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
         return eg;
     }
 
-    public TransitionGraph ajouterTransitionInitiale(EtatGraph parent, EtatGraph source, EtatGraph destination, String etiquette, EnumTransition type){
+    public TransitionGraph ajouterTransition(EtatGraph parent, EtatGraph source, EtatGraph destination, String etiquette, EnumTransition type){
         this.getGraphComponent().getGraph().getModel().beginUpdate();
         Object newEtatParent = ((parent == null) ? graph.getDefaultParent() : parent.getObjet_graphique());
         mxCell transition_mxcell;
@@ -279,7 +279,10 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
         try {
             transition_mxcell = (mxCell)this.getGraphComponent().getGraph().insertEdge(newEtatParent, null, etiquette,
                     (Object)source.getObjet_graphique(),(Object)destination.getObjet_graphique());
-            tg = new TransitionGraph(parent,transition_mxcell, type);
+            if(parent == null)
+                tg = new TransitionGraph(parent,transition_mxcell, type);
+            else
+                tg = new TransitionGraph(parent.getParent(),transition_mxcell, type);
             this.getListe_elements_graphiques().put(transition_mxcell,tg);
         } finally {
             graph.getModel().endUpdate();
@@ -349,4 +352,9 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
     public mxGraphComponent getGraphComponent(){
         return graphComponent;
     }
+
+    public mxGraph getGraph(){
+        return graph;
+    }
+
 }

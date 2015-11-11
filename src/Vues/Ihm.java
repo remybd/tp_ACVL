@@ -1,13 +1,12 @@
 package Vues;
 
 import Controleurs.ControleurDiagramme;
-import ElementsDiagramme.Conteneur;
-import ElementsDiagramme.EnumEtat;
-import ElementsDiagramme.Etat;
-import ElementsDiagramme.Transition;
+import ElementsDiagramme.*;
 import com.mxgraph.model.mxCell;
 
 import javax.naming.ldap.Control;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -39,11 +38,11 @@ public class Ihm {
     public TransitionGraph createTransitionGraph(EtatGraph s, EtatGraph d, Transition t){
         TransitionGraph res = null;
         if(t.isTransitionInitiale()){
-            res = edGraphique.ajouterTransitionInitiale(s.getParent(), s, d, "", EnumTransition.INIT);
+            res = edGraphique.ajouterTransition(s.getParent(), s, d, "", EnumTransition.INIT);
         } else if (t.isTransitionIntermediaire()){
-            //res = edGraphique.
+            res = edGraphique.ajouterTransition(s.getParent(), s, d, ((TransitionIntermediaire) t).getEtiquette(), EnumTransition.INTER);
         } else {
-            //res = edGraphique.
+            res = edGraphique.ajouterTransition(s.getParent(), s, d, ((TransitionFinale) t).getEtiquette(), EnumTransition.FINAL);
         }
         return res;
     }
@@ -63,6 +62,21 @@ public class Ihm {
     }
 
     public void removeElem(mxCell m){
-        EditeurGraphique.instance().getListe_elements_graphiques().remove(m);
+        HashMap<mxCell, ElementGraphique> liste_elements_graphiques = EditeurGraphique.instance().getListe_elements_graphiques();
+        Object[] tabCells = {(Object)m};
+
+        if (m.getChildCount() > 0)
+        System.out.println("Element supprimé :"  + liste_elements_graphiques.get(m).getNom());
+        for(int i=0; i<m.getChildCount(); i++){
+            System.out.println("Element supprimé :" + liste_elements_graphiques.get(m.getChildAt(i)).getNom());
+            removeElem((mxCell) m.getChildAt(i));
+        }
+
+        liste_elements_graphiques.remove(m);
+        EditeurGraphique.instance().getGraph().removeCells(tabCells);
+
+        for(Map.Entry<mxCell,ElementGraphique> entry : liste_elements_graphiques.entrySet()){
+            System.out.println(entry.getKey() + " " + entry.getValue().getNom());
+        }
     }
 }

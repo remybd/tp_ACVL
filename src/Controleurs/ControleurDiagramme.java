@@ -65,6 +65,7 @@ public class ControleurDiagramme {
         if(parent == null){
             conteneurParent = mainConteneur;
         } else {
+            //TODO Exception de cast (l'objet qu'on récupère si le parent != null n'est pas forcément un Composite, je ne sais pas pq)
             conteneurParent = ((Composite)getElementFromGraphic(parent)).getFils();
         }
         Etat e = Etat.creerEtat(type,nom,this,conteneurParent);

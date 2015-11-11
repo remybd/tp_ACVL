@@ -39,7 +39,7 @@ public class CreationTransition extends FenetrePopup implements ActionListener{
         g.setHgap(15);
         g.setVgap(15);
 
-        ArrayList<EtatGraph> liste_elements = Ihm.instance().getControleur().getStatesFromSameConteneur(etat_source);
+        liste_elements = Ihm.instance().getControleur().getStatesFromSameConteneur(etat_source);
         String[] liste_noms_etats = new String[liste_elements.size()];
 
         int i=0;
@@ -65,7 +65,12 @@ public class CreationTransition extends FenetrePopup implements ActionListener{
     public void actionPerformed(ActionEvent arg0){
         EnumEtat type_etat = etat_source.getType();
         int index = liste_etats.getSelectedIndex();
+        System.out.println(index);
         try {
+            System.out.println(this.type);
+            System.out.println(this.etiquette_transition.getText());
+            System.out.println(etat_source);
+            System.out.println(liste_elements.get(index));
             Ihm.instance().getControleur().ajouterTransition(this.type, this.etiquette_transition.getText(),etat_source, liste_elements.get(index));
         } catch (Exception e) {
             e.printStackTrace();

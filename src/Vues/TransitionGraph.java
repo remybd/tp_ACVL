@@ -11,8 +11,8 @@ public class TransitionGraph extends ElementGraphique {
 
     private EnumTransition type;
 
-    public TransitionGraph(EtatGraph source, mxCell objet_graphique, EnumTransition type){
-        super(source.getParent(), objet_graphique);
+    public TransitionGraph(EtatGraph parent, mxCell objet_graphique, EnumTransition type) {
+        super(parent, objet_graphique);
         this.type = type;
         this.supprimable = true;
     }

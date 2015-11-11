@@ -84,14 +84,14 @@ public class MenuContextuelItemListener{
         }
     }
 
-    public static class ChoixConteneurListener extends MenuContextuelItemListener implements ActionListener{
+    public static class SupprimerElementListener extends MenuContextuelItemListener implements ActionListener{
 
-        public ChoixConteneurListener(ElementGraphique element) {
+        public SupprimerElementListener(ElementGraphique element) {
             super(element);
         }
 
         public void actionPerformed(ActionEvent e) {
-            new ChoixConteneur();
+            Ihm.instance().removeElem(element.getObjet_graphique());
         }
     }
 

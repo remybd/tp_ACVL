@@ -72,10 +72,9 @@ public class MenuContextuel extends JPopupMenu {
         modifier.add(modifier_transition);
 
         add(modifier);
-        add(supprimer);
 
-        modifier_conteneur.addActionListener(new MenuContextuelItemListener.ChoixConteneurListener(element));
-        add(modifier_conteneur);
+        supprimer.addActionListener(new MenuContextuelItemListener.SupprimerElementListener(element));
+        add(supprimer);
 
     }
 }
