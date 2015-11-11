@@ -10,7 +10,7 @@ import RessourcesExternes.Fichier;
 import RessourcesExternes.FichierSauvegarde;
 
 /**
- * Created by rémy on 05/11/2015.
+ * Created by rï¿½my on 05/11/2015.
  */
 public class ControleurFichier {
 	private static ControleurFichier instanceUnique = new ControleurFichier();
@@ -38,7 +38,8 @@ public class ControleurFichier {
     }
 
     public void chargerFichier(String path){
-        try {        	
+
+        try {
             fichierDeSauvegarde = new FichierSauvegarde(path);
             Conteneur mainConteneur = fichierDeSauvegarde.getMainConteneur();
             ControleurDiagramme.instance().chargerMainConteneur(mainConteneur);

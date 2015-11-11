@@ -253,8 +253,9 @@ public class ControleurDiagramme {
 
         ArrayList<EtatGraph> sourceAndDestination = new ArrayList<EtatGraph>();
 
-        sourceAndDestination.add(getEtatGraphFromEtat(tg.getEtatDestination()));
         sourceAndDestination.add(getEtatGraphFromEtat(tg.getEtatSource()));
+        sourceAndDestination.add(getEtatGraphFromEtat(tg.getEtatDestination()));
+
 
         return sourceAndDestination;
     }
