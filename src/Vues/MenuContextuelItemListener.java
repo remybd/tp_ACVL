@@ -64,7 +64,7 @@ public class MenuContextuelItemListener{
                     new CreationTransition((EtatGraph) element, EnumTransition.INIT);
                 else if (((EtatGraph) element).getType() == EnumEtat.FINAL) {
                     JOptionPane message_erreur = new JOptionPane();
-                    message_erreur.showMessageDialog(null, "Impossible d'ajouter une transition � un �tat pseudo-final", "Erreur", JOptionPane.ERROR_MESSAGE);
+                    message_erreur.showMessageDialog(null, "Impossible d'ajouter une transition depuis un etat pseudo-final", "Erreur", JOptionPane.ERROR_MESSAGE);
                 } else
                     new CreationTransition((EtatGraph) element, EnumTransition.INTER);
             } catch (Exception ex){
