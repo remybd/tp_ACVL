@@ -10,7 +10,7 @@ import RessourcesExternes.Fichier;
 import RessourcesExternes.FichierSauvegarde;
 
 /**
- * Created by rémy on 05/11/2015.
+ * Created by rï¿½my on 05/11/2015.
  */
 public class ControleurFichier {
 	private static ControleurFichier instanceUnique = new ControleurFichier();
@@ -41,14 +41,6 @@ public class ControleurFichier {
 
     public void chargerFichier(String path){
         try {
-        	System.out.println("Chargement de : "+path);
-        	//si l'extension n'est pas spécifiée dans le nom, on la met
-        	int point = name.lastIndexOf('.');
-        	if(! (point>-1 && name.substring(point).equals("."+FichierSauvegarde.FICHIER_EXTENSION))){
-        		path+="."+FichierSauvegarde.FICHIER_EXTENSION;
-        	}
-        	System.out.println("Chargement de : "+path);
-        	
             fichierDeSauvegarde = new FichierSauvegarde(path);
             Conteneur mainConteneur = fichierDeSauvegarde.getMainConteneur();
             ControleurDiagramme.instance().chargerMainConteneur(mainConteneur);

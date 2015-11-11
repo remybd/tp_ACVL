@@ -375,7 +375,10 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
 		
 		graph.getModel().beginUpdate();
 		try {
+
 			for(ElementGraphique e : listAllElementsGraphique) {
+				if(e == null)
+					System.out.println("YOUHOU");
 				liste_elements_graphiques.put(e.getObjet_graphique(), e);
 				graph.addCell(e.getObjet_graphique());
 			}
