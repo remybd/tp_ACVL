@@ -118,6 +118,8 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
         graphComponent.getGraph().setEdgeLabelsMovable(false);
         graphComponent.getGraph().setAllowDanglingEdges(false);
         graphComponent.setExportEnabled(false);
+        graphComponent.getGraph().setCellsDisconnectable(false);
+        graphComponent.getGraph().setCellsEditable(false);
         graphComponent.setEnterStopsCellEditing(false);
      //   graphComponent.getGraphHandler().set;
         graphComponent.getGraph().setDropEnabled(false);
