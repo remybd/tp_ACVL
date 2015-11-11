@@ -114,7 +114,9 @@ public abstract class EtatIntermediaire extends Etat{
 		for(TransitionIntermediaire trans : _dest){
 			trans.supprimer();
 			elmtsSupr.add(trans);
-		}	
+		}
+		
+		this.getConteneurParent().supprimerElmt(this);
 		
 		return elmtsSupr;
 	} 

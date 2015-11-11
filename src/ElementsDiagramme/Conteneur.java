@@ -48,6 +48,9 @@ public class Conteneur implements Serializable {
 		return elmtsSupr;
 	}
 	
+	public void supprimerElmt(Element elmt){
+		_elmts.remove(elmt);
+	}
 	
 	/**
 	 * 
@@ -161,6 +164,10 @@ public class Conteneur implements Serializable {
 
 	public HashSet<Element> getElmts() {
 		return _elmts;
+	}
+	
+	public HashSet<Element> getAllElmts() {
+		return null; //TODO
 	}
 
 	public void addElmt(Element _elmts) {

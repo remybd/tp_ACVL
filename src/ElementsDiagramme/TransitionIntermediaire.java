@@ -115,7 +115,8 @@ public class TransitionIntermediaire extends Transition {
 		
 		if(_dest != null)
 			_dest.unLinkSource(this);
-		
+
+		this.getConteneurParent().supprimerElmt(this);
 		return elmtsSupr;
 	}
 	

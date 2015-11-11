@@ -31,6 +31,28 @@ public class Composite extends EtatIntermediaire {
 	public void setFils(Conteneur _fils) {
 		this._fils = _fils;
 	}
+	
+	/**
+	 * 
+	 * @return Les éléments du fils
+	 */
+	public HashSet<Element> getElements(){
+		if(_fils == null)
+			return new HashSet<Element>();
+		
+		return _fils.getElmts();
+	}
+	
+	/**
+	 * 
+	 * @return Tous les éléments, même les sous-éléments des états composites
+	 */
+	public HashSet<Element> getAllElements(){
+		if(_fils == null)
+			return new HashSet<Element>();
+		
+		return _fils.getAllElmts();
+	}
 
 	/**
 	 * 

@@ -65,7 +65,8 @@ public class PseudoFinal  extends Etat {
 			trans.supprimer();
 			elmtsSupr.add(trans);
 		}
-		
+
+		this.getConteneurParent().supprimerElmt(this);
 		return elmtsSupr;
 	}
 

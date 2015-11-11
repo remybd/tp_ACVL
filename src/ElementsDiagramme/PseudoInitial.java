@@ -65,6 +65,7 @@ public class PseudoInitial extends Etat {
 		
 		_trans.supprimer();	
 		elmtsSupr.add(_trans);
+		this.getConteneurParent().supprimerElmt(this);
 		return elmtsSupr;
 	}
 

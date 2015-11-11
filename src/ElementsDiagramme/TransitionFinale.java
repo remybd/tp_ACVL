@@ -73,6 +73,7 @@ public class TransitionFinale extends Transition {
 			return elmtsSupr;
 		
 		_etatFinal.unLinkTransition(this);
+		this.getConteneurParent().supprimerElmt(this);
 		return elmtsSupr;
 	}
 
