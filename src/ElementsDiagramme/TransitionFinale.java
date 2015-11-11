@@ -52,6 +52,7 @@ public class TransitionFinale extends Transition {
 	
 	public void setEtiquette(String etiquette){
 		_etiquette = etiquette;
+		informe();
 	}
 	
 	public PseudoFinal getPseudoFinal(){
