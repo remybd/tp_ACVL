@@ -59,6 +59,7 @@ public class ControleurDiagramme {
         conteneurParent.addElmt(t);
         correspondance.put(tg,t);
 
+        this.chercherErreurs();
         return t;
     }
 
@@ -87,6 +88,7 @@ public class ControleurDiagramme {
             getEtatGraphFromEtat(psi).setParent(eg);
         }
 
+        this.chercherErreurs();
         return e;
     }
 
@@ -98,6 +100,7 @@ public class ControleurDiagramme {
         } else {
             throw new NameNotModifiableException();
         }
+        this.chercherErreurs();
     }
 
     public void supprimerElement(ElementGraphique elem){
@@ -116,12 +119,16 @@ public class ControleurDiagramme {
         }
         
         DEBUG_displayElmts();
+        this.chercherErreurs();
     }
 
     public void DEBUG_displayElmts(){
     	System.out.println("Elmts présents dans le controleur :");
-    	
+
+    	int i=0;
     	for(ElementGraphique elmtGraph : correspondance.keySet()){
+			System.out.println("Element "+i);
+			
     		Element elmt = correspondance.get(elmtGraph);
     		if(elmt.isEtat()){
     			System.out.println(((Etat)elmt).getNom());
@@ -129,6 +136,8 @@ public class ControleurDiagramme {
     		else if(elmt.isTransition()){
     			System.out.println(((Transition)elmt).getEtiquette());
     		}
+    		
+    		i++;
     	}
     }
     
@@ -199,6 +208,7 @@ public class ControleurDiagramme {
     		
     		((TransitionIntermediaire)modelTrans).setEtiquette(etiquette);
     	}
+    	this.chercherErreurs();
     }
 
 
@@ -314,7 +324,6 @@ public class ControleurDiagramme {
         return (ElementGraphique)e.getObservateur();
     }
 
-
     public void applatir(){
         mainConteneur.applatir();
 
@@ -332,8 +341,9 @@ public class ControleurDiagramme {
             listAllElementsGraphique.add(eg);
         }
 
-
+        this.DEBUG_displayElmts();
         EditeurGraphique.instance().updateListeElementGraphiqueAndDisplay(listAllElementsGraphique);
+        this.chercherErreurs();
     }
 
     public HashSet<Erreur> getErreurs() {

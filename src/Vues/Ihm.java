@@ -76,10 +76,10 @@ public class Ihm {
     public void removeElem(mxCell m) {
     	System.out.println("QUIQUOI" + m.toString());
         ElementGraphique eg = this.getEdGraphique().getElement_from_liste(m);
+        HashMap<mxCell, ElementGraphique> liste_elements_graphiques = EditeurGraphique.instance().getListe_elements_graphiques();;
 
         if(eg!=null){
 	        if (eg.isSupprimable()){
-	            HashMap<mxCell, ElementGraphique> liste_elements_graphiques = EditeurGraphique.instance().getListe_elements_graphiques();
 	            removeElemFromListeEditeurGraphique(m);
 	            removeElemFromGraph(m);
 	        } else {
@@ -87,13 +87,16 @@ public class Ihm {
 	            message_erreur.showMessageDialog(null, "On ne peut pas supprimé un etat initial", "Erreur", JOptionPane.ERROR_MESSAGE);
 	        }
         }
+
+        System.out.print("Elements presents dans l'editeur graphique :");
+        for (Map.Entry<mxCell, ElementGraphique> entry : liste_elements_graphiques.entrySet()) {
+            System.out.println(liste_elements_graphiques.get(entry.getKey()).getNom());
+        }
     }
 
     public void removeElemFromListeEditeurGraphique(mxCell m){
         HashMap<mxCell, ElementGraphique> liste_elements_graphiques = EditeurGraphique.instance().getListe_elements_graphiques();
         Object[] tabCells = {(Object)m};
-
-        System.out.println("Element supprimé :"  + liste_elements_graphiques.get(m).getNom());
 
         ElementGraphique eg = this.getEdGraphique().getElement_from_liste(m);
 
@@ -102,7 +105,6 @@ public class Ihm {
             if(entry.getKey().isEdge() && ( ((TransitionGraph)entry.getValue()).getDestinationTransition().equals(eg) || ((TransitionGraph)entry.getValue()).getSourceTransition().equals(eg)) ) {
                 liste_elements_graphiques.remove(entry.getKey());
             }
-            System.out.println(entry.getKey() + " " + entry.getValue().getNom());
         }
 
         if (m.getChildCount() > 0)
