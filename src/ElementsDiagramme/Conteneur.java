@@ -5,11 +5,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import Controleurs.ControleurDiagramme;
 import Erreurs.Erreur;
 import Erreurs.ErreurEtat;
 import Erreurs.NonUnicite;
 import Erreurs.TransitionNonDeterministe;
 import Tools.TableSymboles;
+import Vues.ElementGraphique;
 import Vues.ObservateurVue;
 
 /**
@@ -194,12 +196,20 @@ public class Conteneur implements Serializable {
 		this._elmts.add(_elmts);
 	}
 
-	public void applatir(){
+	public void applatir() throws Exception {
 
 		for(Element el: _elmts){
 			if(el.isEtatComposite()){
-				//TODO ((Composite)el).applatir();
+				((Composite)el).applatir();
+				ControleurDiagramme.instance().supprimerElement((ElementGraphique)el.getObservateur());
 			}
+		}
+	}
+
+	public void addElements(HashSet<Element> elements){
+		for(Element ti : elements){
+			ti.setConteneurParent(this);
+			this.addElmt(ti);
 		}
 	}
 }

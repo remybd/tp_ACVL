@@ -97,11 +97,22 @@ public class Composite extends EtatIntermediaire {
 		return transNnDeterm;			
 	}
 
+
+
+
+
+
 	public void applatir() throws Exception {
 		_fils.applatir();
 
-		HashSet<EtatIntermediaire> etatsItermediaires = getEtatsIntermediaires();
-//TODO		HashSet<TransitionIntermediaire> transitionIntermediaires = getEtatsIntermediaires()
+		//change la parenté des états et transition intermédiaires
+		HashSet<Element> listEtatsAndTransitionIntermediaires = getEtatsAndTransitionIntermediaires();
+		getConteneurParent().addElements(listEtatsAndTransitionIntermediaires);
+
+		//change parentée au niveau graphique
+		for(Element el : listEtatsAndTransitionIntermediaires){
+			((ElementGraphique)el.getObservateur()).setParent(((ElementGraphique)getObservateur()).getParent());
+		}
 
 		//relie toutes les transitions entrantes à l'état pointé par l'initial
 		EtatIntermediaire etatPointedByInit = _fils.getPseudoInitial().getTransition().getEtatDest();
@@ -141,8 +152,11 @@ public class Composite extends EtatIntermediaire {
 		}
 		//suprime l'état initial et donc sa transition
 		ControleurDiagramme.instance().supprimerElement((ElementGraphique)_fils.getPseudoInitial().getTransition().getObservateur());
-
+		//vide le conteneur
+		_fils.getElmts().clear();
 	}
+
+
 
 
 	private HashSet<PseudoFinal> getEtatsFinaux(){
@@ -157,6 +171,8 @@ public class Composite extends EtatIntermediaire {
 	}
 
 
+
+
 	private HashSet<EtatIntermediaire> getEtatsPointedByFinal(HashSet<PseudoFinal> listEtatsFinaux){
 		HashSet<EtatIntermediaire> listEtatsPointedByFinal = new HashSet<EtatIntermediaire>();
 
@@ -169,27 +185,32 @@ public class Composite extends EtatIntermediaire {
 		return listEtatsPointedByFinal;
 	}
 
-	private HashSet<EtatIntermediaire> getEtatsIntermediaires(){
-		HashSet<EtatIntermediaire> listEtatsIntermediaires = new HashSet<EtatIntermediaire>();
+
+
+	private HashSet<Element> getEtatsAndTransitionIntermediaires(){
+		HashSet<Element> listEtatsAndTransitionIntermediaires = new HashSet<Element>();
 
 		for(Element e:_fils.getElmts()){
 			if(e.isEtatIntermediaire()){
-				listEtatsIntermediaires.add((EtatIntermediaire)e);
+				listEtatsAndTransitionIntermediaires.add((EtatIntermediaire)e);
+			} else if(e.isTransitionIntermediaire()){
+				listEtatsAndTransitionIntermediaires.add((TransitionIntermediaire)e);
 			}
 		}
-		return listEtatsIntermediaires;
+		return listEtatsAndTransitionIntermediaires;
 	}
 
-	private HashSet<TransitionIntermediaire> getTransitionsIntermediaires(){
-		HashSet<TransitionIntermediaire> listTransitionsIntermediaires = new HashSet<TransitionIntermediaire>();
 
-		for(Element e:_fils.getElmts()){
-			if(e.isTransitionIntermediaire()){
-				listTransitionsIntermediaires.add((TransitionIntermediaire)e);
-			}
-		}
-		return listTransitionsIntermediaires;
-	}
+
+
+
+
+
+
+
+
+
+
 
 
 	@Override
