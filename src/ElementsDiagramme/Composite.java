@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import Controleurs.ControleurDiagramme;
 import Erreurs.ErreurEtat;
 import Erreurs.NonUnicite;
 import Erreurs.TransitionNonDeterministe;
+import Vues.ElementGraphique;
+import Vues.EtatGraph;
 import Vues.ObservateurVue;
 
 
@@ -34,7 +37,7 @@ public class Composite extends EtatIntermediaire {
 	
 	/**
 	 * 
-	 * @return Les éléments du fils
+	 * @return Les ï¿½lï¿½ments du fils
 	 */
 	public HashSet<Element> getElements(){
 		if(_fils == null)
@@ -45,13 +48,13 @@ public class Composite extends EtatIntermediaire {
 	
 	/**
 	 * 
-	 * @return Tous les éléments, même les sous-éléments des états composites
+	 * @return Tous les ï¿½lï¿½ments, mï¿½me les sous-ï¿½lï¿½ments des ï¿½tats composites
 	 */
 	public HashSet<Element> getAllElements(){
 		if(_fils == null)
 			return new HashSet<Element>();
 		
-		return _fils.getAllElmts();
+		return _fils.getAllElements();
 	}
 
 	/**
@@ -93,7 +96,102 @@ public class Composite extends EtatIntermediaire {
 		transNnDeterm.addAll(this._fils.chercherTransNnDeterm(zoneErreur));
 		return transNnDeterm;			
 	}
-	
+
+	public void applatir() throws Exception {
+		_fils.applatir();
+
+		HashSet<EtatIntermediaire> etatsItermediaires = getEtatsIntermediaires();
+		HashSet<TransitionIntermediaire> transitionIntermediaires = getEtatsIntermediaires()
+
+		//relie toutes les transitions entrantes Ã  l'Ã©tat pointÃ© par l'initial
+		EtatIntermediaire etatPointedByInit = _fils.getPseudoInitial().getTransition().getEtatDest();
+		for(Transition t : this.getSources()){
+			if(t.isTransitionIntermediaire()){
+				((TransitionIntermediaire)t).setEtatDest(etatPointedByInit);
+			} else if(t.isTransitionInitiale()){
+				((TransitionInitiale)t).setEtatDest(etatPointedByInit);
+			}
+		}
+
+
+		//relie toutes les transitions sortantes aux Ã©tats finaux
+		HashSet<PseudoFinal> listEtatsFinaux = getEtatsFinaux();
+		if(!listEtatsFinaux.isEmpty()){//il y a des Ã©tats finaux, on les relie donc aux transitions sortantes
+
+			for(EtatIntermediaire etatIntermediaire : getEtatsPointedByFinal(listEtatsFinaux)){
+				for(Transition t : this.getDestinations()){
+					if(t.isTransitionFinale()){//clone les transitions sortantes car peux y avoir plusieurs Ã©tats finaux et il fuat donc les cloner
+						ControleurDiagramme.instance().ajouterTransition(EnumTransition.FINAL,t.getEtiquette(),(EtatGraph)etatIntermediaire.getObservateur(),(EtatGraph)t.getEtatDestination().getObservateur());
+
+					} else if(t.isTransitionIntermediaire()){
+						ControleurDiagramme.instance().ajouterTransition(EnumTransition.INTER, t.getEtiquette(), (EtatGraph) etatIntermediaire.getObservateur(), (EtatGraph) t.getEtatDestination().getObservateur());
+					}
+				}
+			}
+
+		}
+
+		//supprime les transitions sortantes puisqu'on les as clonÃ©es
+		for(Transition t : this.getDestinations()){
+			ControleurDiagramme.instance().supprimerElement((ElementGraphique)t.getObservateur());
+		}
+		//suprime les Ã©tats finaux et leurs transitions dans l'Ã©tat composite
+		for(PseudoFinal pseudoFinal : listEtatsFinaux){
+			ControleurDiagramme.instance().supprimerElement((ElementGraphique)pseudoFinal.getObservateur());
+		}
+		//suprime l'Ã©tat initial et donc sa transition
+		ControleurDiagramme.instance().supprimerElement((ElementGraphique)_fils.getPseudoInitial().getTransition().getObservateur());
+
+	}
+
+
+	private HashSet<PseudoFinal> getEtatsFinaux(){
+		HashSet<PseudoFinal> listEtatsFinaux = new HashSet<PseudoFinal>();
+
+		for(Element e:_fils.getElmts()){
+			if(e.isEtatPseudoFinal()){
+				listEtatsFinaux.add((PseudoFinal)e);
+			}
+		}
+		return listEtatsFinaux;
+	}
+
+
+	private HashSet<EtatIntermediaire> getEtatsPointedByFinal(HashSet<PseudoFinal> listEtatsFinaux){
+		HashSet<EtatIntermediaire> listEtatsPointedByFinal = new HashSet<EtatIntermediaire>();
+
+		for(PseudoFinal pf : listEtatsFinaux){
+			for(TransitionFinale tf : pf.getTransitions()){
+				listEtatsPointedByFinal.add((EtatIntermediaire)tf.getEtatSource());
+			}
+		}
+
+		return listEtatsPointedByFinal;
+	}
+
+	private HashSet<EtatIntermediaire> getEtatsIntermediaires(){
+		HashSet<EtatIntermediaire> listEtatsIntermediaires = new HashSet<EtatIntermediaire>();
+
+		for(Element e:_fils.getElmts()){
+			if(e.isEtatIntermediaire()){
+				listEtatsIntermediaires.add((EtatIntermediaire)e);
+			}
+		}
+		return listEtatsIntermediaires;
+	}
+
+	private HashSet<TransitionIntermediaire> getTransitionsIntermediaires(){
+		HashSet<TransitionIntermediaire> listTransitionsIntermediaires = new HashSet<TransitionIntermediaire>();
+
+		for(Element e:_fils.getElmts()){
+			if(e.isTransitionIntermediaire()){
+				listTransitionsIntermediaires.add((TransitionIntermediaire)e);
+			}
+		}
+		return listTransitionsIntermediaires;
+	}
+
+
 	@Override
 	public ArrayList<Element> supprimer() {
 		ArrayList<Element> elmtsSupr = super.supprimer(); //TODO : fonctionnel ?

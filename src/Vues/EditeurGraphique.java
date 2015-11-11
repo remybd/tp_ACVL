@@ -2,10 +2,11 @@ package Vues;
 
 import Controleurs.ControleurDiagramme;
 import ElementsDiagramme.EnumEtat;
-
 import ElementsDiagramme.EnumTransition;
 import ElementsDiagramme.Etat;
+import ElementsDiagramme.PseudoInitial;
 import ElementsDiagramme.Transition;
+
 import com.mxgraph.model.mxCell;
 import com.mxgraph.model.mxGeometry;
 import com.mxgraph.swing.mxGraphComponent;
@@ -18,6 +19,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -172,9 +174,11 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
                 JFileChooser c = new JFileChooser();
                 int rVal = c.showOpenDialog(EditeurGraphique.this);
                 if (rVal == JFileChooser.APPROVE_OPTION) {
-                    filename.setText(c.getSelectedFile().getName());
-                    dir.setText(c.getCurrentDirectory().toString());
-                    Ihm.instance().getControleurFichier().chargerFichier(filename.getText(), dir.getText());
+                	File f = c.getSelectedFile();
+                    filename.setText(f.getName());
+                    dir.setText(f.getAbsolutePath().toString());
+                    System.out.println(dir.getText());
+                    Ihm.instance().getControleurFichier().chargerFichier(f.getAbsolutePath().toString());
                 }
                 if (rVal == JFileChooser.CANCEL_OPTION) {
                     filename.setText("");
@@ -189,8 +193,9 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
                 // Demonstrate "Save" dialog:
                 int rVal = c.showSaveDialog(EditeurGraphique.this);
                 if (rVal == JFileChooser.APPROVE_OPTION) {
-                    filename.setText(c.getSelectedFile().getName());
-                    dir.setText(c.getCurrentDirectory().toString());
+                	File f = c.getSelectedFile();
+                    filename.setText(f.getName());
+                    dir.setText(f.getAbsolutePath().toString());
                     Ihm.instance().getControleurFichier().sauvegarderFichier(filename.getText(),dir.getText());
                 }
                 if (rVal == JFileChooser.CANCEL_OPTION) {
@@ -375,4 +380,25 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
         return graph;
     }
 
+	public void updateListeElementGraphiqueAndDisplay(
+			HashSet<ElementGraphique> listAllElementsGraphique) {
+		reset();
+		
+		graph.getModel().beginUpdate();
+		try {
+			for(ElementGraphique e : listAllElementsGraphique) {
+				if(e == null)
+					System.out.println("YOUHOU");
+				liste_elements_graphiques.put(e.getObjet_graphique(), e);
+				graph.addCell(e.getObjet_graphique());
+			}
+		} finally {
+		    graph.getModel().endUpdate();
+		}
+	}
+	
+    private void reset() {
+        liste_elements_graphiques = new HashMap<>();
+        EditeurGraphique.instance().getGraphComponent().removeAll();
+    }
 }

@@ -21,7 +21,7 @@ public class TransitionInitiale extends Transition {
 		this.attache(trans.getObservateur());
 		
 		this.setPseudoInitial(pseudoInitial);
-		this.setEtatDest(trans.getEtatDest());
+		this.setEtatDest((EtatIntermediaire)trans.getEtatDestination());
 	}
 	
 	public TransitionInitiale(TransitionFinale trans, PseudoInitial pseudoInitial) {
@@ -94,6 +94,21 @@ public class TransitionInitiale extends Transition {
 	@Override
 	public String getEtiquette() {
 		return "";
+	}
+
+	@Override
+	public String getEvt() {
+		return null;
+	}
+
+	@Override
+	public String getGarde() {
+		return null;
+	}
+
+	@Override
+	public String getAction() {
+		return null;
 	}
 
 	public EtatIntermediaire getEtatDest() {

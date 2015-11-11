@@ -33,13 +33,17 @@ public class Conteneur implements Serializable {
 
 	public ArrayList<Element> supprimer(){
 		ArrayList<Element> elmtsSupr = new ArrayList<Element>();
+		ArrayList<Element> elmtsDuConteneur = new ArrayList<Element>();
+		for(Element elmt : this._elmts){
+			elmtsDuConteneur.add(elmt);
+		}
 		
 		if(_etatInit != null){
 			_etatInit.supprimer();
 			elmtsSupr.add(_etatInit);
 		}
 		
-		for(Element elmt : this._elmts){
+		for(Element elmt : elmtsDuConteneur){
 			elmt.supprimer();
 			elmtsSupr.add(elmt);
 		}
@@ -117,7 +121,7 @@ public class Conteneur implements Serializable {
 		for(Element elmt : this._elmts){
 			if(elmt instanceof EtatIntermediaire){
 				if(((EtatIntermediaire)elmt).estBloquant())
-					etatsBloquants.add(new ErreurEtat("Etat bloquant", (Etat)elmt, Erreur.ERR_ETAT_BLOQUANT, zoneErreur));
+					etatsBloquants.add(new ErreurEtat("Etat bloquant", (Etat) elmt, Erreur.ERR_ETAT_BLOQUANT, zoneErreur));
 				
 				//si l'elmt est un état composite : nous devons détecter les erreurs au sein de celui-ci
 				if(elmt instanceof Composite)
@@ -166,8 +170,21 @@ public class Conteneur implements Serializable {
 		return _elmts;
 	}
 	
-	public HashSet<Element> getAllElmts() {
-		return null; //TODO
+	public HashSet<Element> getAllElements() {
+		HashSet<Element> elmts = new HashSet<Element>(); 
+		
+		if(_elmts == null)
+			return elmts;
+		
+		for(Element elmt : _elmts){
+			if(elmt.isEtatComposite()){
+				elmts.addAll( ((Composite)elmt).getAllElements());
+			}
+			
+			elmts.add(elmt);
+		}
+		
+		return elmts;
 	}
 
 	public void addElmt(Element _elmts) {
@@ -175,5 +192,14 @@ public class Conteneur implements Serializable {
 			this._elmts = new HashSet<Element>();
 			
 		this._elmts.add(_elmts);
-	}	
+	}
+
+	public void applatir(){
+
+		for(Element el: _elmts){
+			if(el.isEtatComposite()){
+				((Composite)el).applatir();
+			}
+		}
+	}
 }
