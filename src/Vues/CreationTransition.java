@@ -54,9 +54,11 @@ public class CreationTransition extends FenetrePopup implements ActionListener{
         line_2.add(liste_etats);
 
         line_3.setLayout(new BoxLayout(line_3, BoxLayout.LINE_AXIS));
-        line_3.add(etiquette_label);
-        if(etat_source.getType() != EnumEtat.INIT)
+        if(etat_source.getType() != EnumEtat.INIT) {
+            line_3.add(etiquette_label);
             line_3.add(etiquette_transition);
+        }
+
         this.valider.addActionListener(this);
 
         getPan().setLayout(new BoxLayout(getPan(), BoxLayout.PAGE_AXIS));
@@ -70,10 +72,13 @@ public class CreationTransition extends FenetrePopup implements ActionListener{
     }
 
     public void actionPerformed(ActionEvent arg0){
-        EnumEtat type_etat = etat_source.getType();
         int index = liste_etats.getSelectedIndex();
+        EnumEtat type_etat = liste_elements.get(index).getType();
         try {
-            Ihm.instance().getControleur().ajouterTransition(this.type, this.etiquette_transition.getText(),etat_source, liste_elements.get(index));
+            if(type_etat == EnumEtat.FINAL)
+                Ihm.instance().getControleur().ajouterTransition(EnumTransition.FINAL, this.etiquette_transition.getText(),etat_source, liste_elements.get(index));
+            else
+                Ihm.instance().getControleur().ajouterTransition(this.type, this.etiquette_transition.getText(),etat_source, liste_elements.get(index));
         } catch (Exception e) {
             e.printStackTrace();
         }
