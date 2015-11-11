@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class EditionTransition extends FenetrePopup implements ActionListener{
 
-    private JComboBox liste_etats_source;
+    private JComboBox nouvel_etat_source;
     private JComboBox liste_etats_destination;
     private JLabel liste_label_source = new JLabel("Liste des etats source");
     private JLabel liste_label_destination = new JLabel("Liste des etats de destination");
@@ -40,23 +40,28 @@ public class EditionTransition extends FenetrePopup implements ActionListener{
             e.printStackTrace();
         }
 
-        String[] liste_noms_etats = new String[liste_elements.size()];
+        String[] noms_etats_source = new String[liste_elements.size()];
+        String[] noms_etats_destination = new String[liste_elements.size()];
+
 
         int i=0;
         for(EtatGraph e: liste_elements){
-            liste_noms_etats[i] = e.getNom();
+            if(e.getType() != EnumEtat.FINAL)
+                noms_etats_source[i] = e.getNom();
+            if(e.getType() != EnumEtat.INIT)
+                noms_etats_destination[i] = e.getNom();
             i++;
         }
 
-        liste_etats_source = new JComboBox(liste_noms_etats);
-        liste_etats_destination = new JComboBox(liste_noms_etats);
+        nouvel_etat_source = new JComboBox(noms_etats_source);
+        liste_etats_destination = new JComboBox(noms_etats_destination);
 
         etiquette_transition.setPreferredSize(new Dimension(150, 30));
         etiquette_transition.setText(transition_graph.getNom());
 
         line_1.setLayout(new BoxLayout(line_1, BoxLayout.LINE_AXIS));
         line_1.add(liste_label_source);
-        line_1.add(liste_etats_source);
+        line_1.add(nouvel_etat_source);
 
         line_2.setLayout(new BoxLayout(line_2, BoxLayout.LINE_AXIS));
         line_2.add(liste_label_destination);
@@ -82,8 +87,8 @@ public class EditionTransition extends FenetrePopup implements ActionListener{
     }
 
     public void actionPerformed(ActionEvent arg0){
-        int index_source = liste_etats_source.getSelectedIndex();
-        int index_destination = liste_etats_source.getSelectedIndex();
+        int index_source = nouvel_etat_source.getSelectedIndex();
+        int index_destination = nouvel_etat_source.getSelectedIndex();
 
         try {
             Ihm.instance().getControleur().modifierTransition(transition_graph, liste_elements.get(index_source), liste_elements.get(index_destination), this.etiquette_transition.getText());

@@ -5,6 +5,7 @@ import ElementsDiagramme.EnumTransition;
 import com.mxgraph.model.mxCell;
 
 import javax.swing.*;
+import java.util.ArrayList;
 
 
 /**
@@ -46,11 +47,21 @@ public class MenuContextuel extends JPopupMenu {
         }
 
         if (type_etat != null){
-
-            modifier_transition.setEnabled(false);
+            ArrayList<EtatGraph> etats_conteneur = new ArrayList<>();
+            try {
+                etats_conteneur = Ihm.instance().getControleur().getStatesFromSameConteneur((EtatGraph)element);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if(etats_conteneur.size() == 0)
+                ajouter_transition.setEnabled(false);
             if (type_etat != EnumEtat.COMPOSITE) {
                 ajouter_etat.setEnabled(false);
             }
+            if (type_etat == EnumEtat.INIT) {
+                modifier_etat.setEnabled(false);
+            }
+            modifier_transition.setEnabled(false);
 
         } else if (type_transition != null){
 
