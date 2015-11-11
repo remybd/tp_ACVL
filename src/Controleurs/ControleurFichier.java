@@ -24,7 +24,6 @@ public class ControleurFichier {
     public static ControleurFichier instance(){
         return instanceUnique;
     }
-
     
     public void creerFichier(String name, String path, Conteneur c) {
         try {
