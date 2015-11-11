@@ -204,6 +204,19 @@ public class ControleurDiagramme {
         return result;
     }
 
+    public ArrayList<EtatGraph> getStatesFromSameConteneur(TransitionGraph transitionGraph) throws Exception {
+        Transition t = (Transition)getElementFromGraphic(transitionGraph);
+
+        Conteneur c = t.getConteneurParent();
+        ArrayList<EtatGraph> result = new ArrayList<EtatGraph>();
+        for(Element element : c.getElmts()){
+            if(element.isEtatIntermediaire() || element.isEtatPseudoFinal()) {
+                result.add((EtatGraph) getEtatGraphFromEtat((Etat) element));
+            }
+        }
+        return result;
+    }
+
     //renvoie tous les états simples et composites fils de l'étatGraph père
     /*public HashSet<EtatGraph> getSonFromFatherState(EtatGraph father) throws Exception {
     	HashSet<EtatGraph> states = new HashSet<EtatGraph>();

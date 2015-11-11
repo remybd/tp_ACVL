@@ -5,6 +5,7 @@ import ElementsDiagramme.*;
 import com.mxgraph.model.mxCell;
 
 import javax.naming.ldap.Control;
+import javax.swing.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,22 +62,41 @@ public class Ihm {
         return res;
     }
 
-    public void removeElem(mxCell m){
+    public void removeElem(mxCell m) {
+        ElementGraphique eg = (EtatGraph) this.getEdGraphique().getElement_from_liste(m);
+
+        if (eg.isSupprimable()){
+            HashMap<mxCell, ElementGraphique> liste_elements_graphiques = EditeurGraphique.instance().getListe_elements_graphiques();
+
+            removeElemFromListeEditeurGraphique(m);
+            removeElemFromGraph(m);
+
+            for (Map.Entry<mxCell, ElementGraphique> entry : liste_elements_graphiques.entrySet()) {
+                System.out.println(entry.getKey() + " " + entry.getValue().getNom());
+            }
+        } else {
+            JOptionPane message_erreur = new JOptionPane();
+            message_erreur.showMessageDialog(null, "On ne peut pas supprimé un etat initial", "Erreur", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public void removeElemFromListeEditeurGraphique(mxCell m){
         HashMap<mxCell, ElementGraphique> liste_elements_graphiques = EditeurGraphique.instance().getListe_elements_graphiques();
         Object[] tabCells = {(Object)m};
 
-        if (m.getChildCount() > 0)
         System.out.println("Element supprimé :"  + liste_elements_graphiques.get(m).getNom());
+
+        if (m.getChildCount() > 0)
         for(int i=0; i<m.getChildCount(); i++){
-            System.out.println("Element supprimé :" + liste_elements_graphiques.get(m.getChildAt(i)).getNom());
-            removeElem((mxCell) m.getChildAt(i));
+            removeElemFromListeEditeurGraphique((mxCell) m.getChildAt(i));
         }
 
         liste_elements_graphiques.remove(m);
-        EditeurGraphique.instance().getGraph().removeCells(tabCells);
-
-        for(Map.Entry<mxCell,ElementGraphique> entry : liste_elements_graphiques.entrySet()){
-            System.out.println(entry.getKey() + " " + entry.getValue().getNom());
-        }
     }
+
+    public void removeElemFromGraph(mxCell m){
+        Object[] tabCells = {(Object)m};
+        EditeurGraphique.instance().getGraph().removeCells(tabCells);
+    }
+
 }

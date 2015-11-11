@@ -1,16 +1,20 @@
 package Vues;
 
+import ElementsDiagramme.EnumEtat;
+
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 /**
  * Created by rémy on 06/11/2015.
  */
 public class EditionTransition extends FenetrePopup implements ActionListener{
 
-    private JComboBox liste_etats_source = new JComboBox();
-    private JComboBox liste_etats_destination = new JComboBox();
+    private JComboBox liste_etats_source;
+    private JComboBox liste_etats_destination;
     private JLabel liste_label_source = new JLabel("Liste des etats source");
     private JLabel liste_label_destination = new JLabel("Liste des etats de destination");
 
@@ -24,11 +28,31 @@ public class EditionTransition extends FenetrePopup implements ActionListener{
     private JPanel line_4 = new JPanel();
 
     private TransitionGraph transition_graph;
+    private ArrayList<EtatGraph> liste_elements;
 
     public EditionTransition(TransitionGraph transition_graph){
         super();
         this.transition_graph = transition_graph;
-        //etiquette_transition.setPreferredSize(new Dimension(150, 30));
+
+        try {
+            liste_elements = Ihm.instance().getControleur().getStatesFromSameConteneur(transition_graph);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        String[] liste_noms_etats = new String[liste_elements.size()];
+
+        int i=0;
+        for(EtatGraph e: liste_elements){
+            liste_noms_etats[i] = e.getNom();
+            i++;
+        }
+
+        liste_etats_source = new JComboBox(liste_noms_etats);
+        liste_etats_destination = new JComboBox(liste_noms_etats);
+
+        etiquette_transition.setPreferredSize(new Dimension(150, 30));
+        etiquette_transition.setText(transition_graph.getNom());
 
         line_1.setLayout(new BoxLayout(line_1, BoxLayout.LINE_AXIS));
         line_1.add(liste_label_source);
@@ -58,7 +82,14 @@ public class EditionTransition extends FenetrePopup implements ActionListener{
     }
 
     public void actionPerformed(ActionEvent arg0){
-        //Ihm.instance().getControleur().create_transition(, this.type);
+        int index_source = liste_etats_source.getSelectedIndex();
+        int index_destination = liste_etats_source.getSelectedIndex();
+
+        try {
+            Ihm.instance().getControleur().modifierTransition(transition_graph, liste_elements.get(index_source), liste_elements.get(index_destination), this.etiquette_transition.getText());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         this.dispose();
     }
 

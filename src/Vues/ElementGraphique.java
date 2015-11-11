@@ -41,7 +41,7 @@ public abstract class ElementGraphique implements ObservateurVue {
     	this.getObjet_graphique().setParent(parent.getObjet_graphique());
  	}
 
-    private boolean isSupprimable(){
+    public boolean isSupprimable(){
         return supprimable;
     }
 }
