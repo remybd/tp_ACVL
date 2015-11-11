@@ -91,7 +91,7 @@ public class MenuContextuelItemListener{
         }
 
         public void actionPerformed(ActionEvent e) {
-            Ihm.instance().removeElem(element.getObjet_graphique());
+            Ihm.instance().getControleur().supprimerElement(element);
         }
     }
 
