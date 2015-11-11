@@ -6,6 +6,7 @@ import com.mxgraph.model.mxCell;
 
 import javax.naming.ldap.Control;
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -67,15 +68,7 @@ public class Ihm {
 
         if (eg.isSupprimable()){
             HashMap<mxCell, ElementGraphique> liste_elements_graphiques = EditeurGraphique.instance().getListe_elements_graphiques();
-       
-            //A MODIFIER
-            for (Map.Entry<mxCell, ElementGraphique> entry : liste_elements_graphiques.entrySet()) {
-            	if(entry.getKey().isEdge() && ( ((TransitionGraph)entry.getValue()).getDestinationTransition().equals(eg) || ((TransitionGraph)entry.getValue()).getSourceTransition().equals(eg)) ) {
-            		liste_elements_graphiques.remove(entry.getKey());
-            	}
-                System.out.println(entry.getKey() + " " + entry.getValue().getNom());
-            }
-            
+
             removeElemFromListeEditeurGraphique(m);
             removeElemFromGraph(m);
 
@@ -91,6 +84,16 @@ public class Ihm {
         Object[] tabCells = {(Object)m};
 
         System.out.println("Element supprimé :"  + liste_elements_graphiques.get(m).getNom());
+
+        ElementGraphique eg = this.getEdGraphique().getElement_from_liste(m);
+
+        //A MODIFIER
+        for (Map.Entry<mxCell, ElementGraphique> entry : liste_elements_graphiques.entrySet()) {
+            if(entry.getKey().isEdge() && ( ((TransitionGraph)entry.getValue()).getDestinationTransition().equals(eg) || ((TransitionGraph)entry.getValue()).getSourceTransition().equals(eg)) ) {
+                liste_elements_graphiques.remove(entry.getKey());
+            }
+            System.out.println(entry.getKey() + " " + entry.getValue().getNom());
+        }
 
         if (m.getChildCount() > 0)
         for(int i=0; i<m.getChildCount(); i++){
