@@ -34,8 +34,16 @@ public class PseudoFinal  extends Etat {
 		super(etat.getConteneurParent(), etat.getNom());
 		this.attache(etat.getObservateur());
 		
-		for(TransitionIntermediaire trans : etat.getDestinations()){
-			this.addTransition(new TransitionFinale(trans, this));			
+		for(Transition trans : etat.getDestinations()){
+			if(trans.isTransitionInitiale()){
+				this.addTransition(new TransitionFinale((TransitionInitiale)trans, this));					
+			}
+			else if(trans.isTransitionIntermediaire()){
+				this.addTransition(new TransitionFinale((TransitionIntermediaire)trans, this));					
+			}
+			else{
+				this.addTransition((TransitionFinale)trans);					
+			}
 		}
 	}
 	

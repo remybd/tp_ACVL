@@ -100,7 +100,7 @@ public class Composite extends EtatIntermediaire {
 		EtatIntermediaire etatPointeByInit = _fils.getPseudoInitial().getTransition().getEtatDest();
 		for(Transition t : this.getDestinations()){
 			if(t.isTransitionFinale()){
-				((TransitionFinale)t).setEtatSource();
+//TODO ((TransitionFinale)t).setEtatSource();
 			}
 		}
 		for(Transition t : this.getSources()){
