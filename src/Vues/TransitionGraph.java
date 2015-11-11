@@ -43,6 +43,7 @@ public class TransitionGraph extends ElementGraphique {
             this.getObjet_graphique().setSource(etats_source_dest.get(0).getObjet_graphique());
             this.getObjet_graphique().setTarget(etats_source_dest.get(1).getObjet_graphique());
             this.getObjet_graphique().setValue(Ihm.instance().getControleur().getEtiquette(this));
+            EditeurGraphique.instance().getGraph().refresh();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
