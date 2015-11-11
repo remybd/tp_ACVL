@@ -91,7 +91,12 @@ public class MenuContextuelItemListener{
         }
 
         public void actionPerformed(ActionEvent e) {
-            Ihm.instance().getControleur().supprimerElement(element);
+            if(element.isSupprimable())
+                Ihm.instance().getControleur().supprimerElement(element);
+            else {
+                JOptionPane message_erreur = new JOptionPane();
+                message_erreur.showMessageDialog(null, "On ne peut pas supprimé un etat initial", "Erreur", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 

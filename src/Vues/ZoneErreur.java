@@ -17,12 +17,14 @@ public class ZoneErreur extends JPanel implements ObservateurVue {
     public ZoneErreur(){
         super();
         //this.setSize(Toolkit.getDefaultToolkit().getScreenSize().width, );
-        //zone_texte.setBackground(Color.LIGHT_GRAY);
         zone_texte.setEditable(false);
+        //JScrollPane scrollPane = new JScrollPane(this,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        //scrollPane.setSize(Toolkit.getDefaultToolkit().getScreenSize().width, 100);
         this.add(zone_texte);
     }
 
     public void miseAJour(){
+        zone_texte.setBackground(this.getParent().getBackground());
         HashSet<Erreur> erreurs = Ihm.instance().getControleur().getErreurs();
         String error_text = "";
         for(Erreur e : erreurs){
