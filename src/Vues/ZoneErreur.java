@@ -12,22 +12,27 @@ import java.util.Iterator;
  */
 public class ZoneErreur extends JPanel implements ObservateurVue {
 
-    private JLabel zone_texte = new JLabel("ZONE ERREUR");
+    private JTextArea zone_texte = new JTextArea("ZONE ERREUR");
 
     public ZoneErreur(){
         super();
         //this.setSize(Toolkit.getDefaultToolkit().getScreenSize().width, );
+        zone_texte.setBackground(Color.LIGHT_GRAY);
+        zone_texte.setEditable(false);
         this.add(zone_texte);
     }
 
     public void miseAJour(){
         HashSet<Erreur> erreurs = Ihm.instance().getControleur().getErreurs();
         String error_text = "";
+        System.out.println(" sIZE / " + erreurs.isEmpty());
         for(Erreur e : erreurs){
-            error_text.concat(e.getNom());
+            System.out.println(" Nom : " + e.getNom());
+            error_text += e.getMessage() + "\n";
         }
+        System.out.println("Erreur ::::" + error_text);
         zone_texte.setText(error_text);
-        this.repaint();
+        this.validate();
     }
 
 }
