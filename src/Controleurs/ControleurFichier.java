@@ -25,10 +25,8 @@ public class ControleurFichier {
         return instanceUnique;
     }
     
-    private void creerFichier(String path, String name, Conteneur c) {
+    private void creerFichier(String path, Conteneur c) {
         try {
-        	path+="."+FichierSauvegarde.FICHIER_EXTENSION;
-        	
             fichierDeSauvegarde = new FichierSauvegarde(path, c);
         } catch (FileNotFoundException e) {
             // TODO : propager l'erreur dans l'IHM
@@ -40,6 +38,7 @@ public class ControleurFichier {
     }
 
     public void chargerFichier(String path){
+
         try {
             fichierDeSauvegarde = new FichierSauvegarde(path);
             Conteneur mainConteneur = fichierDeSauvegarde.getMainConteneur();
@@ -51,10 +50,10 @@ public class ControleurFichier {
 		}
     }
 
-    public void sauvegarderFichier(String path, String name){
+    public void sauvegarderFichier(String path){
         Conteneur mainCont = ControleurDiagramme.instance().getMainConteneur();
         if(fichierDeSauvegarde == null)
-            creerFichier(name, path, mainCont);
+            creerFichier(path, mainCont);
         
         try {
 			fichierDeSauvegarde.sauvegarderFichier();

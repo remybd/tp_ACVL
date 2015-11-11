@@ -1,18 +1,23 @@
 package Vues;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * Created by Jerem on 06/11/2015.
  */
-public class ZoneErreur extends JPanel {
+public class ZoneErreur extends JPanel implements ObservateurVue {
 
-    private static ZoneErreur instanceUnique = new ZoneErreur();
+    private JLabel zone_texte = new JLabel("ZONE ERREUR");
 
-    private ZoneErreur(){}
+    public ZoneErreur(){
+        super();
+        //this.setSize(Toolkit.getDefaultToolkit().getScreenSize().width, );
+        this.add(zone_texte);
+    }
 
-    static public ZoneErreur instance() {
-        return instanceUnique;
+    public void miseAJour(){
+        //updateLabel()
     }
 
 }
