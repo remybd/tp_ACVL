@@ -37,13 +37,15 @@ public class ControleurFichier {
         }
     }
 
-    public Conteneur chargerFichier(String path, String name){
+    public void chargerFichier(String path, String name){
         try {
-			return fichierDeSauvegarde.chargerFichier();
+            fichierDeSauvegarde = new FichierSauvegarde(name, FichierSauvegarde.FICHIER_EXTENSION, path);
+            Conteneur mainConteneur = fichierDeSauvegarde.getMainConteneur();
+            ControleurDiagramme.instance().chargerMainConteneur(mainConteneur);
+            
 		} catch (ClassNotFoundException | IOException e) {
 			//TODO : propager l'erreur dans l'IHM
 			e.printStackTrace();
-			return null;
 		}
     }
 

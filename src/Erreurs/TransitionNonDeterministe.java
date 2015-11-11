@@ -1,5 +1,6 @@
 package Erreurs;
 
+import Vues.ObservateurVue;
 import ElementsDiagramme.Sujet;
 import ElementsDiagramme.Transition;
 
@@ -9,8 +10,8 @@ import ElementsDiagramme.Transition;
 public class TransitionNonDeterministe extends Erreur{
     private Transition transitionParent;
 
-    public TransitionNonDeterministe(Transition transition, int importance){
-        super("Transition Non Déterministe", importance);
+    public TransitionNonDeterministe(Transition transition, int importance, ObservateurVue zoneErreur){
+        super("Transition Non Déterministe", importance, zoneErreur);
         this.transitionParent = transition;
     }
 
