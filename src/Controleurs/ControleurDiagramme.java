@@ -296,7 +296,18 @@ public class ControleurDiagramme {
     }
 
     public void chargerMainConteneur(Conteneur mainConteneur){
+        this.mainConteneur = mainConteneur;
+        correspondance.clear();
 
+        HashSet<Element> listAllElements = mainConteneur.getAllElements();
+        HashSet<ElementGraphique> listAllElementsGraphique = new HashSet<ElementGraphique>();
+        for(Element e : listAllElements){
+            ElementGraphique eg = (ElementGraphique)e.getObservateur();
+            correspondance.put(eg,e);
+            listAllElementsGraphique.add(eg);
+        }
+
+        EditeurGraphique.instance().updateListeElementGraphiqueAndDisplay(listAllElementsGraphique,mainConteneur.getPseudoInitial());
     }
 
 }
