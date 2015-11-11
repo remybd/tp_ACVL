@@ -51,7 +51,7 @@ public class ControleurFichier {
     public void sauvegarderFichier(String path, String name){
         Conteneur mainCont = ControleurDiagramme.instance().getMainConteneur();
         if(fichierDeSauvegarde == null)
-            creerFichier("new_diag", "", mainCont);
+            creerFichier(name, path, mainCont);
         
         try {
 			fichierDeSauvegarde.sauvegarderFichier();
