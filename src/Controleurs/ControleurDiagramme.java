@@ -100,8 +100,6 @@ public class ControleurDiagramme {
         }
     }
 
-
-
     public void supprimerElement(ElementGraphique elem){
         Element e = getElementFromGraphic(elem);
 
@@ -110,8 +108,6 @@ public class ControleurDiagramme {
             correspondance.remove(elem);
         }
     }
-
-
 
     public void modifierTransition(TransitionGraph transitionGraph, EtatGraph source, EtatGraph dest,String etiquette) throws Exception{
     	/* Check les préconditions */
