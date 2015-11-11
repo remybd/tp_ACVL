@@ -59,6 +59,7 @@ public class ControleurDiagramme {
         conteneurParent.addElmt(t);
         correspondance.put(tg,t);
 
+        this.chercherErreurs();
         return t;
     }
 
@@ -87,6 +88,7 @@ public class ControleurDiagramme {
             getEtatGraphFromEtat(psi).setParent(eg);
         }
 
+        this.chercherErreurs();
         return e;
     }
 
@@ -98,6 +100,7 @@ public class ControleurDiagramme {
         } else {
             throw new NameNotModifiableException();
         }
+        this.chercherErreurs();
     }
 
     public void supprimerElement(ElementGraphique elem){
@@ -116,6 +119,7 @@ public class ControleurDiagramme {
         }
         
         DEBUG_displayElmts();
+        this.chercherErreurs();
     }
 
     public void DEBUG_displayElmts(){
@@ -204,6 +208,7 @@ public class ControleurDiagramme {
     		
     		((TransitionIntermediaire)modelTrans).setEtiquette(etiquette);
     	}
+    	this.chercherErreurs();
     }
 
 
@@ -337,6 +342,7 @@ public class ControleurDiagramme {
 
         this.DEBUG_displayElmts();
         EditeurGraphique.instance().updateListeElementGraphiqueAndDisplay(listAllElementsGraphique);
+        this.chercherErreurs();
     }
 
     public HashSet<Erreur> getErreurs() {
