@@ -19,6 +19,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -164,10 +165,11 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFileChooser c = new JFileChooser();
-                int rVal = c.showSaveDialog(EditeurGraphique.this);
+                int rVal = c.showOpenDialog(EditeurGraphique.this);
                 if (rVal == JFileChooser.APPROVE_OPTION) {
-                    filename.setText(c.getSelectedFile().getName());
-                    dir.setText(c.getCurrentDirectory().toString());
+                	File f = c.getSelectedFile();
+                    filename.setText(f.getName());
+                    dir.setText(f.getAbsolutePath().toString());
                     Ihm.instance().getControleurFichier().chargerFichier(filename.getText(), dir.getText());
                 }
                 if (rVal == JFileChooser.CANCEL_OPTION) {
@@ -183,8 +185,9 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
                 // Demonstrate "Save" dialog:
                 int rVal = c.showSaveDialog(EditeurGraphique.this);
                 if (rVal == JFileChooser.APPROVE_OPTION) {
-                    filename.setText(c.getSelectedFile().getName());
-                    dir.setText(c.getCurrentDirectory().toString());
+                	File f = c.getSelectedFile();
+                    filename.setText(f.getName());
+                    dir.setText(f.getAbsolutePath().toString());
                     Ihm.instance().getControleurFichier().sauvegarderFichier(filename.getText(),dir.getText());
                 }
                 if (rVal == JFileChooser.CANCEL_OPTION) {
