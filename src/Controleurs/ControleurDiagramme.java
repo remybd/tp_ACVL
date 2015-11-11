@@ -217,7 +217,7 @@ public class ControleurDiagramme {
     		return;
     	
     	//get toutes les erreurs
-  //erreurs = mainConteneur.chercherErreurs(ihm.getEdGraphique().getZoneErreur());
+    	erreurs = mainConteneur.chercherErreurs(ihm.getEdGraphique().getZoneErreur());
     	
     	//informe la vue des erreurs
     	if(erreurs.size()>0)
@@ -325,7 +325,7 @@ public class ControleurDiagramme {
     }
 
     public void applatir(){
-        mainConteneur.applatir();
+       //TODO  mainConteneur.applatir();
 
     }
 
