@@ -54,6 +54,7 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
 
     private JMenuItem ouvrir = new JMenuItem("Ouvrir");
     private JMenuItem enregistrer = new JMenuItem("Enregistrer");
+    private JMenuItem aplatir = new JMenuItem("Aplatir");
     private JMenuItem fermer = new JMenuItem("Fermer");
 
     private JMenuItem consulter_manuel = new JMenuItem("Consulter Manuel");
@@ -201,6 +202,16 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
                 if (rVal == JFileChooser.CANCEL_OPTION) {
                     filename.setText("You pressed cancel");
                     dir.setText("");
+                }
+            }
+        });
+        aplatir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Ihm.instance().getControleur().applatir();
+                } catch (Exception e1) {
+                    e1.printStackTrace();
                 }
             }
         });

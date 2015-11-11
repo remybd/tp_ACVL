@@ -27,6 +27,7 @@ public class ZoneErreur extends JPanel implements ObservateurVue {
             error_text.concat(e.getNom());
         }
         zone_texte.setText(error_text);
+        this.repaint();
     }
 
 }
