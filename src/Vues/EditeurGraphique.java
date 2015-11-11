@@ -23,6 +23,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Map;
 import java.util.WeakHashMap;
 
 /**
@@ -393,10 +394,13 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
 
 	public void updateListeElementGraphiqueAndDisplay(
 			HashSet<ElementGraphique> listAllElementsGraphique) {
-		reset();
-		
+        EditeurGraphique.instance().getGraph().removeCells();
+
 		graph.getModel().beginUpdate();
 		try {
+			reset();
+			System.out.println("YOUHOUZE");
+
 			for(ElementGraphique e : listAllElementsGraphique) {
 				if(e == null)
 					System.out.println("YOUHOU");
@@ -404,14 +408,18 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
 				graph.addCell(e.getObjet_graphique());
 			}
 		} finally {
-			graph.refresh();
 		    graph.getModel().endUpdate();
-			graph.refresh();
 		}
 	}
 	
     private void reset() {
+        for (Map.Entry<mxCell, ElementGraphique> entry : liste_elements_graphiques.entrySet()) {
+        	Object[] tab = {entry.getKey()};
+            EditeurGraphique.instance().getGraph().removeCells(tab);
+        }
         liste_elements_graphiques = new HashMap<>();
-        EditeurGraphique.instance().getGraphComponent().removeAll();
+
+        //EditeurGraphique.instance().getGraph().removeCells();
+        //EditeurGraphique.instance().getGraph().removeCells(tabCells);
     }
 }
