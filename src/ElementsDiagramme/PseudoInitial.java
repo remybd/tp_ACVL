@@ -3,8 +3,6 @@ package ElementsDiagramme;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import Vues.ObservateurVue;
-
 /**
  *  TODO
  * @author Thibaut
@@ -30,7 +28,7 @@ public class PseudoInitial extends Etat {
 	 */
 	public PseudoInitial(PseudoFinal init){
 		super(init.getConteneurParent(), init.getNom());
-		this.setObservateur(init.getObservateur());
+		this.attache(init.getObservateur());
 	}
 	
 
@@ -40,7 +38,7 @@ public class PseudoInitial extends Etat {
 	 */
 	public PseudoInitial(EtatIntermediaire etat){
 		super(etat.getConteneurParent(), etat.getNom());
-		this.setObservateur(etat.getObservateur());
+		this.attache(etat.getObservateur());
 		
 		HashSet<TransitionIntermediaire> trans = etat.getDestinations();
 		

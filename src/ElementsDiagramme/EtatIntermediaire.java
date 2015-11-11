@@ -1,14 +1,12 @@
 package ElementsDiagramme;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
 import Erreurs.Erreur;
 import Erreurs.TransitionNonDeterministe;
 import Tools.TableSymboles;
-import Vues.ObservateurVue;
 
 /**
  *  TODO
@@ -31,7 +29,7 @@ public abstract class EtatIntermediaire extends Etat{
 	 */
 	public EtatIntermediaire(PseudoInitial init){
 		super(init.getConteneurParent(), init.getNom());
-		this.setObservateur(init.getObservateur());
+		this.attache(init.getObservateur());
 		
 		TransitionInitiale transInit = init.getTransition();
 		
@@ -46,7 +44,7 @@ public abstract class EtatIntermediaire extends Etat{
 	 */
 	public EtatIntermediaire(PseudoFinal etat){
 		super(etat.getConteneurParent(), etat.getNom());
-		this.setObservateur(etat.getObservateur());
+		this.attache(etat.getObservateur());
 		
 		HashSet<TransitionFinale> transFin = etat.getTransitions();
 		

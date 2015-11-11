@@ -23,6 +23,7 @@ public abstract class Etat extends Element {
 	
 	public void setNom(String nom){
 		_nom = nom;
+		informe();
 	}
 
 	@Override

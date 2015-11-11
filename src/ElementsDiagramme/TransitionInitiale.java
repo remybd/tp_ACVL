@@ -2,8 +2,6 @@ package ElementsDiagramme;
 
 import java.util.ArrayList;
 
-import Vues.ObservateurVue;
-
 /**
  *  TODO
  * @author Thibaut
@@ -20,7 +18,7 @@ public class TransitionInitiale extends Transition {
 
 	public TransitionInitiale(TransitionIntermediaire trans, PseudoInitial pseudoInitial) {
 		super(trans.getConteneurParent());
-		this.setObservateur(trans.getObservateur());
+		this.attache(trans.getObservateur());
 		
 		this.setPseudoInitial(pseudoInitial);
 		this.setEtatDest(trans.getEtatDest());
@@ -28,7 +26,7 @@ public class TransitionInitiale extends Transition {
 	
 	public TransitionInitiale(TransitionFinale trans, PseudoInitial pseudoInitial) {
 		super(trans.getConteneurParent());
-		this.setObservateur(trans.getObservateur());
+		this.attache(trans.getObservateur());
 		
 		this.setPseudoInitial(pseudoInitial);
 	}
@@ -39,6 +37,7 @@ public class TransitionInitiale extends Transition {
 
 	public void setPseudoInitial(PseudoInitial _etatInit) {
 		this._etatInit = _etatInit;
+		informe();
 	}
 
 	@Override
@@ -73,10 +72,12 @@ public class TransitionInitiale extends Transition {
 
 	public void setEtatSource(PseudoInitial etat) {
 		this._etatInit = etat;
+		informe();
 	}
 
 	public void setEtatDest(EtatIntermediaire etat) {
-		this._etatDest = etat;		
+		this._etatDest = etat;
+		informe();
 	}
 
 	@Override
