@@ -15,7 +15,7 @@ public abstract class Erreur extends Sujet{
     private int importance;
 
     public Erreur(String nom, int importance, ObservateurVue zoneErreur){
-    	System.out.println("Erreur - Erreur détectée : "+nom);
+    	System.out.println("Erreur - Erreur detectee : "+nom);
     	
         this.nom = nom;
         this.importance = importance;
