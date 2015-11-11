@@ -1,6 +1,7 @@
 package Vues;
 
 import Controleurs.ControleurDiagramme;
+import Controleurs.ControleurFichier;
 import ElementsDiagramme.*;
 import com.mxgraph.model.mxCell;
 
@@ -18,6 +19,7 @@ public class Ihm {
 	final private static Ihm instanceUnique = new Ihm();
 	private EditeurGraphique edGraphique = EditeurGraphique.instance();
     private ControleurDiagramme controleur;
+    private ControleurFichier controleur_fichier;
 
 	private Ihm() {	}
 	
@@ -33,10 +35,18 @@ public class Ihm {
         return controleur;
     }
 
+    public ControleurFichier getControleurFichier(){
+        return controleur_fichier;
+    }
+
     public void setControleur(ControleurDiagramme controleur){
         this.controleur = controleur;
     }
-	
+
+    public void setControleurFichier(ControleurFichier controleur_fichier){
+        this.controleur_fichier = controleur_fichier;
+    }
+
     public TransitionGraph createTransitionGraph(EtatGraph s, EtatGraph d, Transition t){
         TransitionGraph res = null;
         if(t.isTransitionInitiale()){

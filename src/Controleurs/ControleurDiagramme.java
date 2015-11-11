@@ -289,10 +289,6 @@ public class ControleurDiagramme {
     }
 
 
-
-
-
-
     public void applatir(){
 
     }
