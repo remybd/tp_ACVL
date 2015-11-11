@@ -308,7 +308,13 @@ public class ControleurDiagramme {
 
 
     public void applatir(){
+        HashSet<Element> listeEl = mainConteneur.getElmts();
 
+        for(Element el: listeEl){
+            if(el.isEtatComposite()){
+                ((Composite)el).applatir();
+            }
+        }
     }
 
     public void chargerMainConteneur(Conteneur mainConteneur){
