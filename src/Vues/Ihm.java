@@ -74,7 +74,7 @@ public class Ihm {
     }
 
     public void removeElem(mxCell m) {
-    	System.out.println(m);
+    	System.out.println("QUIQUOI" + m.toString());
         ElementGraphique eg = this.getEdGraphique().getElement_from_liste(m);
 
         if (eg.isSupprimable()){
