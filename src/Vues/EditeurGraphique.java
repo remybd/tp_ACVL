@@ -218,6 +218,7 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
         });
         fichier.add(ouvrir);
         fichier.add(enregistrer);
+        fichier.add(aplatir);
         fichier.addSeparator();
 
         fermer.addActionListener(new ActionListener() {
