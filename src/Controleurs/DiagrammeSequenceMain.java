@@ -1,6 +1,7 @@
 package Controleurs;
 
 import Vues.Ihm;
+import Vues.ZoneErreur;
 
 /**
  * Created by rémy on 10/11/2015.

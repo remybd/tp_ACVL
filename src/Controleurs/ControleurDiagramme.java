@@ -319,7 +319,6 @@ public class ControleurDiagramme {
         return (ElementGraphique)e.getObservateur();
     }
 
-
     public void applatir(){
         mainConteneur.applatir();
 

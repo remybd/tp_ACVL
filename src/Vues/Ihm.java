@@ -93,8 +93,6 @@ public class Ihm {
         HashMap<mxCell, ElementGraphique> liste_elements_graphiques = EditeurGraphique.instance().getListe_elements_graphiques();
         Object[] tabCells = {(Object)m};
 
-        System.out.println("Element supprimé :"  + liste_elements_graphiques.get(m).getNom());
-
         ElementGraphique eg = this.getEdGraphique().getElement_from_liste(m);
 
         //A MODIFIER
@@ -102,7 +100,6 @@ public class Ihm {
             if(entry.getKey().isEdge() && ( ((TransitionGraph)entry.getValue()).getDestinationTransition().equals(eg) || ((TransitionGraph)entry.getValue()).getSourceTransition().equals(eg)) ) {
                 liste_elements_graphiques.remove(entry.getKey());
             }
-            System.out.println(entry.getKey() + " " + entry.getValue().getNom());
         }
 
         if (m.getChildCount() > 0)
