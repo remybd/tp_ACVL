@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import Controleurs.ControleurDiagramme;
 import Erreurs.ErreurEtat;
 import Erreurs.NonUnicite;
 import Erreurs.TransitionNonDeterministe;
+import Vues.ElementGraphique;
+import Vues.EtatGraph;
 import Vues.ObservateurVue;
 
 
@@ -94,26 +97,74 @@ public class Composite extends EtatIntermediaire {
 		return transNnDeterm;			
 	}
 
-	public void applatir(){
+	public void applatir() throws Exception {
 		_fils.applatir();
 
-		EtatIntermediaire etatPointeByInit = _fils.getPseudoInitial().getTransition().getEtatDest();
-		for(Transition t : this.getDestinations()){
-			if(t.isTransitionFinale()){
-				((TransitionFinale)t).setEtatSource();
-			}
-		}
+		//relie toutes les transitions entrantes à l'état initial
+		EtatIntermediaire etatPointedByInit = _fils.getPseudoInitial().getTransition().getEtatDest();
 		for(Transition t : this.getSources()){
 			if(t.isTransitionIntermediaire()){
-				((TransitionIntermediaire)t).setEtatDest(etatPointeByInit);
+				((TransitionIntermediaire)t).setEtatDest(etatPointedByInit);
 			} else if(t.isTransitionInitiale()){
-				((TransitionInitiale)t).setEtatDest(etatPointeByInit);
+				((TransitionInitiale)t).setEtatDest(etatPointedByInit);
 			}
 		}
+
+
+		HashSet<PseudoFinal> listEtatsFinaux = getEtatsFinaux();
+		if(!listEtatsFinaux.isEmpty()){//il y a des états finaux que l'on relie aux transitions finales
+
+			for(EtatIntermediaire etatIntermediaire : getEtatsPointedByFinal(listEtatsFinaux)){
+				for(Transition t : this.getDestinations()){
+					if(t.isTransitionFinale()){
+						ControleurDiagramme.instance().ajouterTransition(EnumTransition.FINAL,t.getEtiquette(),(EtatGraph)etatIntermediaire.getObservateur(),(EtatGraph)t.getEtatDestination().getObservateur());
+
+					} else if(t.isTransitionIntermediaire()){
+						ControleurDiagramme.instance().ajouterTransition(EnumTransition.INTER, t.getEtiquette(), (EtatGraph) etatIntermediaire.getObservateur(), (EtatGraph) t.getEtatDestination().getObservateur());
+					}
+				}
+			}
+
+		} else {
+			for(PseudoFinal pf : listEtatsFinaux){
+				for(Transition t : pf.getTransitions()){
+					ControleurDiagramme.instance().supprimerElement((ElementGraphique)t.getObservateur());
+				}
+			}
+		}
+
+
 
 
 	}
-	
+
+
+	private HashSet<PseudoFinal> getEtatsFinaux(){
+		HashSet<PseudoFinal> listEtatsFinaux = new HashSet<PseudoFinal>();
+
+		for(Element e:_fils.getElmts()){
+			if(e.isEtatPseudoFinal()){
+				listEtatsFinaux.add((PseudoFinal)e);
+			}
+		}
+		return listEtatsFinaux;
+	}
+
+
+	private HashSet<EtatIntermediaire> getEtatsPointedByFinal(HashSet<PseudoFinal> listEtatsFinaux){
+		HashSet<EtatIntermediaire> listEtatsPointedByFinal = new HashSet<EtatIntermediaire>();
+
+		for(PseudoFinal pf : listEtatsFinaux){
+			for(TransitionFinale tf : pf.getTransitions()){
+				listEtatsPointedByFinal.add((EtatIntermediaire)tf.getEtatSource());
+			}
+		}
+
+		return listEtatsPointedByFinal;
+	}
+
+
+
 	@Override
 	public ArrayList<Element> supprimer() {
 		ArrayList<Element> elmtsSupr = super.supprimer(); //TODO : fonctionnel ?
