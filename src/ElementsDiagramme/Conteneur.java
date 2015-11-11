@@ -198,7 +198,7 @@ public class Conteneur implements Serializable {
 
 		for(Element el: _elmts){
 			if(el.isEtatComposite()){
-				((Composite)el).applatir();
+				//TODO ((Composite)el).applatir();
 			}
 		}
 	}

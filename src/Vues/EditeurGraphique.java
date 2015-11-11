@@ -189,7 +189,7 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
                 	File f = c.getSelectedFile();
                     filename.setText(f.getName());
                     dir.setText(f.getAbsolutePath().toString());
-                    Ihm.instance().getControleurFichier().sauvegarderFichier(filename.getText(),dir.getText());
+                    Ihm.instance().getControleurFichier().sauvegarderFichier(dir.getText());
                 }
                 if (rVal == JFileChooser.CANCEL_OPTION) {
                     filename.setText("You pressed cancel");

@@ -120,8 +120,11 @@ public class ControleurDiagramme {
 
     public void DEBUG_displayElmts(){
     	System.out.println("Elmts présents dans le controleur :");
-    	
+
+    	int i=0;
     	for(ElementGraphique elmtGraph : correspondance.keySet()){
+			System.out.println("Element "+i);
+			
     		Element elmt = correspondance.get(elmtGraph);
     		if(elmt.isEtat()){
     			System.out.println(((Etat)elmt).getNom());
@@ -129,6 +132,8 @@ public class ControleurDiagramme {
     		else if(elmt.isTransition()){
     			System.out.println(((Transition)elmt).getEtiquette());
     		}
+    		
+    		i++;
     	}
     }
     
@@ -331,7 +336,7 @@ public class ControleurDiagramme {
             listAllElementsGraphique.add(eg);
         }
 
-
+        this.DEBUG_displayElmts();
         EditeurGraphique.instance().updateListeElementGraphiqueAndDisplay(listAllElementsGraphique);
     }
 
