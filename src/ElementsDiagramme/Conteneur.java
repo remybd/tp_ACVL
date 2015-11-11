@@ -166,8 +166,21 @@ public class Conteneur implements Serializable {
 		return _elmts;
 	}
 	
-	public HashSet<Element> getAllElmts() {
-		return null; //TODO
+	public HashSet<Element> getAllElemets() {
+		HashSet<Element> elmts = new HashSet<Element>(); 
+		
+		if(_elmts == null)
+			return elmts;
+		
+		for(Element elmt : _elmts){
+			if(elmt.isEtatComposite()){
+				elmts.addAll( ((Composite)elmt).getAllElements());
+			}
+			
+			elmts.add(elmt);
+		}
+		
+		return elmts;
 	}
 
 	public void addElmt(Element _elmts) {

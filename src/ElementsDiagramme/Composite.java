@@ -51,7 +51,7 @@ public class Composite extends EtatIntermediaire {
 		if(_fils == null)
 			return new HashSet<Element>();
 		
-		return _fils.getAllElmts();
+		return _fils.getAllElements();
 	}
 
 	/**
