@@ -27,4 +27,6 @@ public abstract class Erreur extends Sujet{
     public int getImportance() {
         return importance;
     }
+    
+    public abstract String getMessage();
 }

@@ -20,4 +20,9 @@ public class TransitionNonDeterministe extends Erreur{
     public Transition getTransitionParent() {
         return transitionParent;
     }
+
+	@Override
+	public String getMessage() {
+		return this.getNom()+" - Plusieurs transitions d'un même état source ont le même [événement]/action : "+this.getTransitionParent().getEtiquette();
+	}
 }

@@ -10,6 +10,10 @@ public abstract class Bloquant extends ErreurEtat{
 
     public Bloquant(Etat etat, int importance, ObservateurVue zoneErreur){
         super("Etat Bloquant",etat, importance, zoneErreur);
-        System.out.println("Détails : état problématique : "+etat.getNom());
     }
+
+	@Override
+	public String getMessage() {
+    	return this.getNom()+" - L'état simple suivant doit avoir au moins une transition sortante : "+getEtatParent().getNom();
+	}
 }

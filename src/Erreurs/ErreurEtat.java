@@ -20,4 +20,9 @@ public class ErreurEtat extends Erreur{
     public Etat getEtatParent() {
         return etatParent;
     }
+
+	@Override
+	public String getMessage() {
+    	return this.getNom()+" - "+getEtatParent().getNom();
+	}
 }

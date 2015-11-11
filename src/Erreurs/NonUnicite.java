@@ -18,4 +18,9 @@ public class NonUnicite extends ErreurEtat{
     public Etat getEtatMemeNom() {
         return etatMemeNom;
     }
+
+	@Override
+	public String getMessage() {
+    	return this.getNom()+" - L'état suivant porte le même nom qu'un autre : "+getEtatParent().getNom();
+	}
 }
