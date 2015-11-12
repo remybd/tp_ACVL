@@ -48,12 +48,10 @@ public class ControleurDiagramme {
 
     //TODO A modifier, ajouterTransition doit recevoir des EtatGraph de la Vue et non pas des états
     public Transition ajouterTransition(EnumTransition type, String etiquette, EtatGraph s, EtatGraph d) throws Exception {
-        System.out.println("Test matin " +d);
         Etat sEtat = (Etat)getElementFromGraphic(s);
         Etat dEtat = (Etat)getElementFromGraphic(d);
 
         Conteneur conteneurParent = sEtat.getConteneurParent();
-        System.out.println("Test matin " +dEtat);
         Transition t = Transition.creerTransition(type,etiquette,sEtat,dEtat,conteneurParent);
 
         TransitionGraph tg = ihm.createTransitionGraph(s,d,t);
@@ -112,13 +110,6 @@ public class ControleurDiagramme {
         ArrayList<Element> elementsSupprime = e.supprimer();
         for(Element element : elementsSupprime){
 
-        	if(element.isEtat()){
-        		System.out.println("Suppression graphique de "+( (Etat)element).getNom());
-        	}
-        	else if(element.isTransition()){
-        		System.out.println("Suppression graphique de "+( (Transition)element).getEtiquette());
-        	}
-
             ihm.removeElem(getElemGraphFromElem(element).getObjet_graphique());
             correspondance.remove(elem);
         }
@@ -132,13 +123,6 @@ public class ControleurDiagramme {
 
         ArrayList<Element> elementsSupprime = e.supprimerForAplatir();
         for(Element element : elementsSupprime){
-
-            if(element.isEtat()){
-                System.out.println("Suppression graphique de "+( (Etat)element).getNom());
-            }
-            else if(element.isTransition()){
-                System.out.println("Suppression graphique de "+( (Transition)element).getEtiquette());
-            }
 
             ihm.removeElem(getElemGraphFromElem(element).getObjet_graphique());
             correspondance.remove(elem);
@@ -352,37 +336,7 @@ public class ControleurDiagramme {
 
     public void applatir() throws Exception {
         mainConteneur.applatir();
-        System.out.println("TEST Destinations finales : " + mainConteneur.getPseudoInitial().getTransition().getEtatDest().getDestinations());
-        System.out.println("TEST état : " + mainConteneur.getPseudoInitial().getTransition().getEtatDest());
-        System.out.println("TEST état parent elemnt graph: " + ((ElementGraphique)(mainConteneur.getPseudoInitial().getTransition().getEtatDest().getObservateur())).getParent());
-        ((ElementGraphique)(mainConteneur.getPseudoInitial().getTransition().getEtatDest().getObservateur())).setParent(null);
-        System.out.println("TEST état parent elemnt graph: " + ((ElementGraphique)(mainConteneur.getPseudoInitial().getTransition().getEtatDest().getObservateur())).getParent());
-        System.out.println("TEST état parent elemnt mxl: " + ((ElementGraphique) (mainConteneur.getPseudoInitial().getTransition().getEtatDest().getObservateur())).getObjet_graphique().getParent());
-
-        for(Transition t : mainConteneur.getPseudoInitial().getTransition().getEtatDest().getDestinations()){
-            System.out.println("TEST Destinations finales : transition " + t + "   elemt graphique : " + t.getObservateur() + "  parent elmt graph : " + ((ElementGraphique) t.getObservateur()).getObjet_graphique().getParent());
-            ((ElementGraphique) t.getObservateur()).getObjet_graphique().setParent((mxCell)(Ihm.instance().getEdGraphique().getGraph().getDefaultParent()));
-            //((ElementGraphique) t.getObservateur()).getObjet_graphique().setParent(null);
-
-            System.out.println("TEST Destinations finales : transition " + t + "   elemt graphique : " + t.getObservateur() + "  parent elmt graph : " + ((ElementGraphique) t.getObservateur()).getObjet_graphique().getParent());
-
-        }
-
         Ihm.instance().getEdGraphique().getGraph().refresh();
-        System.out.println(Ihm.instance().getEdGraphique().getGraph().getDefaultParent());
-        for(Element e:mainConteneur.getElmts()){
-            if(e.isEtatPseudoFinal()){
-                System.out.println("TEST état final: " + e);
-                System.out.println("TEST état parent elemnt graph: " + ((ElementGraphique)(e.getObservateur())).getParent());
-                System.out.println("TEST état parent elemnt mxl: " + ((ElementGraphique)(e.getObservateur())).getObjet_graphique().getParent());
-                for(Transition t : ((PseudoFinal) e).getTransitions()){
-                    System.out.println("TEST sources états finaux : transition " + t + "   elemt graphique : " + t.getObservateur()) ;
-                    System.out.println("TEST sources états finaux : transition " + t.getEtatDestination()) ;
-                    System.out.println("TEST sources états finaux : transition " + t.getEtatSource()) ;
-                }
-            }
-        }
-        System.out.println("TEST Destinations init : " + mainConteneur.getPseudoInitial().getTransition().getEtatDest().getSources());
     }
 
     public void chargerMainConteneur(Conteneur mainConteneur){
