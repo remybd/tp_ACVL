@@ -38,10 +38,19 @@ public class EditionTransition extends FenetrePopup implements ActionListener{
         this.transition_graph = transition_graph;
 
         evenement_transition.setPreferredSize(new Dimension(150, 30));
+        garde_transition.setPreferredSize(new Dimension(150, 30));
+        action_transition.setPreferredSize(new Dimension(150, 30));
 
-        evenement_transition.setText(TransitionIntermediaire.getEvt(transition_graph.getNom()));
-        garde_transition.setText(TransitionIntermediaire.getGarde(transition_graph.getNom()));
-        action_transition.setText(TransitionIntermediaire.getAction(transition_graph.getNom()));
+        String evenement = TransitionIntermediaire.getEvt(transition_graph.getNom());
+        String garde = TransitionIntermediaire.getGarde(transition_graph.getNom());
+        String action = TransitionIntermediaire.getAction(transition_graph.getNom());
+
+        if(!evenement.isEmpty())
+            evenement_transition.setText(evenement);
+        if(!garde.isEmpty())
+            garde_transition.setText(garde);
+        if(!action.isEmpty())
+            action_transition.setText(action);
 
         JPanel centered = new JPanel();
         centered.add(evenement_label);
