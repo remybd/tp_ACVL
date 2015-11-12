@@ -335,4 +335,17 @@ public class ControleurDiagramme {
     	erreurs.add(err);
     	err.getObservateur().miseAJour();
     }
+    
+    public void reset() {
+    	for(Element e : (HashSet<Element>) mainConteneur.getElmts().clone()) {
+    		this.supprimerElement((ElementGraphique)e.getObservateur());
+    	}
+    	mainConteneur.getElmts().clear();
+    }
+
+	public void nouveau() throws Exception {
+		reset();
+		ajouterEtat(EnumEtat.INIT, "", null);
+		chercherErreurs();
+	}
 }

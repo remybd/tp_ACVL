@@ -58,6 +58,7 @@ public class EditeurGraphique extends JFrame {
     private JMenu fichier = new JMenu("Fichier");
     private JMenu aide = new JMenu("Aide");
 
+    private JMenuItem nouveau = new JMenuItem("Nouveau");
     private JMenuItem ouvrir = new JMenuItem("Ouvrir");
     private JMenuItem enregistrer = new JMenuItem("Enregistrer");
     private JMenuItem aplatir = new JMenuItem("Aplatir");
@@ -182,6 +183,18 @@ public class EditeurGraphique extends JFrame {
                 
             }
         });
+        nouveau.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	reset();
+            	try {
+            		ControleurDiagramme.instance().nouveau();
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+            }
+        });
+        fichier.add(nouveau);
         fichier.add(ouvrir);
         fichier.add(enregistrer);
         fichier.add(aplatir);

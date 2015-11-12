@@ -63,7 +63,7 @@ public class EditionTransition extends FenetrePopup implements ActionListener{
 
     public void actionPerformed(ActionEvent arg0){
         EnumTransition type = transition_graph.getType();
-        String etiquette = evenement_transition.getText() + " [" + garde_transition.getText() + "] /" + action_transition.getText();
+        String etiquette = evenement_transition.getText() + " [" + garde_transition.getText() + "] / " + action_transition.getText();
         try {
             ArrayList<EtatGraph> etats_source_destination = Ihm.instance().getControleur().getSourceAndDestination(transition_graph);
             Ihm.instance().getControleur().supprimerElement(transition_graph);
