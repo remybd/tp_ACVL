@@ -18,6 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -126,14 +127,15 @@ public class EditeurGraphique extends JFrame {
                 if (rVal == JFileChooser.APPROVE_OPTION) {
                 	File f = c.getSelectedFile();
                     filename.setText(f.getName());
-                    dir.setText(f.getAbsolutePath().toString());
+                    dir.setText(f.getAbsolutePath().toString());                 
 					try {
 						Ihm.instance().getControleurFichier().chargerFichier(f.getAbsolutePath().toString());
-					} catch (ClassNotFoundException
-							| IOException e1) {
-						new FenetreErreur("Une erreur survenue pendant l'ouverture du fichier ; il n'existe peut-�tre pas.");
-					}
-					
+					} catch (ClassNotFoundException e1){
+						new FenetreErreur("Une erreur est survenue pendant le chargement du fichier; il est ptrobablement corrompu.");
+					} catch(IOException e2) {
+						new FenetreErreur("Une erreur est survenue pendant l'ouverture du fichier ; il n'existe peut-etre pas.");
+						e2.printStackTrace();
+					}					
                 }
                 if (rVal == JFileChooser.CANCEL_OPTION) {
                     filename.setText("");
@@ -193,7 +195,26 @@ public class EditeurGraphique extends JFrame {
         });
         fichier.add(fermer);
 
+        consulter_manuel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+					Ihm.instance().getControleurFichier().ouvrirManuel();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+            }
+        });
         aide.add(consulter_manuel);
+        a_propos.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String a_propos_texte = "TransUML \n RAKOTOARISOA Jérémy \n BATAL Thibaut \n BEULE DAUZAT Rémy \n ROUSSEAU Benjamin";
+                JOptionPane jop = new JOptionPane();
+                jop.showMessageDialog(null, a_propos_texte, "Information", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
         aide.add(a_propos);
 
         menu.add(fichier);
@@ -385,7 +406,7 @@ public class EditeurGraphique extends JFrame {
         }
         return res;
     }
-	
+
     private void reset() {
         for (Map.Entry<mxCell, ElementGraphique> entry : liste_elements_graphiques.entrySet()) {
         	Object[] tab = {entry.getKey()};

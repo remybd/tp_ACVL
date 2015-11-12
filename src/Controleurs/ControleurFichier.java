@@ -8,6 +8,7 @@ import java.io.IOException;
 import ElementsDiagramme.Conteneur;
 import RessourcesExternes.Fichier;
 import RessourcesExternes.FichierSauvegarde;
+import Vues.FenetreErreur;
 
 /**
  * Created by r�my on 05/11/2015.
