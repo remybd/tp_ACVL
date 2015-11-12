@@ -1,11 +1,15 @@
 package Vues;
 
+import java.util.ArrayList;
+
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+
 import ElementsDiagramme.EnumEtat;
 import ElementsDiagramme.EnumTransition;
-import com.mxgraph.model.mxCell;
 
-import javax.swing.*;
-import java.util.ArrayList;
+import com.mxgraph.model.mxCell;
 
 
 /**
@@ -71,7 +75,7 @@ public class MenuContextuel extends JPopupMenu {
             if(type_transition == EnumTransition.INIT)
                 modifier_transition.setEnabled(false);
 
-            // Aucun élément sélectionné
+            // Aucun Ã©lÃ©ment sÃ©lectionnÃ©
         } else {
 
             ajouter_transition.setEnabled(false);

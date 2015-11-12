@@ -49,13 +49,7 @@ public class ControleurFichier {
         return manuel;
     }
     
-    public void ouvrirManuel(){
-    	try {
-			Desktop.getDesktop().open(new File(getManuel().getCheminRelatif()));
-		} catch (IOException e) {
-			new FenetreErreur("Le manuel n'a pas ete trouve. Verifiez qu'un fichier UserGuide.pdf existe bien a la racine de l'application.");
-		
-			e.printStackTrace();
-		}
+    public void ouvrirManuel() throws IOException{
+		Desktop.getDesktop().open(new File(getManuel().getCheminRelatif()));
     }
 }

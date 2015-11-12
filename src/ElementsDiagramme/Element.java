@@ -1,12 +1,9 @@
 package ElementsDiagramme;
 
-import Vues.ObservateurVue;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * Created by rémy on 04/11/2015.
+ * Created by rï¿½my on 04/11/2015.
  */
 public abstract class Element extends Sujet{
 	
@@ -25,7 +22,7 @@ public abstract class Element extends Sujet{
         this.conteneurParent = conteneurParent;
     }
 
-    public abstract ArrayList<Element> supprimer(); //suppression de l'élément this
+    public abstract ArrayList<Element> supprimer(); //suppression de l'ï¿½lï¿½ment this
 
     public abstract boolean isEtat();
     public abstract boolean isEtatIntermediaire();

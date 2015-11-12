@@ -1,19 +1,35 @@
 package Controleurs;
 
-import ElementsDiagramme.*;
-import ElementsDiagramme.Etat;
-import ElementsDiagramme.Transition;
-import Erreurs.Erreur;
-import Exceptions.*;
-import Vues.*;
-import com.mxgraph.model.mxCell;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import ElementsDiagramme.Composite;
+import ElementsDiagramme.Conteneur;
+import ElementsDiagramme.Element;
+import ElementsDiagramme.EnumEtat;
+import ElementsDiagramme.EnumTransition;
+import ElementsDiagramme.Etat;
+import ElementsDiagramme.EtatIntermediaire;
+import ElementsDiagramme.PseudoFinal;
+import ElementsDiagramme.PseudoInitial;
+import ElementsDiagramme.Transition;
+import ElementsDiagramme.TransitionFinale;
+import ElementsDiagramme.TransitionInitiale;
+import ElementsDiagramme.TransitionIntermediaire;
+import Erreurs.Erreur;
+import Exceptions.BadCorrespondanceBetweenObservateurAndSubjectType;
+import Exceptions.CantCreateTransitionOnFinal;
+import Exceptions.NameNotModifiableException;
+import Vues.EditeurGraphique;
+import Vues.ElementGraphique;
+import Vues.EtatGraph;
+import Vues.Ihm;
+import Vues.ObservateurVue;
+import Vues.TransitionGraph;
+
 /**
- * Created by r�my on 05/11/2015.
+ * Created by rémy on 05/11/2015.
  */
 public class ControleurDiagramme {
     private Conteneur mainConteneur;
@@ -46,7 +62,6 @@ public class ControleurDiagramme {
 
     }
 
-    //TODO A modifier, ajouterTransition doit recevoir des EtatGraph de la Vue et non pas des �tats
     public Transition ajouterTransition(EnumTransition type, String etiquette, EtatGraph s, EtatGraph d) throws Exception {
         Etat sEtat = (Etat)getElementFromGraphic(s);
         Etat dEtat = (Etat)getElementFromGraphic(d);
@@ -69,7 +84,6 @@ public class ControleurDiagramme {
         if(parent == null){
             conteneurParent = mainConteneur;
         } else {
-            //TODO Exception de cast (l'objet qu'on r�cup�re si le parent != null n'est pas forc�ment un Composite, je ne sais pas pq)
             conteneurParent = ((Composite)getElementFromGraphic(parent)).getFils();
         }
         Etat e = Etat.creerEtat(type,nom,this,conteneurParent);
@@ -114,7 +128,6 @@ public class ControleurDiagramme {
             correspondance.remove(elem);
         }
         
-        DEBUG_displayElmts();
         this.chercherErreurs();
     }
 
@@ -128,71 +141,51 @@ public class ControleurDiagramme {
             correspondance.remove(elem);
         }
 
-        DEBUG_displayElmts();
         this.chercherErreurs();
-    }
-
-    public void DEBUG_displayElmts(){
-    	System.out.println("Elmts pr�sents dans le controleur :");
-
-    	int i=0;
-    	for(ElementGraphique elmtGraph : correspondance.keySet()){
-			System.out.println("Element "+i);
-			
-    		Element elmt = correspondance.get(elmtGraph);
-    		if(elmt.isEtat()){
-    			System.out.println("Etat : "+((Etat)elmt).getNom());
-    		}
-    		else if(elmt.isTransition()){
-    			System.out.println("Transition : "+((Transition)elmt).getEtiquette());
-    		}
-    		
-    		i++;
-    	}
     }
     
     public void modifierTransition(TransitionGraph transitionGraph, EtatGraph source, EtatGraph dest,String etiquette) throws Exception{
-    	/* Check les pr�conditions */
+    	/* Check les préconditions */
     	if(!correspondance.containsKey(transitionGraph))
-    		throw new Exception("La transition sp�cifi�e n'existe pas");
+    		throw new Exception("La transition spécifiée n'existe pas");
     	
     	if(!correspondance.containsKey(source))
-    		throw new Exception("L'�tat source sp�cifi� n'existe pas");
+    		throw new Exception("L'état source spécifié n'existe pas");
     	
     	if(!correspondance.containsKey(dest))
-    		throw new Exception("L'�tat destination sp�cifi� n'existe pas");
+    		throw new Exception("L'état destination spécifié n'existe pas");
     	
     	
     	
-    	/* Get les correspondances dans le mod�le */
+    	/* Get les correspondances dans le modèle */
     	Element modelTrans = correspondance.get(transitionGraph);
     	if(!modelTrans.isTransition())
-    		throw new Exception("La transition sp�cifi�e n'est pas une transition");
+    		throw new Exception("La transition spécifiée n'est pas une transition");
     	
     	Element modelSource = correspondance.get(source);
     	if(!modelSource.isEtat())
-    		throw new Exception("L'�tat source sp�cifi� n'est pas un �tat");
+    		throw new Exception("L'état source spécifié n'est pas un état");
     	    	
     	Element modelDest = correspondance.get(dest);
     	if(!modelDest.isEtat())
-    		throw new Exception("L'�tat destination sp�cifi� n'est pas un �tat");
+    		throw new Exception("L'état destination spécifié n'est pas un état");
     	
     	/* Check logique */
     	if(modelSource.isEtatPseudoFinal())
-    		throw new Exception("Un �tat final ne peut pas �tre utilis� comme �tat source d'une transition");
+    		throw new Exception("Un état final ne peut pas être utilisé comme état source d'une transition");
     	
     	if(modelDest.isEtatPseudoInitial())
-    		throw new Exception("Un �tat initial ne peut pas �tre utilis� comme �tat destination d'une transition");
+    		throw new Exception("Un état initial ne peut pas étre utilisé comme état destination d'une transition");
     	
     	
     	
-    	/* On ne peut pas lier un �tat initial � un �tat final*/
+    	/* On ne peut pas lier un état initial é un état final*/
     	if(modelSource.isEtatPseudoInitial() && modelDest.isEtatPseudoFinal()){
-    		throw new Exception("Une transition ne peut pas relier un �tat initial � un �tat final");
+    		throw new Exception("Une transition ne peut pas relier un état initial à un état final");
     	}
     	
     	
-    	/* Converti la transition suivant les nouveaux �tats associ�s */
+    	/* Converti la transition suivant les nouveaux états associés */
     	if(modelSource.isEtatPseudoInitial()){
     		if(modelTrans.isTransitionIntermediaire()){
     			modelTrans = new TransitionInitiale((TransitionIntermediaire)modelTrans, (PseudoInitial)modelSource);
@@ -226,10 +219,8 @@ public class ControleurDiagramme {
     	if(mainConteneur == null)
     		return;
     	
-    	//get toutes les erreurs
         erreurs = mainConteneur.chercherErreurs(ihm.getEdGraphique().getZoneErreur());
     	
-    	//informe la vue des erreurs
     	if(erreurs.size()>0)
     		erreurs.iterator().next().getObservateur().miseAJour();
     }
@@ -286,29 +277,6 @@ public class ControleurDiagramme {
         return e.getNom();
     }
 
-
-
-    //renvoie tous les �tats simples et composites fils de l'�tatGraph p�re
-    /*public HashSet<EtatGraph> getSonFromFatherState(EtatGraph father) throws Exception {
-    	HashSet<EtatGraph> states = new HashSet<EtatGraph>();
-    	
-    	if(father == null || !correspondance.containsKey(father))
-    		return states;
-    	
-    	Element composite = correspondance.get(father);
-    	if(!composite.isEtatComposite())
-    		return states;
-    	
-    	HashSet<Element> elmtsFils = ((Composite)composite).getFils().getElmts();
-    	for(Element elmt : elmtsFils){
-    		if(elmt.isEtat()){
-                states.add((EtatGraph)getEtatGraphFromEtat((Etat)elmt));
-    		}
-    	}
-    	
-    	return states;
-    }*/
-
     public HashMap<ElementGraphique, Element> getCorrespondance() {
         return correspondance;
     }
@@ -346,37 +314,15 @@ public class ControleurDiagramme {
         ArrayList<Element> listAllElements = new ArrayList<Element>();
         mainConteneur.getAllElements(listAllElements);
 
-      //  HashSet<ElementGraphique> listAllElementsGraphique = new HashSet<ElementGraphique>();
         for(Element e : listAllElements){
             ElementGraphique eg = (ElementGraphique)e.getObservateur();
             correspondance.put(eg,e);
-            //listAllElementsGraphique.add(eg);
         }
 
-        this.DEBUG_displayElmts();
         EditeurGraphique.instance().updateListeElementGraphiqueAndDisplay(listAllElements);
         Ihm.instance().getEdGraphique().getGraph().refresh();
         this.chercherErreurs();
     }
-
-    /*  public void chargerMainConteneur(Conteneur mainConteneur){
-        this.mainConteneur = mainConteneur;
-        correspondance.clear();
-
-        HashSet<Element> listAllElements = mainConteneur.getAllElements();
-
-        HashSet<ElementGraphique> listAllElementsGraphique = new HashSet<ElementGraphique>();
-        for(Element e : listAllElements){
-            ElementGraphique eg = (ElementGraphique)e.getObservateur();
-            correspondance.put(eg,e);
-            listAllElementsGraphique.add(eg);
-        }
-
-        this.DEBUG_displayElmts();
-        EditeurGraphique.instance().updateListeElementGraphiqueAndDisplay(listAllElementsGraphique);
-        Ihm.instance().getEdGraphique().getGraph().refresh();
-        this.chercherErreurs();
-    }*/
 
     public HashSet<Erreur> getErreurs() {
         return erreurs;
@@ -389,4 +335,17 @@ public class ControleurDiagramme {
     	erreurs.add(err);
     	err.getObservateur().miseAJour();
     }
+    
+    public void reset() {
+    	for(Element e : (HashSet<Element>) mainConteneur.getElmts().clone()) {
+    		this.supprimerElement((ElementGraphique)e.getObservateur());
+    	}
+    	mainConteneur.getElmts().clear();
+    }
+
+	public void nouveau() throws Exception {
+		reset();
+		ajouterEtat(EnumEtat.INIT, "", null);
+		chercherErreurs();
+	}
 }

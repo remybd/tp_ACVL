@@ -1,7 +1,9 @@
 package Vues;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 /**
  * Created by Jerem on 03/11/2015.

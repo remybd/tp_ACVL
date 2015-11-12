@@ -1,20 +1,15 @@
 package Vues;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
-
-import ElementsDiagramme.EnumEtat;
-import Exceptions.NameNotModifiableException;
 
 /**
- * Pour afficher simplement un mesage d'erreur dans une nouvelle fenêtre
+ * Pour afficher simplement un mesage d'erreur dans une nouvelle fenÃªtre
  *
  */
 public class FenetreErreur extends FenetrePopup implements ActionListener {

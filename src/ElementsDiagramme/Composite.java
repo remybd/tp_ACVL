@@ -35,10 +35,6 @@ public class Composite extends EtatIntermediaire {
 		this._fils = _fils;
 	}
 	
-	/**
-	 * 
-	 * @return Les �l�ments du fils
-	 */
 	public HashSet<Element> getElements(){
 		if(_fils == null)
 			return new HashSet<Element>();
@@ -49,7 +45,7 @@ public class Composite extends EtatIntermediaire {
 	/**
 	 * 
 	 * @param l 
-	 * @return Tous les �l�ments, m�me les sous-�l�ments des �tats composites
+	 * @return Tous les éléments, même les sous-éléments des états composites
 	 */
 	public void getAllElements(ArrayList<Element> l){
 		if(_fils != null)
@@ -58,7 +54,7 @@ public class Composite extends EtatIntermediaire {
 
 	/**
 	 * 
-	 * @return la liste des �tats qui sont bloquants au sein de cet �tat composite
+	 * @return la liste des états qui sont bloquants au sein de cet état composite
 	 */
 	public HashSet<ErreurEtat> chercherEtatsBloquants(ObservateurVue zoneErreur){
 		if(_fils != null)
@@ -69,8 +65,8 @@ public class Composite extends EtatIntermediaire {
 	
 
 	/**
-	 * Gestion erreur d'unicit� des �tats
-	 * @return la liste des etats qui ont le m�me nom au sein d'un conteneur
+	 * Gestion erreur d'unicité des états
+	 * @return la liste des etats qui ont le même nom au sein d'un conteneur
 	 */
 	public HashMap<Conteneur,HashSet<NonUnicite>> chercherPluriciteEtats(ObservateurVue zoneErreur){
 		if(this._fils==null)
@@ -82,8 +78,8 @@ public class Composite extends EtatIntermediaire {
 
 
 	/**
-	 * Retourne les erreurs de transition non d�terministes li�s � cet �tat
-	 * 2 transitions sont non d�terministes si elles ont le m�me �v�nement et la m�me condition
+	 * Retourne les erreurs de transition non déterministes liés à cet état
+	 * 2 transitions sont non déterministes si elles ont le même évènement et la même condition
 	 * @return
 	 */
 	public HashSet<TransitionNonDeterministe> chercherTransNnDeterm(ObservateurVue zoneErreur){
@@ -103,8 +99,8 @@ public class Composite extends EtatIntermediaire {
 		HashSet<Element> listEtatsAndTransitionIntermediaires = getEtatsAndTransitionIntermediaires();
 		getConteneurParent().addElements(listEtatsAndTransitionIntermediaires);
 
-
 		EtatGraph grandParent = ((ElementGraphique) getObservateur()).getParent();
+
 		//change parentée au niveau graphique
 		for(Element el : listEtatsAndTransitionIntermediaires){
 			((ElementGraphique)el.getObservateur()).setParentPourAplatissement();
@@ -122,27 +118,20 @@ public class Composite extends EtatIntermediaire {
 			}
 		}
 
-
 		//relie toutes les transitions sortantes aux états finaux
 		HashSet<PseudoFinal> listEtatsFinaux = getEtatsFinaux();
-		if(!listEtatsFinaux.isEmpty()){//il y a des états finaux, on les relie donc aux transitions sortantes
+		if(!listEtatsFinaux.isEmpty()){
+			//il y a des états finaux, on les relie donc aux transitions sortantes
 			for(EtatIntermediaire etatIntermediaire : getEtatsPointedByFinal(listEtatsFinaux)){
 				for(Transition t : this.getDestinations()){
-
 					if(t.isTransitionFinale()){//clone les transitions sortantes car peux y avoir plusieurs états finaux et il fuat donc les cloner
 						ControleurDiagramme.instance().ajouterTransition(EnumTransition.FINAL,t.getEtiquette(),(EtatGraph)etatIntermediaire.getObservateur(),(EtatGraph)t.getEtatDestination().getObservateur());
-
 					} else if(t.isTransitionIntermediaire()){
 						ControleurDiagramme.instance().ajouterTransition(EnumTransition.INTER, t.getEtiquette(), (EtatGraph) etatIntermediaire.getObservateur(), (EtatGraph) t.getEtatDestination().getObservateur());
 					}
 				}
 			}
 
-		}
-
-		for(Transition t : this.getDestinations()){
-			if(t.isTransitionFinale()){//clone les transitions sortantes car peux y avoir plusieurs états finaux et il fuat donc les cloner
-			}
 		}
 
 		//supprime les transitions sortantes puisqu'on les as clonées
@@ -215,19 +204,6 @@ public class Composite extends EtatIntermediaire {
 		}
 		return listEtatsAndTransitionIntermediaires;
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	@Override
 	public ArrayList<Element> supprimer() {

@@ -1,6 +1,5 @@
 package Vues;
 
-import Controleurs.ControleurDiagramme;
 import com.mxgraph.model.mxCell;
 
 /**

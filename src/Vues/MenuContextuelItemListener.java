@@ -1,18 +1,18 @@
 package Vues;
 
-import ElementsDiagramme.EnumEtat;
-import ElementsDiagramme.EnumTransition;
-
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.JOptionPane;
+
+import ElementsDiagramme.EnumEtat;
+import ElementsDiagramme.EnumTransition;
 
 /**
  * Created by Jerem on 08/11/2015.
  */
 public class MenuContextuelItemListener{
 
-    //private static String nom_element;
     private static ElementGraphique element;
 
     public MenuContextuelItemListener(ElementGraphique element){
@@ -64,7 +64,7 @@ public class MenuContextuelItemListener{
                     new CreationTransition((EtatGraph) element, EnumTransition.INIT);
                 else if (((EtatGraph) element).getType() == EnumEtat.FINAL) {
                     JOptionPane message_erreur = new JOptionPane();
-                    message_erreur.showMessageDialog(null, "Impossible d'ajouter une transition depuis un etat pseudo-final", "Erreur", JOptionPane.ERROR_MESSAGE);
+                    message_erreur.showMessageDialog(null, "Impossible d'ajouter une transition depuis un état pseudo-final", "Erreur", JOptionPane.ERROR_MESSAGE);
                 } else
                     new CreationTransition((EtatGraph) element, EnumTransition.INTER);
             } catch (Exception ex){
@@ -95,7 +95,7 @@ public class MenuContextuelItemListener{
                 Ihm.instance().getControleur().supprimerElement(element);
             else {
                 JOptionPane message_erreur = new JOptionPane();
-                message_erreur.showMessageDialog(null, "On ne peut pas supprim� un etat initial", "Erreur", JOptionPane.ERROR_MESSAGE);
+                message_erreur.showMessageDialog(null, "On ne peut pas supprimer un état initial", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
         }
     }

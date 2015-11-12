@@ -1,10 +1,10 @@
 package Erreurs;
 
-import Vues.ObservateurVue;
 import ElementsDiagramme.Etat;
+import Vues.ObservateurVue;
 
 /**
- * Created by rémy on 05/11/2015.
+ * Created by rï¿½my on 05/11/2015.
  */
 public abstract class Bloquant extends ErreurEtat{
 
@@ -14,6 +14,6 @@ public abstract class Bloquant extends ErreurEtat{
 
 	@Override
 	public String getMessage() {
-    	return this.getNom()+" - L'etat simple suivant doit avoir au moins une transition sortante : "+getEtatParent().getNom();
+    	return this.getNom() + " - L'etat simple suivant doit avoir au moins une transition sortante : "+getEtatParent().getNom();
 	}
 }

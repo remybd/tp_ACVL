@@ -1,10 +1,10 @@
 package Vues;
 
-import ElementsDiagramme.EnumEtat;
-import ElementsDiagramme.EnumTransition;
-import com.mxgraph.model.mxCell;
-
 import java.util.ArrayList;
+
+import ElementsDiagramme.EnumTransition;
+
+import com.mxgraph.model.mxCell;
 
 /**
  * Created by Jerem on 03/11/2015.
@@ -70,6 +70,5 @@ public class TransitionGraph extends ElementGraphique {
             EditeurGraphique.instance().getGraph().getModel().endUpdate();
             EditeurGraphique.instance().setVisible(true);
         }
-        //this.getObjet_graphique().setValue();
     }
 }

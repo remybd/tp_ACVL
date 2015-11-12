@@ -21,7 +21,7 @@ public class TransitionFinale extends Transition {
 	
 
 	/**
-	 * Converti la TransitionIntermediaire spécifiée en TransitionFinale
+	 * Converti la TransitionIntermediaire spÃ©cifiÃ©e en TransitionFinale
 	 * @param trans
 	 * @param pseudoFinal
 	 */
@@ -35,7 +35,7 @@ public class TransitionFinale extends Transition {
 	}
 
 	/**
-	 * Converti la TransitionInitiale spécifiée en TransitionFinale ; l'état destination est perdu
+	 * Converti la TransitionInitiale spÃ©cifiÃ©e en TransitionFinale ; l'Ã©tat destination est perdu
 	 * @param trans
 	 * @param pseudoFinal
 	 */
@@ -53,7 +53,7 @@ public class TransitionFinale extends Transition {
 	}
 
 	/**
-	 * Retourne la garde indiquée dans l'étiquette
+	 * Retourne la garde indiquÃ©e dans l'Ã©tiquette
 	 * @return
 	 */
 	@Override
@@ -63,15 +63,15 @@ public class TransitionFinale extends Transition {
 			return "";
 
 		int secCrochet = _etiquette.indexOf(']', premCrochet);
-		if(secCrochet<0) //pas de fermeture de garde => on considère que tout le reste de la chaîne est la garde TODO : Avertir l'utilisateur ?
+		if(secCrochet<0) //pas de fermeture de garde => on considï¿½re que tout le reste de la chaï¿½ne est la garde TODO : Avertir l'utilisateur ?
 			secCrochet = _etiquette.length();
 
 		return _etiquette.substring(premCrochet, secCrochet);
 	}
 
 	/**
-	 * Retourne l'événement indiqué dans l'étiquette
-	 * L'événement se trouve avant le premier '[', à défaut avant le premier '/', sinon ce n'est rien
+	 * Retourne l'Ã©vÃ¨nement indiquÃ© dans l'Ã©tiquette
+	 * L'Ã©vÃ¨nement se trouve avant le premier '[', Ã  dÃ©faut avant le premier '/', sinon ce n'est rien
 	 * @return
 	 */
 	@Override
@@ -88,8 +88,8 @@ public class TransitionFinale extends Transition {
 	}
 
 	/**
-	 * Retourne l'action indiquée dans l'étiquette
-	 * L'action se trouve après le slash, c'est toute l'étiquette s'il n'y en a pas
+	 * Retourne l'action indiquÃ©e dans l'Ã©tiquette
+	 * L'action se trouve aprÃ¨s le slash, c'est toute l'Ã©tiquette s'il n'y en a pas
 	 * @return
 	 */
 	@Override
@@ -124,7 +124,6 @@ public class TransitionFinale extends Transition {
 			_etatFinal.unLinkTransition(this);
 		if(_etatSource != null)
 			_etatSource.unLinkDestination(this);
-
 
 		this.getConteneurParent().supprimerElmt(this);
 		return elmtsSupr;

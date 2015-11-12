@@ -1,11 +1,11 @@
 package Exceptions;
 
 /**
- * Created by rémy on 08/11/2015.
+ * Created by rï¿½my on 08/11/2015.
  */
 public class NotADestinationException extends Exception {
 
     public NotADestinationException(){
-        System.out.println("L'état demandé n'est pas une destination");
+    	super("L'Ã©tat demandÃ© n'est pas une destination");
     }
 }

@@ -56,8 +56,6 @@ public class TransitionInitiale extends Transition {
 		return elmtsSupr;
 	}
 	
-
-
 	@Override
 	public boolean isTransitionFinale() {
 		return false;
@@ -72,7 +70,6 @@ public class TransitionInitiale extends Transition {
 	public boolean isTransitionIntermediaire() {
 		return false;
 	}
-
 
 	public void setEtatSource(PseudoInitial etat) {
 		this._etatInit = etat;

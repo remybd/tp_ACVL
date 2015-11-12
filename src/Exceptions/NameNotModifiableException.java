@@ -1,11 +1,11 @@
 package Exceptions;
 
 /**
- * Created by rémy on 08/11/2015.
+ * Created by rï¿½my on 08/11/2015.
  */
 public class NameNotModifiableException extends Exception {
 
     public NameNotModifiableException(){
-        System.out.println("Le nom de cet élément n'est pas modifiable");
+    	super("Le nom de cet Ã©lÃ©ment n'est pas modifiable");
     }
 }

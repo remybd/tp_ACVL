@@ -20,10 +20,8 @@ public class PseudoInitial extends Etat {
 		this.setTransition(transition);
 	}
 
-
-
 	/**
-	 * Converti le PseudoFinal spécifié en PseudoInitial ; la transition associée est perdue
+	 * Converti le PseudoFinal spÃ©cifiÃ© en PseudoInitial ; la transition associÃ©e est perdue
 	 * @param 
 	 */
 	public PseudoInitial(PseudoFinal init){
@@ -33,7 +31,7 @@ public class PseudoInitial extends Etat {
 	
 
 	/**
-	 * Converti le EtatIntermediaire spécifié en PseudoInitial
+	 * Converti le EtatIntermediaire spÃ©cifiÃ© en PseudoInitial
 	 * @param 
 	 */
 	public PseudoInitial(EtatIntermediaire etat){

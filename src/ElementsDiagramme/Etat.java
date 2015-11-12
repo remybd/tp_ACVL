@@ -1,8 +1,6 @@
 package ElementsDiagramme;
 
 import Controleurs.ControleurDiagramme;
-import Vues.EtatGraph;
-import Vues.ObservateurVue;
 
 /**
  *  TODO
@@ -63,8 +61,7 @@ public abstract class Etat extends Element {
 		else if(type == EnumEtat.SIMPLE){
 			e = new Simple(parent,nom);
 		}
-		else{//état final
-			//TODO : peut être modifier le constructeur pour ne pas avoir à mettre null pour la transition
+		else{
 			e = new PseudoFinal(parent,"final_"+nom);
 		}
 
