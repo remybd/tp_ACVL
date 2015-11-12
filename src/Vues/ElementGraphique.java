@@ -44,7 +44,12 @@ public abstract class ElementGraphique implements ObservateurVue {
         else{
             this.getObjet_graphique().setParent((mxCell)EditeurGraphique.instance().getGraph().getDefaultParent());
         }
-
+ 	}
+ 	
+ 	public void setParentPourAplatissement() {
+ 		mxCell c = (mxCell) this.getObjet_graphique().getParent();
+		 this.getObjet_graphique().removeFromParent();
+		 c.getParent().insert(this.getObjet_graphique());
  	}
 
     public boolean isSupprimable(){
