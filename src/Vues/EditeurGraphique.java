@@ -1,34 +1,41 @@
 package Vues;
 
-import Controleurs.ControleurDiagramme;
-import ElementsDiagramme.EnumEtat;
-import ElementsDiagramme.EnumTransition;
-import ElementsDiagramme.Etat;
-import ElementsDiagramme.PseudoInitial;
-import ElementsDiagramme.Transition;
-
-import com.mxgraph.model.mxCell;
-import com.mxgraph.model.mxGeometry;
-import com.mxgraph.swing.mxGraphComponent;
-import com.mxgraph.util.mxConstants;
-import com.mxgraph.view.mxGraph;
-import com.mxgraph.view.mxStylesheet;
-
-import javax.swing.*;
-
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.*;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Map;
-import java.util.WeakHashMap;
+
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import Controleurs.ControleurDiagramme;
+import ElementsDiagramme.Conteneur;
+import ElementsDiagramme.Element;
+import ElementsDiagramme.EnumEtat;
+import ElementsDiagramme.EnumTransition;
+
+import com.mxgraph.model.mxCell;
+import com.mxgraph.model.mxGeometry;
+import com.mxgraph.model.mxICell;
+import com.mxgraph.swing.mxGraphComponent;
+import com.mxgraph.util.mxConstants;
+import com.mxgraph.view.mxGraph;
+import com.mxgraph.view.mxStylesheet;
 
 /**
  * Created by Jerem on 11/10/2015.
@@ -422,35 +429,86 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
     }
 
 	public void updateListeElementGraphiqueAndDisplay(
+			ArrayList<Element> listAllElements) {
+        EditeurGraphique.instance().getGraph().removeCells();
+
+		graph.getModel().beginUpdate();
+		try {
+			reset();
+            ArrayList<ElementGraphique> eg_array = new ArrayList<ElementGraphique>();
+			Conteneur top = ControleurDiagramme.instance().getMainConteneur();
+
+			for(Element e : listAllElements) {
+				if(e.getConteneurParent().equals(top) || ( ((ElementGraphique) e.getObservateur()).getParent() == null)) {
+					System.out.println("LAAAAAAAAAAAAAA");
+	                graph.addCell(((ElementGraphique)e.getObservateur()).getObjet_graphique(), Ihm.instance().getEdGraphique().getGraph().getDefaultParent());
+				} else {
+					if(((ElementGraphique)e.getObservateur()) == null)
+						System.out.println("1");
+					else if(((ElementGraphique)e.getObservateur()).getObjet_graphique() == null)
+						System.out.println("2");
+					else if(e.getObservateur() == null)
+						System.out.println("3");
+					else if( ((ElementGraphique) e.getObservateur()).getParent() == null)
+						System.out.println("4");
+					else if(((ElementGraphique) e.getObservateur()).getParent().getObjet_graphique() == null)
+						System.out.println("5");
+	                graph.addCell(((ElementGraphique)e.getObservateur()).getObjet_graphique(), ((ElementGraphique)e.getObservateur()).getParent().getObjet_graphique());
+				}
+                liste_elements_graphiques.put(((ElementGraphique)e.getObservateur()).getObjet_graphique(), (ElementGraphique)e.getObservateur());
+			}
+			
+		} finally {
+            graph.getModel().endUpdate();
+		}
+	}
+    
+	public void updateListeElementGraphiqueAndDisplay(
 			HashSet<ElementGraphique> listAllElementsGraphique) {
         EditeurGraphique.instance().getGraph().removeCells();
 
 		graph.getModel().beginUpdate();
 		try {
 			reset();
-			System.out.println("YOUHOUZE");
             ArrayList<ElementGraphique> eg_array = new ArrayList<ElementGraphique>();
 
 			for(ElementGraphique e : listAllElementsGraphique) {
                 if(!eg_array.contains(e)) {
-
-                    addParent(e,eg_array);
-                    /*if (e.getObjet_graphique().getParent() != null)
-                        graph.addCell(e.getObjet_graphique().getParent());
-                    graph.addCell(e.getObjet_graphique(), e.getObjet_graphique().getParent());
-
-                    System.out.println("Objet ; " + e.getObjet_graphique());
-                if(e.getObjet_graphique().getParent() == null){
-                    System.out.println("Parent : " + e.getObjet_graphique().getParent());
-                    graph.addCell(e.getObjet_graphique());
-                } else {
-                    System.out.println("Parent 2: " + e.getObjet_graphique().getParent());
-                    graph.addCell(e.getObjet_graphique(),e.getObjet_graphique().getParent());
-                }*/
+                	if(e.getObjet_graphique().isVertex()) {
+                        mxICell res = (mxICell) addParent(e,eg_array);
+                     //   if(res == null) {
+                        if(e.getParent() != null) {
+                        	e.getObjet_graphique().setParent((mxICell) graph.getDefaultParent()); 
+                        } else {
+                        	if(e.getParent().getObjet_graphique() == null)
+                        		System.out.println("ALLLERTE GENERALE");
+                        	e.getObjet_graphique().setParent((mxICell) e.getParent().getObjet_graphique()); 
+                        }
+                   /*     } else {
+                        	e.getObjet_graphique().setParent(res);
+                        }*/
+                        liste_elements_graphiques.put(e.getObjet_graphique(), e);
+                	}
                 }
-                liste_elements_graphiques.put(e.getObjet_graphique(), e);
-
 			}
+			
+			for(ElementGraphique e : listAllElementsGraphique) {
+                if(!eg_array.contains(e)) {
+                    mxICell res = (mxICell) addParent(e,eg_array);
+               //     if(res == null) {
+                    if(e.getParent() != null) {
+                    	e.getObjet_graphique().setParent((mxICell) graph.getDefaultParent()); 
+                    } else {
+                    	e.getObjet_graphique().setParent((mxICell) e.getParent().getObjet_graphique()); 
+                    }
+                //    	e.getObjet_graphique().setParent((mxICell) graph.getDefaultParent()); 
+              /*      } else {
+                    	e.getObjet_graphique().setParent(res);
+                    }*/
+                    liste_elements_graphiques.put(e.getObjet_graphique(), e);
+                }
+			}
+			
 		} finally {
             graph.getModel().endUpdate();
 		}
@@ -459,7 +517,7 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
     public Object addParent(ElementGraphique eg, ArrayList<ElementGraphique> eg_array) {
     	Object res = null;
         if(eg != null) {
-            if (eg.getObjet_graphique().getParent() != null) {
+            if (eg.getParent() != null) {
                Object parent = addParent(eg.getParent(), eg_array);
                 res = graph.addCell(eg.getObjet_graphique(), parent);
             } else {
