@@ -25,42 +25,23 @@ public class ControleurFichier {
         return instanceUnique;
     }
     
-    private void creerFichier(String path, Conteneur c) {
-        try {
+    private void creerFichier(String path, Conteneur c) throws FileNotFoundException, IOException {
             fichierDeSauvegarde = new FichierSauvegarde(path, c);
-        } catch (FileNotFoundException e) {
-            // TODO : propager l'erreur dans l'IHM
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO : propager l'erreur dans l'IHM
-            e.printStackTrace();
-        }
     }
 
-    public void chargerFichier(String path){
+    public void chargerFichier(String path) throws FileNotFoundException, ClassNotFoundException, IOException{
 
-        try {
-            fichierDeSauvegarde = new FichierSauvegarde(path);
-            Conteneur mainConteneur = fichierDeSauvegarde.getMainConteneur();
-            ControleurDiagramme.instance().chargerMainConteneur(mainConteneur);
-            
-		} catch (ClassNotFoundException | IOException e) {
-			//TODO : propager l'erreur dans l'IHM
-			e.printStackTrace();
-		}
+        fichierDeSauvegarde = new FichierSauvegarde(path);
+        Conteneur mainConteneur = fichierDeSauvegarde.getMainConteneur();
+        ControleurDiagramme.instance().chargerMainConteneur(mainConteneur);
     }
 
-    public void sauvegarderFichier(String path){
+    public void sauvegarderFichier(String path) throws FileNotFoundException, IOException{
         Conteneur mainCont = ControleurDiagramme.instance().getMainConteneur();
         if(fichierDeSauvegarde == null)
             creerFichier(path, mainCont);
         
-        try {
-			fichierDeSauvegarde.sauvegarderFichier();
-		} catch (IOException e) {
-			// TODO propager l'erreur dans l'IHM
-			e.printStackTrace();
-		}
+		fichierDeSauvegarde.sauvegarderFichier();
     }
 
     public Fichier getManuel(){

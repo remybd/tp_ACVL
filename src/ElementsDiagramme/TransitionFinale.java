@@ -12,9 +12,11 @@ public class TransitionFinale extends Transition {
 	private PseudoFinal _etatFinal;
 	private EtatIntermediaire _etatSource;
 	
-	public TransitionFinale(Conteneur parent, String etiquette){
+	public TransitionFinale(Conteneur parent, String etiquette, EtatIntermediaire s, PseudoFinal d){
 		super(parent);
 		this.setEtiquette(etiquette);
+		_etatFinal = d;
+		_etatSource = s;
 	}
 	
 

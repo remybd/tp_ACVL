@@ -66,13 +66,13 @@ public class PseudoInitial extends Etat {
 	public ArrayList<Element> supprimer() {
 		ArrayList<Element> elmtsSupr = new ArrayList<Element>();
 		elmtsSupr.add(this);
+		this.getConteneurParent().supprimerElmt(this);
 		
 		if(_trans == null)
 			return elmtsSupr;
 		
 		_trans.supprimer();	
 		elmtsSupr.add(_trans);
-		this.getConteneurParent().supprimerElmt(this);
 		return elmtsSupr;
 	}
 

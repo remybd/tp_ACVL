@@ -15,9 +15,9 @@ import Vues.ObservateurVue;
  *
  */
 public abstract class EtatIntermediaire extends Etat{
-	//transitions dont la destination est this
+	//transitions dont la destination est un autre état
 	private HashSet<Transition> _dest = new HashSet<Transition>();
-	//transitions dont la source est this
+	//transitions dont la source est un autre état
 	private HashSet<Transition> _sources = new HashSet<Transition>();
 	
 	public EtatIntermediaire(Conteneur parent, String nom){
@@ -74,7 +74,7 @@ public abstract class EtatIntermediaire extends Etat{
 	public HashSet<Transition> getSources() {
 		return _sources;
 	}
-	public void addSource(TransitionIntermediaire source) {
+	public void addSource(Transition source) {
 		if(this._sources == null)
 			this._sources = new HashSet<Transition>();
 			
@@ -127,8 +127,8 @@ public abstract class EtatIntermediaire extends Etat{
 	 * 			false sinon
 	 */
 	public boolean estBloquant(){
-		for(Transition source : _sources){
-			if(source.getEtatDestination() != this)
+		for(Transition dest : _dest){
+			if(dest.getEtatDestination() != this)
 				return false;
 		}
 		
@@ -161,7 +161,7 @@ public abstract class EtatIntermediaire extends Etat{
 		HashSet<TransitionNonDeterministe> transNonDeterm = new HashSet<TransitionNonDeterministe>();
 		String evtCond; //pr 1 transition, contient evenement+condition sans espaces
 		String symbol;
-		for(Transition trans : _sources){
+		for(Transition trans : _dest){
 			evtCond = trans.getEvt()+trans.getAction();
 			evtCond = evtCond.replaceAll("\\s", "");
 			evtCond = evtCond.replaceAll("\\t", "");
