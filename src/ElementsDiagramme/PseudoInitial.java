@@ -3,8 +3,6 @@ package ElementsDiagramme;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import Vues.ObservateurVue;
-
 /**
  *  TODO
  * @author Thibaut
@@ -30,7 +28,7 @@ public class PseudoInitial extends Etat {
 	 */
 	public PseudoInitial(PseudoFinal init){
 		super(init.getConteneurParent(), init.getNom());
-		this.setObservateur(init.getObservateur());
+		this.attache(init.getObservateur());
 	}
 	
 
@@ -40,12 +38,19 @@ public class PseudoInitial extends Etat {
 	 */
 	public PseudoInitial(EtatIntermediaire etat){
 		super(etat.getConteneurParent(), etat.getNom());
-		this.setObservateur(etat.getObservateur());
+		this.attache(etat.getObservateur());
 		
-		HashSet<TransitionIntermediaire> trans = etat.getDestinations();
+		HashSet<Transition> trans = etat.getDestinations();
 		
-		if(trans != null && trans.size()>0)
-			this.setTransition(new TransitionInitiale(trans.iterator().next(), this));
+		if(trans != null && trans.size()>0){
+			Transition tr = trans.iterator().next();
+			if(tr.isTransitionFinale())
+				this.setTransition(new TransitionInitiale((TransitionFinale)tr, this));
+			else if(tr.isTransitionIntermediaire())
+				this.setTransition(new TransitionInitiale((TransitionIntermediaire)tr, this));
+			else
+				this.setTransition((TransitionInitiale)tr);
+		}
 	}
 	
 	public TransitionInitiale getTransition() {
@@ -61,12 +66,13 @@ public class PseudoInitial extends Etat {
 	public ArrayList<Element> supprimer() {
 		ArrayList<Element> elmtsSupr = new ArrayList<Element>();
 		elmtsSupr.add(this);
+		this.getConteneurParent().supprimerElmt(this);
 		
 		if(_trans == null)
 			return elmtsSupr;
-		
-		_trans.supprimer();	
+
 		elmtsSupr.add(_trans);
+		_trans.supprimer();	
 		return elmtsSupr;
 	}
 

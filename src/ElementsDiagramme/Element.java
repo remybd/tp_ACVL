@@ -8,8 +8,7 @@ import java.util.ArrayList;
 /**
  * Created by rémy on 04/11/2015.
  */
-public abstract class Element extends Sujet implements Serializable {
-	private static final long serialVersionUID = 43L;
+public abstract class Element extends Sujet{
 	
 	private Conteneur conteneurParent;
 

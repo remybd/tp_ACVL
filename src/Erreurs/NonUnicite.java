@@ -1,5 +1,6 @@
 package Erreurs;
 
+import Vues.ObservateurVue;
 import ElementsDiagramme.Etat;
 
 /**
@@ -8,12 +9,18 @@ import ElementsDiagramme.Etat;
 public class NonUnicite extends ErreurEtat{
     private Etat etatMemeNom;
 
-    public NonUnicite(Etat etat, Etat etatMemeNom, int importance){
-        super("Etat Non Unique",etat, importance);
+    public NonUnicite(Etat etat, Etat etatMemeNom, int importance, ObservateurVue zoneErreur){
+        super("Etat Non Unique",etat, importance, zoneErreur);
+        System.out.println("Details : etat problematique : "+etat.getNom());
         this.etatMemeNom = etatMemeNom;
     }
 
     public Etat getEtatMemeNom() {
         return etatMemeNom;
     }
+
+	@Override
+	public String getMessage() {
+    	return this.getNom()+" - L'etat suivant porte le meme nom qu'un autre : "+getEtatParent().getNom();
+	}
 }

@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import Controleurs.ControleurDiagramme;
 import Erreurs.ErreurEtat;
 import Erreurs.NonUnicite;
 import Erreurs.TransitionNonDeterministe;
+import Vues.ElementGraphique;
+import Vues.EtatGraph;
 import Vues.ObservateurVue;
 
 
@@ -31,14 +34,36 @@ public class Composite extends EtatIntermediaire {
 	public void setFils(Conteneur _fils) {
 		this._fils = _fils;
 	}
+	
+	/**
+	 * 
+	 * @return Les �l�ments du fils
+	 */
+	public HashSet<Element> getElements(){
+		if(_fils == null)
+			return new HashSet<Element>();
+		
+		return _fils.getElmts();
+	}
+	
+	/**
+	 * 
+	 * @return Tous les �l�ments, m�me les sous-�l�ments des �tats composites
+	 */
+	public HashSet<Element> getAllElements(){
+		if(_fils == null)
+			return new HashSet<Element>();
+		
+		return _fils.getAllElements();
+	}
 
 	/**
 	 * 
 	 * @return la liste des �tats qui sont bloquants au sein de cet �tat composite
 	 */
-	public HashSet<ErreurEtat> chercherEtatsBloquants(){
+	public HashSet<ErreurEtat> chercherEtatsBloquants(ObservateurVue zoneErreur){
 		if(_fils != null)
-			return _fils.chercherEtatsBloquants();
+			return _fils.chercherEtatsBloquants(zoneErreur);
 		else
 			return new HashSet<ErreurEtat>();
 	}
@@ -48,11 +73,11 @@ public class Composite extends EtatIntermediaire {
 	 * Gestion erreur d'unicit� des �tats
 	 * @return la liste des etats qui ont le m�me nom au sein d'un conteneur
 	 */
-	public HashMap<Conteneur,HashSet<NonUnicite>> chercherPluriciteEtats(){
+	public HashMap<Conteneur,HashSet<NonUnicite>> chercherPluriciteEtats(ObservateurVue zoneErreur){
 		if(this._fils==null)
 			return new HashMap<Conteneur,HashSet<NonUnicite>>();
 		
-		return this._fils.chercherPluriciteEtats();
+		return this._fils.chercherPluriciteEtats(zoneErreur);
 	}
 	
 
@@ -62,30 +87,166 @@ public class Composite extends EtatIntermediaire {
 	 * 2 transitions sont non d�terministes si elles ont le m�me �v�nement et la m�me condition
 	 * @return
 	 */
-	public HashSet<TransitionNonDeterministe> chercherTransNnDeterm(){
-		HashSet<TransitionNonDeterministe> transNnDeterm = super.chercherTransNnDeterm();
+	public HashSet<TransitionNonDeterministe> chercherTransNnDeterm(ObservateurVue zoneErreur){
+		HashSet<TransitionNonDeterministe> transNnDeterm = super.chercherTransNnDeterm(zoneErreur);
 		
 		if(this._fils==null)
 			return transNnDeterm;
 		
-		transNnDeterm.addAll(this._fils.chercherTransNnDeterm());
+		transNnDeterm.addAll(this._fils.chercherTransNnDeterm(zoneErreur));
 		return transNnDeterm;			
 	}
-	
+
+
+
+
+
+
+	public void applatir() throws Exception {
+		System.out.println("TEST0 : " + _fils.getElmts());
+		System.out.println("TEST600 : " + getConteneurParent().getPseudoInitial().getTransition().getEtatDest());
+		_fils.applatir();
+		System.out.println("TEST1 : " + _fils.getElmts());
+		System.out.println("TEST601 : " + _fils.getPseudoInitial().getTransition().getEtatDest());
+
+		//change la parenté des états et transition intermédiaires
+		HashSet<Element> listEtatsAndTransitionIntermediaires = getEtatsAndTransitionIntermediaires();
+		System.out.println("TEST2 : " + getEtatsAndTransitionIntermediaires());
+		getConteneurParent().addElements(listEtatsAndTransitionIntermediaires);
+
+
+		EtatGraph grandParent = ((ElementGraphique) getObservateur()).getParent();
+		//change parentée au niveau graphique
+		for(Element el : listEtatsAndTransitionIntermediaires){
+			((ElementGraphique)el.getObservateur()).setParentPourAplatissement();
+		}
+
+		//relie toutes les transitions entrantes à l'état pointé par l'initial
+		System.out.println("TEST4 : " + this.getSources());
+		if(_fils.getPseudoInitial().getTransition() != null){
+			EtatIntermediaire etatPointedByInit = _fils.getPseudoInitial().getTransition().getEtatDest();
+			System.out.println("TEST5 : " + etatPointedByInit);
+			for(Transition t : this.getSources()){
+				if(t.isTransitionIntermediaire()){
+					ControleurDiagramme.instance().ajouterTransition(EnumTransition.INTER,t.getEtiquette(),(EtatGraph)t.getEtatSource().getObservateur(),(EtatGraph)etatPointedByInit.getObservateur());
+				} else if(t.isTransitionInitiale()){
+					ControleurDiagramme.instance().ajouterTransition(EnumTransition.INIT,t.getEtiquette(),(EtatGraph)t.getEtatSource().getObservateur(),(EtatGraph)etatPointedByInit.getObservateur());
+				}
+			}
+		}
+		System.out.println("TEST61 : " + _fils.getPseudoInitial().getTransition().getEtatDest());
+		System.out.println("TEST62 : " + getConteneurParent().getPseudoInitial().getTransition().getEtatDest());
+
+
+
+		//relie toutes les transitions sortantes aux états finaux
+		HashSet<PseudoFinal> listEtatsFinaux = getEtatsFinaux();
+		if(!listEtatsFinaux.isEmpty()){//il y a des états finaux, on les relie donc aux transitions sortantes
+			System.out.println("TEST7 : " + getEtatsPointedByFinal(listEtatsFinaux));
+			for(EtatIntermediaire etatIntermediaire : getEtatsPointedByFinal(listEtatsFinaux)){
+				for(Transition t : this.getDestinations()){
+					if(t.isTransitionFinale()){//clone les transitions sortantes car peux y avoir plusieurs états finaux et il fuat donc les cloner
+						ControleurDiagramme.instance().ajouterTransition(EnumTransition.FINAL,t.getEtiquette(),(EtatGraph)etatIntermediaire.getObservateur(),(EtatGraph)t.getEtatDestination().getObservateur());
+
+					} else if(t.isTransitionIntermediaire()){
+						ControleurDiagramme.instance().ajouterTransition(EnumTransition.INTER, t.getEtiquette(), (EtatGraph) etatIntermediaire.getObservateur(), (EtatGraph) t.getEtatDestination().getObservateur());
+					}
+				}
+			}
+
+		}
+
+		System.out.println("TEST64 : " + getConteneurParent().getPseudoInitial().getTransition().getEtatDest());
+
+		//supprime les transitions sortantes puisqu'on les as clonées
+		HashSet<Transition> clone = (HashSet<Transition>)this.getDestinations().clone();
+		for(Transition t : clone){
+			ControleurDiagramme.instance().supprimerElement((ElementGraphique)t.getObservateur());
+		}
+		this.getDestinations().clear();
+
+		System.out.println("TEST65 : " + getConteneurParent().getPseudoInitial().getTransition().getEtatDest());
+		//suprime les états finaux et leurs transitions dans l'état composite
+		for(PseudoFinal pseudoFinal : listEtatsFinaux){
+			ControleurDiagramme.instance().supprimerElement((ElementGraphique)pseudoFinal.getObservateur());
+		}
+
+		System.out.println("TEST66 : " + getConteneurParent().getPseudoInitial().getTransition().getEtatDest());
+		//suprime l'état initial et donc sa transition
+		ControleurDiagramme.instance().supprimerElement((ElementGraphique) _fils.getPseudoInitial().getObservateur());
+		System.out.println("TEST67 : " + getConteneurParent().getPseudoInitial().getTransition().getEtatDest());
+		//vide le conteneur
+		_fils.getElmts().clear();
+		System.out.println("TEST68 : " + getConteneurParent().getPseudoInitial().getTransition().getEtatDest());
+
+	}
+
+
+
+
+	private HashSet<PseudoFinal> getEtatsFinaux(){
+		HashSet<PseudoFinal> listEtatsFinaux = new HashSet<PseudoFinal>();
+
+		for(Element e:_fils.getElmts()){
+			if(e.isEtatPseudoFinal()){
+				listEtatsFinaux.add((PseudoFinal)e);
+			}
+		}
+		return listEtatsFinaux;
+	}
+
+
+
+
+	private HashSet<EtatIntermediaire> getEtatsPointedByFinal(HashSet<PseudoFinal> listEtatsFinaux){
+		HashSet<EtatIntermediaire> listEtatsPointedByFinal = new HashSet<EtatIntermediaire>();
+
+		for(PseudoFinal pf : listEtatsFinaux){
+			for(TransitionFinale tf : pf.getTransitions()){
+				listEtatsPointedByFinal.add((EtatIntermediaire)tf.getEtatSource());
+			}
+		}
+
+		return listEtatsPointedByFinal;
+	}
+
+
+
+	private HashSet<Element> getEtatsAndTransitionIntermediaires(){
+		HashSet<Element> listEtatsAndTransitionIntermediaires = new HashSet<Element>();
+
+		for(Element e:_fils.getElmts()){
+			if(e.isEtatIntermediaire()){
+				listEtatsAndTransitionIntermediaires.add((EtatIntermediaire)e);
+			} else if(e.isTransitionIntermediaire()){
+				listEtatsAndTransitionIntermediaires.add((TransitionIntermediaire)e);
+			}
+		}
+		return listEtatsAndTransitionIntermediaires;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	@Override
 	public ArrayList<Element> supprimer() {
 		ArrayList<Element> elmtsSupr = super.supprimer(); //TODO : fonctionnel ?
-		
+
 		if(_fils == null)
 			return elmtsSupr;
-		
-		elmtsSupr.add(this);
-		return elmtsSupr;
-	}
 
-	@Override
-	public boolean isEtatIntermediaire() {
-		return false;
+		elmtsSupr.addAll(_fils.supprimer());
+		return elmtsSupr;
 	}
 
 	@Override

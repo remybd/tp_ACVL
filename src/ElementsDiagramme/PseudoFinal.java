@@ -3,8 +3,6 @@ package ElementsDiagramme;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import Vues.ObservateurVue;
-
 /**
  *  TODO
  * @author Thibaut
@@ -13,9 +11,8 @@ import Vues.ObservateurVue;
 public class PseudoFinal  extends Etat {
 	private HashSet<TransitionFinale> _trans = new HashSet<TransitionFinale>();
 
-	public PseudoFinal(Conteneur parent, String nom, TransitionFinale transitionFinale){
+	public PseudoFinal(Conteneur parent, String nom){
 		super(parent, nom);
-		this.addTransition(transitionFinale);
 	}
 	
 
@@ -25,7 +22,7 @@ public class PseudoFinal  extends Etat {
 	 */
 	public PseudoFinal(PseudoInitial init){
 		super(init.getConteneurParent(), init.getNom());
-		this.setObservateur(init.getObservateur());
+		this.attache(init.getObservateur());
 	}
 	
 
@@ -35,10 +32,18 @@ public class PseudoFinal  extends Etat {
 	 */
 	public PseudoFinal(EtatIntermediaire etat){
 		super(etat.getConteneurParent(), etat.getNom());
-		this.setObservateur(etat.getObservateur());
+		this.attache(etat.getObservateur());
 		
-		for(TransitionIntermediaire trans : etat.getDestinations()){
-			this.addTransition(new TransitionFinale(trans, this));			
+		for(Transition trans : etat.getDestinations()){
+			if(trans.isTransitionInitiale()){
+				this.addTransition(new TransitionFinale((TransitionInitiale)trans, this));					
+			}
+			else if(trans.isTransitionIntermediaire()){
+				this.addTransition(new TransitionFinale((TransitionIntermediaire)trans, this));					
+			}
+			else{
+				this.addTransition((TransitionFinale)trans);					
+			}
 		}
 	}
 	
@@ -62,12 +67,16 @@ public class PseudoFinal  extends Etat {
 	public ArrayList<Element> supprimer() {
 		ArrayList<Element> elmtsSupr = new ArrayList<Element>();
 		elmtsSupr.add(this);
-		
-		for(TransitionFinale trans : _trans){
-			trans.supprimer();
+
+
+		HashSet<TransitionFinale> clone = (HashSet<TransitionFinale>)_trans.clone();
+		for(TransitionFinale trans : clone){
 			elmtsSupr.add(trans);
+			trans.supprimer();
 		}
-		
+		_trans.clear();
+
+		this.getConteneurParent().supprimerElmt(this);
 		return elmtsSupr;
 	}
 

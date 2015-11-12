@@ -1,9 +1,6 @@
 package ElementsDiagramme;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-
-import Vues.ObservateurVue;
 
 /**
  *  TODO
@@ -15,9 +12,11 @@ public class TransitionFinale extends Transition {
 	private PseudoFinal _etatFinal;
 	private EtatIntermediaire _etatSource;
 	
-	public TransitionFinale(Conteneur parent, String etiquette){
+	public TransitionFinale(Conteneur parent, String etiquette, EtatIntermediaire s, PseudoFinal d){
 		super(parent);
 		this.setEtiquette(etiquette);
+		_etatFinal = d;
+		_etatSource = s;
 	}
 	
 
@@ -28,10 +27,10 @@ public class TransitionFinale extends Transition {
 	 */
 	public TransitionFinale(TransitionIntermediaire trans, PseudoFinal pseudoFinal) {
 		super(trans.getConteneurParent());
-		this.setObservateur(trans.getObservateur());
+		this.attache(trans.getObservateur());
 		
 		this.setEtiquette(trans.getEtiquette());
-		this.setEtatSource(trans.getEtatSource());
+		this.setEtatSource((EtatIntermediaire)trans.getEtatSource());
 		this.setPseudoFinal(pseudoFinal);
 	}
 
@@ -42,19 +41,69 @@ public class TransitionFinale extends Transition {
 	 */
 	public TransitionFinale(TransitionInitiale trans, PseudoFinal pseudoFinal) {
 		super(trans.getConteneurParent());
-		this.setObservateur(trans.getObservateur());
+		this.attache(trans.getObservateur());
 		
 		this.setEtiquette("");
 		this.setPseudoFinal(pseudoFinal);
 	}
 
-
+	@Override
 	public String getEtiquette(){
 		return _etiquette;
 	}
-	
+
+	/**
+	 * Retourne la garde indiquée dans l'étiquette
+	 * @return
+	 */
+	@Override
+	public String getGarde(){
+		int premCrochet = _etiquette.indexOf('[');
+		if(premCrochet<0) //pas de crochet => pas de garde
+			return "";
+
+		int secCrochet = _etiquette.indexOf(']', premCrochet);
+		if(secCrochet<0) //pas de fermeture de garde => on considère que tout le reste de la chaîne est la garde TODO : Avertir l'utilisateur ?
+			secCrochet = _etiquette.length();
+
+		return _etiquette.substring(premCrochet, secCrochet);
+	}
+
+	/**
+	 * Retourne l'événement indiqué dans l'étiquette
+	 * L'événement se trouve avant le premier '[', à défaut avant le premier '/', sinon ce n'est rien
+	 * @return
+	 */
+	@Override
+	public String getEvt(){
+		int delimiteur = _etiquette.indexOf('[');
+		if(delimiteur<0){
+			delimiteur = _etiquette.indexOf('/');
+
+			if(delimiteur<0)
+				return "";
+		}
+
+		return _etiquette.substring(0, delimiteur);
+	}
+
+	/**
+	 * Retourne l'action indiquée dans l'étiquette
+	 * L'action se trouve après le slash, c'est toute l'étiquette s'il n'y en a pas
+	 * @return
+	 */
+	@Override
+	public String getAction(){
+		int slash = _etiquette.indexOf('/');
+		if(slash<0)
+			return _etiquette;
+
+		return _etiquette.substring(slash, _etiquette.length());
+	}
+
 	public void setEtiquette(String etiquette){
 		_etiquette = etiquette;
+		informe();
 	}
 	
 	public PseudoFinal getPseudoFinal(){
@@ -63,6 +112,7 @@ public class TransitionFinale extends Transition {
 	
 	public void setPseudoFinal(PseudoFinal etatFinal){
 		this._etatFinal = etatFinal;
+		informe();
 	}
 
 	@Override
@@ -74,6 +124,7 @@ public class TransitionFinale extends Transition {
 			return elmtsSupr;
 		
 		_etatFinal.unLinkTransition(this);
+		this.getConteneurParent().supprimerElmt(this);
 		return elmtsSupr;
 	}
 
@@ -93,17 +144,24 @@ public class TransitionFinale extends Transition {
 		return false;
 	}
 
-	public EtatIntermediaire getEtatSource() {
+	@Override
+	public Etat getEtatSource() {
 		return _etatSource;
 	}
 
+	@Override
+	public Etat getEtatDestination() {
+		return _etatFinal;
+	}
 
 	public void setEtatSource(EtatIntermediaire etat) {
 		this._etatSource = etat;
+		informe();
 	}
 
 	public void setEtatDest(PseudoFinal etat) {
 		this._etatFinal = etat;
+		informe();
 	}
 
 	public PseudoFinal getEtatDest() {

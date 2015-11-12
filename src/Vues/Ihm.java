@@ -1,13 +1,15 @@
 package Vues;
 
 import Controleurs.ControleurDiagramme;
-import ElementsDiagramme.Conteneur;
-import ElementsDiagramme.EnumEtat;
-import ElementsDiagramme.Etat;
-import ElementsDiagramme.Transition;
+import Controleurs.ControleurFichier;
+import ElementsDiagramme.*;
 import com.mxgraph.model.mxCell;
 
 import javax.naming.ldap.Control;
+import javax.swing.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -17,6 +19,7 @@ public class Ihm {
 	final private static Ihm instanceUnique = new Ihm();
 	private EditeurGraphique edGraphique = EditeurGraphique.instance();
     private ControleurDiagramme controleur;
+    private ControleurFichier controleur_fichier;
 
 	private Ihm() {	}
 	
@@ -32,18 +35,26 @@ public class Ihm {
         return controleur;
     }
 
+    public ControleurFichier getControleurFichier(){
+        return controleur_fichier;
+    }
+
     public void setControleur(ControleurDiagramme controleur){
         this.controleur = controleur;
     }
-	
+
+    public void setControleurFichier(ControleurFichier controleur_fichier){
+        this.controleur_fichier = controleur_fichier;
+    }
+
     public TransitionGraph createTransitionGraph(EtatGraph s, EtatGraph d, Transition t){
         TransitionGraph res = null;
         if(t.isTransitionInitiale()){
-            res = edGraphique.ajouterTransitionInitiale(s.getParent(), s, d, "", EnumTransition.INIT);
+            res = edGraphique.ajouterTransition(s.getParent(), s, d, "", EnumTransition.INIT);
         } else if (t.isTransitionIntermediaire()){
-            //res = edGraphique.
+            res = edGraphique.ajouterTransition(s.getParent(), s, d, ((TransitionIntermediaire) t).getEtiquette(), EnumTransition.INTER);
         } else {
-            //res = edGraphique.
+            res = edGraphique.ajouterTransition(s.getParent(), s, d, ((TransitionFinale) t).getEtiquette(), EnumTransition.FINAL);
         }
         return res;
     }
@@ -62,7 +73,47 @@ public class Ihm {
         return res;
     }
 
-    public void removeElem(mxCell m){
-        EditeurGraphique.instance().getListe_elements_graphiques().remove(m);
+    public void removeElem(mxCell m) {
+    	System.out.println("QUIQUOI" + m.toString());
+        ElementGraphique eg = this.getEdGraphique().getElement_from_liste(m);
+        HashMap<mxCell, ElementGraphique> liste_elements_graphiques = EditeurGraphique.instance().getListe_elements_graphiques();;
+
+        if(eg!=null){
+            removeElemFromListeEditeurGraphique(m);
+            removeElemFromGraph(m);
+        }
+
+        System.out.println("Elements presents dans l'editeur graphique :");
+        for (Map.Entry<mxCell, ElementGraphique> entry : liste_elements_graphiques.entrySet()) {
+            System.out.println(liste_elements_graphiques.get(entry.getKey()).getNom());
+        }
     }
+
+    public void removeElemFromListeEditeurGraphique(mxCell m){
+        HashMap<mxCell, ElementGraphique> liste_elements_graphiques = EditeurGraphique.instance().getListe_elements_graphiques();
+        Object[] tabCells = {(Object)m};
+
+        ElementGraphique eg = this.getEdGraphique().getElement_from_liste(m);
+
+        //A MODIFIER
+        for (Map.Entry<mxCell, ElementGraphique> entry : liste_elements_graphiques.entrySet()) {
+            if(entry.getKey().isEdge() && ( ((TransitionGraph)entry.getValue()).getDestinationTransition().equals(eg) || ((TransitionGraph)entry.getValue()).getSourceTransition().equals(eg)) ) {
+                liste_elements_graphiques.remove(entry.getKey());
+            }
+        }
+
+        if (m.getChildCount() > 0)
+        for(int i=0; i<m.getChildCount(); i++){
+            removeElemFromListeEditeurGraphique((mxCell) m.getChildAt(i));
+        }
+
+        liste_elements_graphiques.remove(m);
+    }
+
+    public void removeElemFromGraph(mxCell m){
+        Object[] tabCells = {(Object)m};
+        EditeurGraphique.instance().getGraph().removeCells(tabCells);
+    }
+    
+
 }

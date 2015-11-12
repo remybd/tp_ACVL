@@ -64,7 +64,7 @@ public class MenuContextuelItemListener{
                     new CreationTransition((EtatGraph) element, EnumTransition.INIT);
                 else if (((EtatGraph) element).getType() == EnumEtat.FINAL) {
                     JOptionPane message_erreur = new JOptionPane();
-                    message_erreur.showMessageDialog(null, "Impossible d'ajouter une transition à un état pseudo-final", "Erreur", JOptionPane.ERROR_MESSAGE);
+                    message_erreur.showMessageDialog(null, "Impossible d'ajouter une transition depuis un etat pseudo-final", "Erreur", JOptionPane.ERROR_MESSAGE);
                 } else
                     new CreationTransition((EtatGraph) element, EnumTransition.INTER);
             } catch (Exception ex){
@@ -84,14 +84,19 @@ public class MenuContextuelItemListener{
         }
     }
 
-    public static class ChoixConteneurListener extends MenuContextuelItemListener implements ActionListener{
+    public static class SupprimerElementListener extends MenuContextuelItemListener implements ActionListener{
 
-        public ChoixConteneurListener(ElementGraphique element) {
+        public SupprimerElementListener(ElementGraphique element) {
             super(element);
         }
 
         public void actionPerformed(ActionEvent e) {
-            new ChoixConteneur();
+            if(element.isSupprimable())
+                Ihm.instance().getControleur().supprimerElement(element);
+            else {
+                JOptionPane message_erreur = new JOptionPane();
+                message_erreur.showMessageDialog(null, "On ne peut pas supprimé un etat initial", "Erreur", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 

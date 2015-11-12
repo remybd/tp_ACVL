@@ -17,7 +17,9 @@ import java.util.HashSet;
 public class ControleurDiagramme {
     private Conteneur mainConteneur;
     private Ihm ihm;
+
     private HashMap<ElementGraphique,Element> correspondance;
+    private HashSet<Erreur> erreurs = new HashSet<Erreur>();
     final private static ControleurDiagramme instanceUnique = new ControleurDiagramme();
 
     private ControleurDiagramme(){
@@ -39,6 +41,7 @@ public class ControleurDiagramme {
             e.printStackTrace();
         }
         pi.setConteneurParent(mainConteneur);
+        mainConteneur.setPseudoInital(pi);
 
     }
 
@@ -52,11 +55,12 @@ public class ControleurDiagramme {
         Transition t = Transition.creerTransition(type,etiquette,sEtat,dEtat,conteneurParent);
 
         TransitionGraph tg = ihm.createTransitionGraph(s,d,t);
-        t.setObservateur(tg);
+        t.attache(tg);
 
         conteneurParent.addElmt(t);
         correspondance.put(tg,t);
 
+        this.chercherErreurs();
         return t;
     }
 
@@ -65,12 +69,13 @@ public class ControleurDiagramme {
         if(parent == null){
             conteneurParent = mainConteneur;
         } else {
+            //TODO Exception de cast (l'objet qu'on récupère si le parent != null n'est pas forcément un Composite, je ne sais pas pq)
             conteneurParent = ((Composite)getElementFromGraphic(parent)).getFils();
         }
         Etat e = Etat.creerEtat(type,nom,this,conteneurParent);
 
         EtatGraph eg = ihm.createEtatGraph(parent,e);
-        e.setObservateur(eg);
+        e.attache(eg);
 
         conteneurParent.addElmt(e);
         correspondance.put(eg,e);
@@ -84,6 +89,7 @@ public class ControleurDiagramme {
             getEtatGraphFromEtat(psi).setParent(eg);
         }
 
+        this.chercherErreurs();
         return e;
     }
 
@@ -95,21 +101,49 @@ public class ControleurDiagramme {
         } else {
             throw new NameNotModifiableException();
         }
+        this.chercherErreurs();
     }
-
-
 
     public void supprimerElement(ElementGraphique elem){
         Element e = getElementFromGraphic(elem);
 
-        for(Element element : e.supprimer()){
+        ArrayList<Element> elementsSupprime = e.supprimer();
+        for(Element element : elementsSupprime){
+
+        	if(element.isEtat()){
+        		System.out.println("Suppression graphique de "+( (Etat)element).getNom());
+        	}
+        	else if(element.isTransition()){
+        		System.out.println("Suppression graphique de "+( (Transition)element).getEtiquette());
+        	}
+
             ihm.removeElem(getElemGraphFromElem(element).getObjet_graphique());
             correspondance.remove(elem);
         }
+        
+        DEBUG_displayElmts();
+        this.chercherErreurs();
     }
 
+    public void DEBUG_displayElmts(){
+    	System.out.println("Elmts présents dans le controleur :");
 
-
+    	int i=0;
+    	for(ElementGraphique elmtGraph : correspondance.keySet()){
+			System.out.println("Element "+i);
+			
+    		Element elmt = correspondance.get(elmtGraph);
+    		if(elmt.isEtat()){
+    			System.out.println(((Etat)elmt).getNom());
+    		}
+    		else if(elmt.isTransition()){
+    			System.out.println(((Transition)elmt).getEtiquette());
+    		}
+    		
+    		i++;
+    	}
+    }
+    
     public void modifierTransition(TransitionGraph transitionGraph, EtatGraph source, EtatGraph dest,String etiquette) throws Exception{
     	/* Check les préconditions */
     	if(!correspondance.containsKey(transitionGraph))
@@ -177,14 +211,20 @@ public class ControleurDiagramme {
     		
     		((TransitionIntermediaire)modelTrans).setEtiquette(etiquette);
     	}
+    	this.chercherErreurs();
     }
 
 
-    public HashSet<Erreur> chercherErreurs(){
+    public void chercherErreurs(){
     	if(mainConteneur == null)
-    		return new HashSet<Erreur>();
+    		return;
     	
-    	return mainConteneur.chercherErreurs();
+    	//get toutes les erreurs
+        erreurs = mainConteneur.chercherErreurs(ihm.getEdGraphique().getZoneErreur());
+    	
+    	//informe la vue des erreurs
+    	if(erreurs.size()>0)
+    		erreurs.iterator().next().getObservateur().miseAJour();
     }
 
     public ArrayList<EtatGraph> getStatesFromSameConteneur(EtatGraph etatGraph) throws Exception {
@@ -202,6 +242,44 @@ public class ControleurDiagramme {
         }
         return result;
     }
+
+    public ArrayList<EtatGraph> getStatesFromSameConteneur(TransitionGraph transitionGraph) throws Exception {
+        Transition t = (Transition)getElementFromGraphic(transitionGraph);
+
+        Conteneur c = t.getConteneurParent();
+        ArrayList<EtatGraph> result = new ArrayList<EtatGraph>();
+        for(Element element : c.getElmts()){
+            if(element.isEtatIntermediaire() || element.isEtatPseudoFinal()) {
+                result.add((EtatGraph) getEtatGraphFromEtat((Etat) element));
+            }
+        }
+        return result;
+    }
+
+    public ArrayList<EtatGraph> getSourceAndDestination(TransitionGraph transitionGraph) throws Exception {
+        Transition tg = (Transition)getElementFromGraphic(transitionGraph);
+
+        ArrayList<EtatGraph> sourceAndDestination = new ArrayList<EtatGraph>();
+
+        sourceAndDestination.add(getEtatGraphFromEtat(tg.getEtatSource()));
+        sourceAndDestination.add(getEtatGraphFromEtat(tg.getEtatDestination()));
+
+
+        return sourceAndDestination;
+    }
+
+    public String getEtiquette(TransitionGraph transitionGraph) throws Exception {
+        Transition tg = (Transition)getElementFromGraphic(transitionGraph);
+
+        return tg.getEtiquette();
+    }
+
+    public String getNom(EtatGraph etatGraph) throws Exception {
+        Etat e = (Etat)getElementFromGraphic(etatGraph);
+        return e.getNom();
+    }
+
+
 
     //renvoie tous les états simples et composites fils de l'étatGraph père
     /*public HashSet<EtatGraph> getSonFromFatherState(EtatGraph father) throws Exception {
@@ -246,6 +324,39 @@ public class ControleurDiagramme {
     }
 
     private ElementGraphique getElemGraphFromElem(Element e) {
-        return (EtatGraph)e.getObservateur();
+        return (ElementGraphique)e.getObservateur();
+    }
+
+    public void applatir() throws Exception {
+        mainConteneur.applatir();
+    }
+
+    public void chargerMainConteneur(Conteneur mainConteneur){
+        this.mainConteneur = mainConteneur;
+        correspondance.clear();
+
+        HashSet<Element> listAllElements = mainConteneur.getAllElements();
+        HashSet<ElementGraphique> listAllElementsGraphique = new HashSet<ElementGraphique>();
+        for(Element e : listAllElements){
+            ElementGraphique eg = (ElementGraphique)e.getObservateur();
+            correspondance.put(eg,e);
+            listAllElementsGraphique.add(eg);
+        }
+
+        this.DEBUG_displayElmts();
+        EditeurGraphique.instance().updateListeElementGraphiqueAndDisplay(listAllElementsGraphique);
+        this.chercherErreurs();
+    }
+
+    public HashSet<Erreur> getErreurs() {
+        return erreurs;
+    }
+    
+    public void propagerErreur(Erreur err){
+    	if(err.getObservateur()==null)
+    		err.attache(ihm.getEdGraphique().getZoneErreur());
+    	
+    	erreurs.add(err);
+    	err.getObservateur().miseAJour();
     }
 }

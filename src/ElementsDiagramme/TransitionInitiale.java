@@ -2,8 +2,6 @@ package ElementsDiagramme;
 
 import java.util.ArrayList;
 
-import Vues.ObservateurVue;
-
 /**
  *  TODO
  * @author Thibaut
@@ -16,19 +14,20 @@ public class TransitionInitiale extends Transition {
 	public TransitionInitiale(Conteneur parent, PseudoInitial etatInitial, EtatIntermediaire _etatDest){
 		super(parent);
 		this.setPseudoInitial(etatInitial);
+		this.setEtatDest(_etatDest);
 	}
 
 	public TransitionInitiale(TransitionIntermediaire trans, PseudoInitial pseudoInitial) {
 		super(trans.getConteneurParent());
-		this.setObservateur(trans.getObservateur());
+		this.attache(trans.getObservateur());
 		
 		this.setPseudoInitial(pseudoInitial);
-		this.setEtatDest(trans.getEtatDest());
+		this.setEtatDest((EtatIntermediaire)trans.getEtatDestination());
 	}
 	
 	public TransitionInitiale(TransitionFinale trans, PseudoInitial pseudoInitial) {
 		super(trans.getConteneurParent());
-		this.setObservateur(trans.getObservateur());
+		this.attache(trans.getObservateur());
 		
 		this.setPseudoInitial(pseudoInitial);
 	}
@@ -39,6 +38,7 @@ public class TransitionInitiale extends Transition {
 
 	public void setPseudoInitial(PseudoInitial _etatInit) {
 		this._etatInit = _etatInit;
+		informe();
 	}
 
 	@Override
@@ -50,6 +50,7 @@ public class TransitionInitiale extends Transition {
 			return elmtsSupr;
 		
 		_etatInit.setTransition(null);
+		this.getConteneurParent().supprimerElmt(this);
 		return elmtsSupr;
 	}
 	
@@ -73,14 +74,42 @@ public class TransitionInitiale extends Transition {
 
 	public void setEtatSource(PseudoInitial etat) {
 		this._etatInit = etat;
+		informe();
 	}
 
 	public void setEtatDest(EtatIntermediaire etat) {
-		this._etatDest = etat;		
+		this._etatDest = etat;
+		informe();
 	}
 
-	public PseudoInitial getEtatSource() {
+	@Override
+	public Etat getEtatSource() {
 		return _etatInit;
+	}
+
+	@Override
+	public Etat getEtatDestination() {
+		return _etatDest;
+	}
+
+	@Override
+	public String getEtiquette() {
+		return "";
+	}
+
+	@Override
+	public String getEvt() {
+		return null;
+	}
+
+	@Override
+	public String getGarde() {
+		return null;
+	}
+
+	@Override
+	public String getAction() {
+		return null;
 	}
 
 	public EtatIntermediaire getEtatDest() {

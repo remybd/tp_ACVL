@@ -2,10 +2,11 @@ package Vues;
 
 import Controleurs.ControleurDiagramme;
 import ElementsDiagramme.EnumEtat;
-
 import ElementsDiagramme.EnumTransition;
 import ElementsDiagramme.Etat;
+import ElementsDiagramme.PseudoInitial;
 import ElementsDiagramme.Transition;
+
 import com.mxgraph.model.mxCell;
 import com.mxgraph.model.mxGeometry;
 import com.mxgraph.swing.mxGraphComponent;
@@ -18,9 +19,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.*;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 /**
  * Created by Jerem on 11/10/2015.
@@ -33,7 +41,7 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
 
     private static HashMap<mxCell, ElementGraphique> liste_elements_graphiques = new HashMap<>();
 
-    private ZoneErreur zone_erreur;
+    private ZoneErreur zone_erreur = new ZoneErreur();
     private JPanel content = new JPanel();
 
     final private static EditeurGraphique instanceUnique = new EditeurGraphique();
@@ -51,6 +59,7 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
 
     private JMenuItem ouvrir = new JMenuItem("Ouvrir");
     private JMenuItem enregistrer = new JMenuItem("Enregistrer");
+    private JMenuItem aplatir = new JMenuItem("Aplatir");
     private JMenuItem fermer = new JMenuItem("Fermer");
 
     private JMenuItem consulter_manuel = new JMenuItem("Consulter Manuel");
@@ -71,10 +80,14 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
 
         createMenu();
 
-        JPanel mainPanel = new JPanel(); //Panel
+        JPanel mainPanel = new JPanel();
+        JPanel panelGraph = new JPanel(); //Panel
 
-        BorderLayout bl = new BorderLayout();   //layoutManager
-        mainPanel.setLayout(bl);    //attache le layoutManager au panel           
+        BorderLayout bl = new BorderLayout();
+        BorderLayout b2 = new BorderLayout();
+
+        mainPanel.setLayout(bl);
+        panelGraph.setLayout(b2);
 
         Object parent = graph.getDefaultParent();
         Object v1 = null;
@@ -116,11 +129,15 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
         graphComponent.setConnectable(false);
         graphComponent.getGraph().setVertexLabelsMovable(false);
         graphComponent.getGraph().setEdgeLabelsMovable(false);
+        graphComponent.getGraph().setAllowDanglingEdges(false);
+        graphComponent.setExportEnabled(false);
+        graphComponent.getGraph().setCellsDisconnectable(false);
+        graphComponent.getGraph().setCellsEditable(false);
         graphComponent.setEnterStopsCellEditing(false);
      //   graphComponent.getGraphHandler().set;
         graphComponent.getGraph().setDropEnabled(false);
      //   graphComponent.setImportEnabled(false);
-        
+
     //    graphComponent.getGraph().setExtendParents(false);
 
        // graphComponent.getGraphHandler().set;
@@ -138,18 +155,21 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
         stylesheet.putCellStyle("ROUNDED", style);
 
         //System.out.println("hsit" + graphComponent.getCellAt(19,19));
-        System.out.println("hzesit");
         //System.out.println(graphComponent.getCellAt(20,20).equals(vertex) + "HOURAAAA");
-        mainPanel.add(graphComponent);
 
-        mainPanel.setSize(800, 420);
-        setContentPane(mainPanel);  //defini le panel de la JFrame
-        setVisible(true);  //affiche la JFrame
+        graphComponent.setMaximumSize(new Dimension(400,400));
 
-        setVisible(true);
+        panelGraph.setMaximumSize(new Dimension(400, 400));
+        panelGraph.add(graphComponent);
+
+        mainPanel.setMaximumSize(new Dimension(400, 400));
+        mainPanel.add(panelGraph);
+        mainPanel.add(zone_erreur, BorderLayout.NORTH);
+
+        this.setContentPane(mainPanel);
+        setVisible(true); //affiche la JFrame
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //  mxConstants.STYLE_SOURCE_PORT;
-
     }
 
     private void createMenu() {
@@ -158,10 +178,21 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFileChooser c = new JFileChooser();
-                int rVal = c.showSaveDialog(EditeurGraphique.this);
+                int rVal = c.showOpenDialog(EditeurGraphique.this);
                 if (rVal == JFileChooser.APPROVE_OPTION) {
-                    filename.setText(c.getSelectedFile().getName());
-                    dir.setText(c.getCurrentDirectory().toString());
+                	File f = c.getSelectedFile();
+                    filename.setText(f.getName());
+                    dir.setText(f.getAbsolutePath().toString());
+                    System.out.println(dir.getText());
+                 
+						try {
+							Ihm.instance().getControleurFichier().chargerFichier(f.getAbsolutePath().toString());
+						} catch (ClassNotFoundException
+								| IOException e1) {
+							new FenetreErreur("Une erreur survenue pendant l'ouverture du fichier ; il n'existe peut-�tre pas.");
+							e1.printStackTrace();
+						}
+					
                 }
                 if (rVal == JFileChooser.CANCEL_OPTION) {
                     filename.setText("");
@@ -176,8 +207,18 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
                 // Demonstrate "Save" dialog:
                 int rVal = c.showSaveDialog(EditeurGraphique.this);
                 if (rVal == JFileChooser.APPROVE_OPTION) {
-                    filename.setText(c.getSelectedFile().getName());
-                    dir.setText(c.getCurrentDirectory().toString());
+                	File f = c.getSelectedFile();
+                    filename.setText(f.getName());
+                    dir.setText(f.getAbsolutePath().toString());
+                    try {
+						Ihm.instance().getControleurFichier().sauvegarderFichier(dir.getText());
+					} catch (FileNotFoundException e1) {
+						new FenetreErreur("Une erreur est survenue pendant la sauvegarde du fichier : il n'existe pas.");
+						e1.printStackTrace();
+					} catch (IOException e1) {
+						new FenetreErreur("Une erreur d'�criture est survenue pendant la sauvegarde du fichier.");
+						e1.printStackTrace();
+					}
                 }
                 if (rVal == JFileChooser.CANCEL_OPTION) {
                     filename.setText("You pressed cancel");
@@ -185,8 +226,22 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
                 }
             }
         });
+        aplatir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+           
+                    try {
+						Ihm.instance().getControleur().applatir();
+					} catch (Exception e1) {
+						new FenetreErreur("Une erreur non g�r�e est survenue pendant l'applatissement.");
+						e1.printStackTrace();
+					}
+                
+            }
+        });
         fichier.add(ouvrir);
         fichier.add(enregistrer);
+        fichier.add(aplatir);
         fichier.addSeparator();
 
         fermer.addActionListener(new ActionListener() {
@@ -206,6 +261,10 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
         this.setJMenuBar(menu);
     }
 
+    public ZoneErreur getZoneErreur(){
+        return zone_erreur;
+    }
+
     @Override
     public void miseAJour() {
         // TODO Auto-generated method stub
@@ -218,6 +277,7 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
         EtatGraph eg;
         try {
             etat_graph = (mxCell)this.getGraphComponent().getGraph().insertVertex(newEtatParent, null, label, 50, 50, 80, 30);
+            System.out.println("Creation etat simple: " + etat_graph.getParent());
             eg = new EtatGraph(parent,etat_graph, type);
             this.getListe_elements_graphiques().put(etat_graph, eg);
         } finally {
@@ -233,6 +293,7 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
         EtatGraph eg;
         try {
             etat_mxcell = (mxCell)this.getGraphComponent().getGraph().insertVertex(newEtatParent, null, label, 50, 50, 80, 30, etatInitialStyle);
+            System.out.println("Creation etat initial : " + etat_mxcell.getParent());
             eg = new EtatGraph(parent, (mxCell) etat_mxcell, type);
             this.getListe_elements_graphiques().put(etat_mxcell, eg);
         } finally {
@@ -263,6 +324,7 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
         EtatGraph eg;
         try {
             etat_mxcell = (mxCell)this.getGraphComponent().getGraph().insertVertex(newEtatParent, null, label, 50, 50, 80, 30);
+            System.out.println("Creation etat composite: " + etat_mxcell.getParent());
             eg = new EtatGraph(parent,etat_mxcell, type);
             this.getListe_elements_graphiques().put(etat_mxcell,eg);
         } finally {
@@ -271,7 +333,7 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
         return eg;
     }
 
-    public TransitionGraph ajouterTransitionInitiale(EtatGraph parent, EtatGraph source, EtatGraph destination, String etiquette, EnumTransition type){
+    public TransitionGraph ajouterTransition(EtatGraph parent, EtatGraph source, EtatGraph destination, String etiquette, EnumTransition type){
         this.getGraphComponent().getGraph().getModel().beginUpdate();
         Object newEtatParent = ((parent == null) ? graph.getDefaultParent() : parent.getObjet_graphique());
         mxCell transition_mxcell;
@@ -279,7 +341,10 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
         try {
             transition_mxcell = (mxCell)this.getGraphComponent().getGraph().insertEdge(newEtatParent, null, etiquette,
                     (Object)source.getObjet_graphique(),(Object)destination.getObjet_graphique());
-            tg = new TransitionGraph(parent,transition_mxcell, type);
+            if(parent == null)
+                tg = new TransitionGraph(parent, source, destination, transition_mxcell, type);
+            else
+                tg = new TransitionGraph(parent.getParent(), source, destination, transition_mxcell, type);
             this.getListe_elements_graphiques().put(transition_mxcell,tg);
         } finally {
             graph.getModel().endUpdate();
@@ -348,5 +413,69 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
 
     public mxGraphComponent getGraphComponent(){
         return graphComponent;
+    }
+
+    public mxGraph getGraph(){
+        return graph;
+    }
+
+	public void updateListeElementGraphiqueAndDisplay(
+			HashSet<ElementGraphique> listAllElementsGraphique) {
+        EditeurGraphique.instance().getGraph().removeCells();
+
+		graph.getModel().beginUpdate();
+		try {
+			reset();
+			System.out.println("YOUHOUZE");
+            ArrayList<ElementGraphique> eg_array = new ArrayList<ElementGraphique>();
+
+			for(ElementGraphique e : listAllElementsGraphique) {
+                if(!eg_array.contains(e)) {
+
+                    addParent(e,eg_array);
+                    /*if (e.getObjet_graphique().getParent() != null)
+                        graph.addCell(e.getObjet_graphique().getParent());
+                    graph.addCell(e.getObjet_graphique(), e.getObjet_graphique().getParent());
+
+                    System.out.println("Objet ; " + e.getObjet_graphique());
+                if(e.getObjet_graphique().getParent() == null){
+                    System.out.println("Parent : " + e.getObjet_graphique().getParent());
+                    graph.addCell(e.getObjet_graphique());
+                } else {
+                    System.out.println("Parent 2: " + e.getObjet_graphique().getParent());
+                    graph.addCell(e.getObjet_graphique(),e.getObjet_graphique().getParent());
+                }*/
+                }
+                liste_elements_graphiques.put(e.getObjet_graphique(), e);
+
+			}
+		} finally {
+            graph.getModel().endUpdate();
+		}
+	}
+
+    public Object addParent(ElementGraphique eg, ArrayList<ElementGraphique> eg_array) {
+    	Object res = null;
+        if(eg != null) {
+            if (eg.getObjet_graphique().getParent() != null) {
+               Object parent = addParent(eg.getParent(), eg_array);
+                res = graph.addCell(eg.getObjet_graphique(), parent);
+            } else {
+                res = graph.addCell(eg.getObjet_graphique());
+            }
+            eg_array.add(eg);
+        }
+        return res;
+    }
+	
+    private void reset() {
+        for (Map.Entry<mxCell, ElementGraphique> entry : liste_elements_graphiques.entrySet()) {
+        	Object[] tab = {entry.getKey()};
+            EditeurGraphique.instance().getGraph().removeCells(tab);
+        }
+        liste_elements_graphiques = new HashMap<>();
+
+        //EditeurGraphique.instance().getGraph().removeCells();
+        //EditeurGraphique.instance().getGraph().removeCells(tabCells);
     }
 }

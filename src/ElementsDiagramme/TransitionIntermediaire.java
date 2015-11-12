@@ -2,8 +2,6 @@ package ElementsDiagramme;
 
 import java.util.ArrayList;
 
-import Vues.ObservateurVue;
-
 /**
  *  TODO : Surveiller la bonne construction de l'étiquette ?
  * @author Thibaut
@@ -28,7 +26,7 @@ public class TransitionIntermediaire extends Transition {
 	 */
 	public TransitionIntermediaire(TransitionInitiale transInit, EtatIntermediaire etatSource) {
 		super(transInit.getConteneurParent());
-		this.setObservateur(transInit.getObservateur());
+		this.attache(transInit.getObservateur());
 		
 		this.setEtiquette("");
 		this.setEtatSource(etatSource);
@@ -42,20 +40,21 @@ public class TransitionIntermediaire extends Transition {
 	 */
 	public TransitionIntermediaire(TransitionFinale trans, EtatIntermediaire etatIntermediaire) {
 		super(trans.getConteneurParent());
-		this.setObservateur(trans.getObservateur());
+		this.attache(trans.getObservateur());
 		
 		this.setEtiquette(trans.getEtiquette());
-		this.setEtatSource(trans.getEtatSource());
+		this.setEtatSource((EtatIntermediaire)trans.getEtatSource());
 		this.setEtatDest(etatIntermediaire);
 	}
 
-
+	@Override
 	public String getEtiquette(){
 		return _etiquette;
 	}
 	
 	public void setEtiquette(String etiquette){
 		_etiquette = etiquette;
+		informe();
 	}
 
 
@@ -64,6 +63,7 @@ public class TransitionIntermediaire extends Transition {
 	 * Retourne la garde indiquée dans l'étiquette
 	 * @return
 	 */
+	@Override
 	public String getGarde(){
 		return this.getGarde(_etiquette);
 	}
@@ -90,6 +90,7 @@ public class TransitionIntermediaire extends Transition {
 	 * L'événement se trouve avant le premier '[', à défaut avant le premier '/', sinon ce n'est rien
 	 * @return
 	 */
+	@Override
 	public String getEvt(){
 		return this.getEvt(_etiquette);
 	}
@@ -116,6 +117,7 @@ public class TransitionIntermediaire extends Transition {
 	 * L'action se trouve après le slash, c'est toute l'étiquette s'il n'y en a pas
 	 * @return
 	 */
+	@Override
 	public String getAction(){
 		return this.getAction(_etiquette);
 	}
@@ -143,7 +145,8 @@ public class TransitionIntermediaire extends Transition {
 		
 		if(_dest != null)
 			_dest.unLinkSource(this);
-		
+
+		this.getConteneurParent().supprimerElmt(this);
 		return elmtsSupr;
 	}
 	
@@ -166,17 +169,22 @@ public class TransitionIntermediaire extends Transition {
 
 	public void setEtatSource(EtatIntermediaire etat) {
 		this._source = etat;
+		informe();
 	}
 
 	public void setEtatDest(EtatIntermediaire etat) {
-		this._dest = etat;		
+		this._dest = etat;
+		informe();
 	}
 
-	public EtatIntermediaire getEtatSource() {
+	@Override
+	public Etat getEtatSource() {
 		return _source;
 	}
 
-	public EtatIntermediaire getEtatDest() {
+	@Override
+	public Etat getEtatDestination() {
 		return _dest;
 	}
+
 }

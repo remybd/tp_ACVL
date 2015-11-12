@@ -1,7 +1,6 @@
 package ElementsDiagramme;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -16,10 +15,10 @@ import Vues.ObservateurVue;
  *
  */
 public abstract class EtatIntermediaire extends Etat{
-	//transitions dont la destination est this
-	private HashSet<TransitionIntermediaire> _dest = new HashSet<TransitionIntermediaire>();
-	//transitions dont la source est this
-	private HashSet<TransitionIntermediaire> _sources = new HashSet<TransitionIntermediaire>();
+	//transitions dont la destination est un autre état
+	private HashSet<Transition> _dest = new HashSet<Transition>();
+	//transitions dont la source est un autre état
+	private HashSet<Transition> _sources = new HashSet<Transition>();
 	
 	public EtatIntermediaire(Conteneur parent, String nom){
 		super(parent, nom);
@@ -31,7 +30,7 @@ public abstract class EtatIntermediaire extends Etat{
 	 */
 	public EtatIntermediaire(PseudoInitial init){
 		super(init.getConteneurParent(), init.getNom());
-		this.setObservateur(init.getObservateur());
+		this.attache(init.getObservateur());
 		
 		TransitionInitiale transInit = init.getTransition();
 		
@@ -46,7 +45,7 @@ public abstract class EtatIntermediaire extends Etat{
 	 */
 	public EtatIntermediaire(PseudoFinal etat){
 		super(etat.getConteneurParent(), etat.getNom());
-		this.setObservateur(etat.getObservateur());
+		this.attache(etat.getObservateur());
 		
 		HashSet<TransitionFinale> transFin = etat.getTransitions();
 		
@@ -59,30 +58,30 @@ public abstract class EtatIntermediaire extends Etat{
 		}
 	}
 	
-	public HashSet<TransitionIntermediaire> getDestinations() {
+	public HashSet<Transition> getDestinations() {
 		return _dest;
 	}
-	public void addDestination(TransitionIntermediaire dest) {
+	public void addDestination(Transition dest) {
         if(this._dest == null)
-            this._dest = new HashSet<TransitionIntermediaire>();
+            this._dest = new HashSet<Transition>();
 
         this._dest.add(dest);
     }
-    public void setDestinations(HashSet<TransitionIntermediaire> destinations){
+    public void setDestinations(HashSet<Transition> destinations){
         _dest = destinations;
     }
 	
-	public HashSet<TransitionIntermediaire> getSources() {
+	public HashSet<Transition> getSources() {
 		return _sources;
 	}
-	public void addSource(TransitionIntermediaire source) {
+	public void addSource(Transition source) {
 		if(this._sources == null)
-			this._sources = new HashSet<TransitionIntermediaire>();
+			this._sources = new HashSet<Transition>();
 			
 		this._sources.add(source);
 	}
 	
-	public void setSources(HashSet<TransitionIntermediaire> sources){
+	public void setSources(HashSet<Transition> sources){
         _sources = sources;
     }
 	
@@ -106,16 +105,22 @@ public abstract class EtatIntermediaire extends Etat{
 	public ArrayList<Element> supprimer() {
 		ArrayList<Element> elmtsSupr = new ArrayList<Element>();
 		elmtsSupr.add(this);
-		
-		for(TransitionIntermediaire trans : _sources){
-			trans.supprimer();
+
+		HashSet<Transition> clone = (HashSet<Transition>)_sources.clone();
+		for(Transition trans : clone){
 			elmtsSupr.add(trans);
+			trans.supprimer();
 		}
-		
-		for(TransitionIntermediaire trans : _dest){
-			trans.supprimer();
+		_sources.clear();
+
+		clone = (HashSet<Transition>)_dest.clone();
+		for(Transition trans : clone){
 			elmtsSupr.add(trans);
-		}	
+			trans.supprimer();
+		}
+		_dest.clear();
+		
+		this.getConteneurParent().supprimerElmt(this);
 		
 		return elmtsSupr;
 	} 
@@ -126,12 +131,12 @@ public abstract class EtatIntermediaire extends Etat{
 	 * 			false sinon
 	 */
 	public boolean estBloquant(){
-		for(TransitionIntermediaire source : _sources){
-			if(source.getEtatDest() != this)
-				return true;
+		for(Transition dest : _dest){
+			if(dest.getEtatDestination() != this)
+				return false;
 		}
 		
-		return false;
+		return true;
 	}
 
 	@Override
@@ -155,12 +160,12 @@ public abstract class EtatIntermediaire extends Etat{
 	 * 2 transitions sont non déterministes si elles ont le même événement et la même condition
 	 * @return
 	 */
-	public HashSet<TransitionNonDeterministe> chercherTransNnDeterm(){
+	public HashSet<TransitionNonDeterministe> chercherTransNnDeterm(ObservateurVue zoneErreur){
 		HashSet<String> evtsConds = new HashSet<String>();
 		HashSet<TransitionNonDeterministe> transNonDeterm = new HashSet<TransitionNonDeterministe>();
 		String evtCond; //pr 1 transition, contient evenement+condition sans espaces
 		String symbol;
-		for(TransitionIntermediaire trans : _sources){
+		for(Transition trans : _dest){
 			evtCond = trans.getEvt()+trans.getAction();
 			evtCond = evtCond.replaceAll("\\s", "");
 			evtCond = evtCond.replaceAll("\\t", "");
@@ -168,7 +173,7 @@ public abstract class EtatIntermediaire extends Etat{
 			//evtsConds contient déjà ces infos -> trans est une transition non déterministe
 			symbol = TableSymboles.get(evtCond);
 			if(evtsConds.contains(symbol)){
-				transNonDeterm.add(new TransitionNonDeterministe(trans, Erreur.ERR_TRANSITION_NON_DETERM));
+				transNonDeterm.add(new TransitionNonDeterministe(trans, Erreur.ERR_TRANSITION_NON_DETERM, zoneErreur));
 			}
 			else{
 				evtsConds.add(symbol);

@@ -1,8 +1,11 @@
 package Vues;
 
+import ElementsDiagramme.EnumEtat;
+import ElementsDiagramme.EnumTransition;
 import com.mxgraph.model.mxCell;
 
 import javax.swing.*;
+import java.util.ArrayList;
 
 
 /**
@@ -13,7 +16,7 @@ public class MenuContextuel extends JPopupMenu {
     private Ihm ihm = Ihm.instance();
 
     private JMenu ajouter = new JMenu("Ajouter");
-    private JMenu etat = new JMenu("Etat");
+    private JMenu ajouter_etat = new JMenu("Etat");
     private JMenuItem etat_simple = new JMenuItem("Simple");
     private JMenuItem etat_final = new JMenuItem("Final");
     private JMenuItem etat_composite = new JMenuItem("Composite");
@@ -34,18 +37,50 @@ public class MenuContextuel extends JPopupMenu {
 
         creationMenu(element);
 
-        if (objSelectionne.equals(EnumObjetSelectionne.AUCUN)) {
+        EnumEtat type_etat = null;
+        EnumTransition type_transition = null;
+
+        if (element instanceof EtatGraph) {
+            type_etat = ((EtatGraph) element).getType();
+        } else if (element instanceof  TransitionGraph){
+            type_transition = ((TransitionGraph) element).getType();
+        }
+
+        if (type_etat != null){
+            ArrayList<EtatGraph> etats_conteneur = new ArrayList<>();
+            try {
+                etats_conteneur = Ihm.instance().getControleur().getStatesFromSameConteneur((EtatGraph)element);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if(etats_conteneur.size() == 0)
+                ajouter_transition.setEnabled(false);
+            if (type_etat != EnumEtat.COMPOSITE) {
+                ajouter_etat.setEnabled(false);
+            }
+            if (type_etat == EnumEtat.INIT) {
+                modifier_etat.setEnabled(false);
+            }
+            modifier_transition.setEnabled(false);
+
+        } else if (type_transition != null){
+
+            ajouter.setEnabled(false);
+            modifier_etat.setEnabled(false);
+            modifier_conteneur.setEnabled(false);
+            if(type_transition == EnumTransition.INIT)
+                modifier_transition.setEnabled(false);
+
+            // Aucun élément sélectionné
+        } else {
+
             ajouter_transition.setEnabled(false);
             modifier.setEnabled(false);
             supprimer.setEnabled(false);
             modifier_conteneur.setEnabled(false);
-        } else if (objSelectionne.equals(EnumObjetSelectionne.ETAT)) {
-            modifier_transition.setEnabled(false);
-        } else if (objSelectionne.equals(EnumObjetSelectionne.TRANSITION)) {
-            ajouter.setEnabled(false);
-            modifier_etat.setEnabled(false);
-            modifier_conteneur.setEnabled(false);
+
         }
+
     }
 
     private void creationMenu(ElementGraphique element) {
@@ -54,10 +89,10 @@ public class MenuContextuel extends JPopupMenu {
         etat_final.addActionListener(new MenuContextuelItemListener.CreationEtatFinalListener());
 
         etat_composite.addActionListener(new MenuContextuelItemListener.CreationEtatCompositeListener());
-        etat.add(etat_simple);
-        etat.add(etat_final);
-        etat.add(etat_composite);
-        ajouter.add(etat);
+        ajouter_etat.add(etat_simple);
+        ajouter_etat.add(etat_final);
+        ajouter_etat.add(etat_composite);
+        ajouter.add(ajouter_etat);
 
         ajouter_transition.addActionListener(new MenuContextuelItemListener.AjouterTransitionListener(element));
         ajouter.add(ajouter_transition);
@@ -72,10 +107,9 @@ public class MenuContextuel extends JPopupMenu {
         modifier.add(modifier_transition);
 
         add(modifier);
-        add(supprimer);
 
-        modifier_conteneur.addActionListener(new MenuContextuelItemListener.ChoixConteneurListener(element));
-        add(modifier_conteneur);
+        supprimer.addActionListener(new MenuContextuelItemListener.SupprimerElementListener(element));
+        add(supprimer);
 
     }
 }

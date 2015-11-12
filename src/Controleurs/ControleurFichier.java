@@ -10,7 +10,7 @@ import RessourcesExternes.Fichier;
 import RessourcesExternes.FichierSauvegarde;
 
 /**
- * Created by rémy on 05/11/2015.
+ * Created by rï¿½my on 05/11/2015.
  */
 public class ControleurFichier {
 	private static ControleurFichier instanceUnique = new ControleurFichier();
@@ -20,45 +20,28 @@ public class ControleurFichier {
     private ControleurFichier(){
     	
     }
-    
 
     public static ControleurFichier instance(){
         return instanceUnique;
     }
-
     
-    public void creerFichier(String name, String path, Conteneur c){
-    	try {
-			fichierDeSauvegarde = new FichierSauvegarde(name,FichierSauvegarde.FICHIER_EXTENSION, path, c);
-		} catch (FileNotFoundException e) {
-			// TODO : propager l'erreur dans l'IHM
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO : propager l'erreur dans l'IHM
-			e.printStackTrace();
-		}
+    private void creerFichier(String path, Conteneur c) throws FileNotFoundException, IOException {
+            fichierDeSauvegarde = new FichierSauvegarde(path, c);
     }
 
-    public Conteneur chargerFichier(String path){ 	
-        try {
-			return fichierDeSauvegarde.chargerFichier();
-		} catch (ClassNotFoundException | IOException e) {
-			//TODO : propager l'erreur dans l'IHM
-			e.printStackTrace();
-			return null;
-		}
+    public void chargerFichier(String path) throws FileNotFoundException, ClassNotFoundException, IOException{
+
+        fichierDeSauvegarde = new FichierSauvegarde(path);
+        Conteneur mainConteneur = fichierDeSauvegarde.getMainConteneur();
+        ControleurDiagramme.instance().chargerMainConteneur(mainConteneur);
     }
 
-    public void sauvegarderFichier(Conteneur mainCont){
+    public void sauvegarderFichier(String path) throws FileNotFoundException, IOException{
+        Conteneur mainCont = ControleurDiagramme.instance().getMainConteneur();
         if(fichierDeSauvegarde == null)
-            creerFichier("new_diag", "", mainCont);
+            creerFichier(path, mainCont);
         
-        try {
-			fichierDeSauvegarde.sauvegarderFichier();
-		} catch (IOException e) {
-			// TODO propager l'erreur dans l'IHM
-			e.printStackTrace();
-		}
+		fichierDeSauvegarde.sauvegarderFichier();
     }
 
     public Fichier getManuel(){

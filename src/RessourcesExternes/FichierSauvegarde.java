@@ -19,9 +19,24 @@ public class FichierSauvegarde extends Fichier{
         this.mainConteneur = mainConteneur;
         this.sauvegarderFichier();
     }
+    
+    //création d'un fichier
+    public FichierSauvegarde(String chemin, Conteneur mainConteneur) throws FileNotFoundException, IOException{
+        super(chemin);
+
+        this.mainConteneur = mainConteneur;
+        this.sauvegarderFichier();
+    }
+    
+    //chargement d'un fichier
+    public FichierSauvegarde(String nom, String extension, String chemin) throws FileNotFoundException, IOException, ClassNotFoundException{
+        super(nom, extension, chemin);
+
+        this.mainConteneur = this.chargerFichier();
+    }
 
     //ouverture d'un fichier
-    public FichierSauvegarde(String path) throws ClassNotFoundException, IOException{
+    public FichierSauvegarde(String path) throws FileNotFoundException, ClassNotFoundException, IOException{
         super(path);
         
         this.mainConteneur = chargerFichier();
@@ -31,10 +46,12 @@ public class FichierSauvegarde extends Fichier{
         ObjectOutputStream oos = null;
 
         try {
+        	System.out.println("Sauvegarder : "+this.getCheminAbsolu());
+        	
             oos = new ObjectOutputStream(
                     new BufferedOutputStream(
                             new FileOutputStream(
-                                    new File(this.getCheminRelatif()))));
+                                    new File(this.getCheminAbsolu()))));
 
             //écriture du mainconteneur dans le fichier
             oos.writeObject(mainConteneur);
@@ -56,8 +73,9 @@ public class FichierSauvegarde extends Fichier{
      * @throws IOException 
      * @throws ClassNotFoundException 
      */
-    public Conteneur chargerFichier() throws IOException, ClassNotFoundException {
-		FileInputStream fis = new FileInputStream(this.getCheminRelatif());
+    public Conteneur chargerFichier() throws FileNotFoundException, ClassNotFoundException, IOException {
+    	System.out.println("Charger : "+this.getCheminAbsolu());
+		FileInputStream fis = new FileInputStream(this.getCheminAbsolu());
 		ObjectInputStream ois= new ObjectInputStream(fis);
 		try {	
 			mainConteneur = (Conteneur) ois.readObject(); 

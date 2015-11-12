@@ -23,6 +23,7 @@ public abstract class Etat extends Element {
 	
 	public void setNom(String nom){
 		_nom = nom;
+		informe();
 	}
 
 	@Override
@@ -64,7 +65,7 @@ public abstract class Etat extends Element {
 		}
 		else{//état final
 			//TODO : peut être modifier le constructeur pour ne pas avoir à mettre null pour la transition
-			e = new PseudoFinal(parent,"final_"+nom,null);
+			e = new PseudoFinal(parent,"final_"+nom);
 		}
 
 		return e;
