@@ -46,7 +46,7 @@ public class TransitionInitiale extends Transition {
 		ArrayList<Element> elmtsSupr = new ArrayList<Element>();
 		elmtsSupr.add(this);
 
-		if(_etatInit != null && _etatInit.getTransition().equals(this))
+		if(_etatInit != null && (_etatInit.getTransition() != null) && _etatInit.getTransition().equals(this))
 			_etatInit.setTransition(null);
 
 		if(_etatDest != null )

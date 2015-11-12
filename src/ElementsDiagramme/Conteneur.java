@@ -61,7 +61,7 @@ public class Conteneur implements Serializable {
 	
 	/**
 	 * 
-	 * @return La liste des erreurs trouvées dans le conteneur this et tous ses états composites
+	 * @return La liste des erreurs trouvï¿½es dans le conteneur this et tous ses ï¿½tats composites
 	 */
 	public HashSet<Erreur> chercherErreurs(ObservateurVue zoneErreur){
 		HashSet<Erreur> erreurs = new HashSet<Erreur>();
@@ -77,8 +77,8 @@ public class Conteneur implements Serializable {
 	}
 	
 	/**
-	 * Gestion erreur d'unicité des états
-	 * @return la liste des etats qui ont le même nom au sein d'un conteneur
+	 * Gestion erreur d'unicitï¿½ des ï¿½tats
+	 * @return la liste des etats qui ont le mï¿½me nom au sein d'un conteneur
 	 */
 	public HashMap<Conteneur,HashSet<NonUnicite>> chercherPluriciteEtats(ObservateurVue zoneErreur){
 		HashMap<Conteneur,HashSet<NonUnicite>> etatsIdentiques = new HashMap<Conteneur,HashSet<NonUnicite>>();
@@ -89,10 +89,10 @@ public class Conteneur implements Serializable {
 			if(elmt instanceof EtatIntermediaire){
 				String nomEtat = TableSymboles.get( ((EtatIntermediaire) elmt).getNom() );
 				
-				//l'état a un nom déjà utilisé
+				//l'ï¿½tat a un nom dï¿½jï¿½ utilisï¿½
 				if(nomsUtilises.containsKey(nomEtat)){
 					
-					//this n'a encore jamais été répertorié
+					//this n'a encore jamais ï¿½tï¿½ rï¿½pertoriï¿½
 					if(!etatsIdentiques.containsKey(this)){
 						etatsIdentiques.put(this, new HashSet<NonUnicite>() );
 					}
@@ -104,7 +104,7 @@ public class Conteneur implements Serializable {
 				else
 					nomsUtilises.put(nomEtat, (EtatIntermediaire) elmt);
 				
-				//si l'élément est un composite, on doit y faire les mêmes vérifications
+				//si l'ï¿½lï¿½ment est un composite, on doit y faire les mï¿½mes vï¿½rifications
 				if(elmt instanceof Composite){
 					etatsIdentiques.putAll( ((Composite)elmt).chercherPluriciteEtats(zoneErreur) );
 				}
@@ -115,8 +115,8 @@ public class Conteneur implements Serializable {
 	}
 	
 	/**
-	 * Gestion erreur d'états bloquants
-	 * @return la liste des états qui sont bloquants
+	 * Gestion erreur d'ï¿½tats bloquants
+	 * @return la liste des ï¿½tats qui sont bloquants
 	 */
 	public HashSet<ErreurEtat> chercherEtatsBloquants(ObservateurVue zoneErreur){
 		HashSet<ErreurEtat> etatsBloquants = new HashSet<ErreurEtat>(); 
@@ -126,7 +126,7 @@ public class Conteneur implements Serializable {
 				if(((EtatIntermediaire)elmt).estBloquant())
 					etatsBloquants.add(new ErreurEtat("Etat bloquant", (Etat) elmt, Erreur.ERR_ETAT_BLOQUANT, zoneErreur));
 				
-				//si l'elmt est un état composite : nous devons détecter les erreurs au sein de celui-ci
+				//si l'elmt est un ï¿½tat composite : nous devons dï¿½tecter les erreurs au sein de celui-ci
 				if(elmt instanceof Composite)
 					etatsBloquants.addAll(((Composite)elmt).chercherEtatsBloquants(zoneErreur));
 			}
@@ -137,7 +137,7 @@ public class Conteneur implements Serializable {
 	}
 	
 	/**
-	 * Gestion erreur de transitions non déterministes
+	 * Gestion erreur de transitions non dï¿½terministes
 	 * @return
 	 */
 	public HashSet<TransitionNonDeterministe> chercherTransNnDeterm(ObservateurVue zoneErreur){
@@ -173,7 +173,7 @@ public class Conteneur implements Serializable {
 		return _elmts;
 	}
 	
-	public HashSet<Element> getAllElements() {
+	/*public HashSet<Element> getAllElements() {
 		HashSet<Element> elmts = new HashSet<Element>(); 
 		
 		if(_elmts == null)
@@ -188,6 +188,18 @@ public class Conteneur implements Serializable {
 		}
 		
 		return elmts;
+	}*/
+	
+	public void getAllElements(ArrayList<Element> l) {		
+		if(_elmts != null) {
+			for(Element elmt : _elmts){
+				l.add(elmt);
+				if(elmt.isEtatComposite()){
+					((Composite)elmt).getAllElements(l);
+				}
+				
+			}
+		}
 	}
 
 	public void addElmt(Element _elmts) {
