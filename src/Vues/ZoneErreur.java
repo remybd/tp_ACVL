@@ -18,9 +18,10 @@ public class ZoneErreur extends JPanel implements ObservateurVue {
         super();
         //this.setSize(Toolkit.getDefaultToolkit().getScreenSize().width, );
         zone_texte.setEditable(false);
-        //JScrollPane scrollPane = new JScrollPane(this,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        //scrollPane.setSize(Toolkit.getDefaultToolkit().getScreenSize().width, 100);
-        this.add(zone_texte);
+        zone_texte.setPreferredSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width-50, 70));
+        JScrollPane scrollPane = new JScrollPane(zone_texte,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        //scrollPane.set(Toolkit.getDefaultToolkit().getScreenSize().width, 100);
+        this.add(scrollPane);
     }
 
     public void miseAJour(){
