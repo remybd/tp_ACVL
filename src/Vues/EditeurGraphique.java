@@ -433,7 +433,6 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
                 if(!eg_array.contains(e)) {
 
                     addParent(e,eg_array);
-                    liste_elements_graphiques.put(e.getObjet_graphique(), e);
                     /*if (e.getObjet_graphique().getParent() != null)
                         graph.addCell(e.getObjet_graphique().getParent());
                     graph.addCell(e.getObjet_graphique(), e.getObjet_graphique().getParent());
@@ -447,19 +446,26 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
                     graph.addCell(e.getObjet_graphique(),e.getObjet_graphique().getParent());
                 }*/
                 }
+                liste_elements_graphiques.put(e.getObjet_graphique(), e);
+
 			}
 		} finally {
             graph.getModel().endUpdate();
 		}
 	}
 
-    public void addParent(ElementGraphique eg, ArrayList<ElementGraphique> eg_array) {
+    public Object addParent(ElementGraphique eg, ArrayList<ElementGraphique> eg_array) {
+    	Object res = null;
         if(eg != null) {
-            if (eg.getObjet_graphique().getParent() != null)
-                addParent(eg.getParent(), eg_array);
-            graph.addCell(eg.getObjet_graphique());
+            if (eg.getObjet_graphique().getParent() != null) {
+               Object parent = addParent(eg.getParent(), eg_array);
+                res = graph.addCell(eg.getObjet_graphique(), parent);
+            } else {
+                res = graph.addCell(eg.getObjet_graphique());
+            }
             eg_array.add(eg);
         }
+        return res;
     }
 	
     private void reset() {
