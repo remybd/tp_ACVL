@@ -120,10 +120,12 @@ public class TransitionFinale extends Transition {
 		ArrayList<Element> elmtsSupr = new ArrayList<Element>();
 		elmtsSupr.add(this);
 		
-		if(_etatFinal == null)
-			return elmtsSupr;
-		
-		_etatFinal.unLinkTransition(this);
+		if(_etatFinal != null)
+			_etatFinal.unLinkTransition(this);
+		if(_etatSource != null)
+			_etatSource.unLinkDestination(this);
+
+
 		this.getConteneurParent().supprimerElmt(this);
 		return elmtsSupr;
 	}

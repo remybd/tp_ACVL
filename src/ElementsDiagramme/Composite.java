@@ -118,6 +118,7 @@ public class Composite extends EtatIntermediaire {
 		EtatGraph grandParent = ((ElementGraphique) getObservateur()).getParent();
 		//change parentée au niveau graphique
 		for(Element el : listEtatsAndTransitionIntermediaires){
+			System.out.println("Changement Parent " + el);
 			((ElementGraphique)el.getObservateur()).setParentPourAplatissement();
 		}
 
@@ -141,14 +142,21 @@ public class Composite extends EtatIntermediaire {
 
 		//relie toutes les transitions sortantes aux états finaux
 		HashSet<PseudoFinal> listEtatsFinaux = getEtatsFinaux();
+		System.out.println("TEST71 : " + listEtatsFinaux);
 		if(!listEtatsFinaux.isEmpty()){//il y a des états finaux, on les relie donc aux transitions sortantes
-			System.out.println("TEST7 : " + getEtatsPointedByFinal(listEtatsFinaux));
+			System.out.println("TEST72 : " + getEtatsPointedByFinal(listEtatsFinaux));
+			System.out.println("TEST73 : " + this.getDestinations());
 			for(EtatIntermediaire etatIntermediaire : getEtatsPointedByFinal(listEtatsFinaux)){
 				for(Transition t : this.getDestinations()){
+					System.out.println("état destination de la transition de sortie : " + t.getEtatDestination());
+
 					if(t.isTransitionFinale()){//clone les transitions sortantes car peux y avoir plusieurs états finaux et il fuat donc les cloner
+						System.out.println("ajout transition finale");
+						System.out.println("TEST75 : " + ((PseudoFinal) t.getEtatDestination()).getTransitions());
 						ControleurDiagramme.instance().ajouterTransition(EnumTransition.FINAL,t.getEtiquette(),(EtatGraph)etatIntermediaire.getObservateur(),(EtatGraph)t.getEtatDestination().getObservateur());
 
 					} else if(t.isTransitionIntermediaire()){
+						System.out.println("ajout transition intermediaire");
 						ControleurDiagramme.instance().ajouterTransition(EnumTransition.INTER, t.getEtiquette(), (EtatGraph) etatIntermediaire.getObservateur(), (EtatGraph) t.getEtatDestination().getObservateur());
 					}
 				}
@@ -156,15 +164,46 @@ public class Composite extends EtatIntermediaire {
 
 		}
 
-		System.out.println("TEST64 : " + getConteneurParent().getPseudoInitial().getTransition().getEtatDest());
+		System.out.println("TEST64 : " + getConteneurParent().getPseudoInitial().getTransition().getEtatDest().getDestinations());
+		for(Transition t : this.getDestinations()){
+			if(t.isTransitionFinale()){//clone les transitions sortantes car peux y avoir plusieurs états finaux et il fuat donc les cloner
+				System.out.println("TEST76 : " + ((PseudoFinal) t.getEtatDestination()).getTransitions());
+			}
+		}
 
 		//supprime les transitions sortantes puisqu'on les as clonées
 		HashSet<Transition> clone = (HashSet<Transition>)this.getDestinations().clone();
+		System.out.println("TEST MATIN " + clone);
 		for(Transition t : clone){
 			ControleurDiagramme.instance().supprimerElement((ElementGraphique)t.getObservateur());
 		}
+		System.out.println("TEST640 : " + getConteneurParent().getPseudoInitial().getTransition().getEtatDest().getDestinations());
+		for(Transition t : this.getDestinations()){
+			if(t.isTransitionFinale()){//clone les transitions sortantes car peux y avoir plusieurs états finaux et il fuat donc les cloner
+				System.out.println("TEST760 : " + ((PseudoFinal) t.getEtatDestination()).getTransitions());
+			}
+		}
 		this.getDestinations().clear();
 
+
+
+		System.out.println("TEST641 : " + getConteneurParent().getPseudoInitial().getTransition().getEtatDest().getSources());
+		//supprime les transitions entrante puisqu'on les as clonées
+		clone = (HashSet<Transition>)this.getSources().clone();
+		System.out.println("TEST MATIN " + clone);
+		for(Transition t : clone){
+			ControleurDiagramme.instance().supprimerElement((ElementGraphique) t.getObservateur());
+		}
+		this.getSources().clear();
+
+		System.out.println("TEST64 : " + getConteneurParent().getPseudoInitial().getTransition().getEtatDest().getDestinations());
+		for(Transition t : this.getDestinations()){
+			if(t.isTransitionFinale()){//clone les transitions sortantes car peux y avoir plusieurs états finaux et il fuat donc les cloner
+				System.out.println("TEST76 : " + ((PseudoFinal) t.getEtatDestination()).getTransitions());
+			}
+		}
+
+		System.out.println("TEST651 : " + getConteneurParent().getPseudoInitial().getTransition());
 		System.out.println("TEST65 : " + getConteneurParent().getPseudoInitial().getTransition().getEtatDest());
 		//suprime les états finaux et leurs transitions dans l'état composite
 		for(PseudoFinal pseudoFinal : listEtatsFinaux){
@@ -248,6 +287,20 @@ public class Composite extends EtatIntermediaire {
 		elmtsSupr.addAll(_fils.supprimer());
 		return elmtsSupr;
 	}
+
+	public ArrayList<Element> supprimerForAplatir() {
+		ArrayList<Element> elmtsSupr = new ArrayList<Element>();
+		elmtsSupr.add(this);
+
+		this.getConteneurParent().supprimerElmt(this);
+
+		if(_fils == null)
+			return elmtsSupr;
+
+		elmtsSupr.addAll(_fils.supprimer());
+		return elmtsSupr;
+	}
+
 
 	@Override
 	public boolean isTransition() {
