@@ -36,7 +36,7 @@ public class FichierSauvegarde extends Fichier{
     }
 
     //ouverture d'un fichier
-    public FichierSauvegarde(String path) throws ClassNotFoundException, IOException{
+    public FichierSauvegarde(String path) throws FileNotFoundException, ClassNotFoundException, IOException{
         super(path);
         
         this.mainConteneur = chargerFichier();
@@ -73,7 +73,7 @@ public class FichierSauvegarde extends Fichier{
      * @throws IOException 
      * @throws ClassNotFoundException 
      */
-    public Conteneur chargerFichier() throws IOException, ClassNotFoundException {
+    public Conteneur chargerFichier() throws FileNotFoundException, ClassNotFoundException, IOException {
     	System.out.println("Charger : "+this.getCheminAbsolu());
 		FileInputStream fis = new FileInputStream(this.getCheminAbsolu());
 		ObjectInputStream ois= new ObjectInputStream(fis);

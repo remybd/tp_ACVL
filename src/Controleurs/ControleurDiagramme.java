@@ -349,4 +349,12 @@ public class ControleurDiagramme {
     public HashSet<Erreur> getErreurs() {
         return erreurs;
     }
+    
+    public void propagerErreur(Erreur err){
+    	if(err.getObservateur()==null)
+    		err.attache(ihm.getEdGraphique().getZoneErreur());
+    	
+    	erreurs.add(err);
+    	err.getObservateur().miseAJour();
+    }
 }

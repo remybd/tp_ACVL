@@ -20,6 +20,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -180,7 +182,15 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
                     filename.setText(f.getName());
                     dir.setText(f.getAbsolutePath().toString());
                     System.out.println(dir.getText());
-                    Ihm.instance().getControleurFichier().chargerFichier(f.getAbsolutePath().toString());
+                 
+						try {
+							Ihm.instance().getControleurFichier().chargerFichier(f.getAbsolutePath().toString());
+						} catch (ClassNotFoundException
+								| IOException e1) {
+							new FenetreErreur("Une erreur survenue pendant l'ouverture du fichier ; il n'existe peut-être pas.");
+							e1.printStackTrace();
+						}
+					
                 }
                 if (rVal == JFileChooser.CANCEL_OPTION) {
                     filename.setText("");
@@ -198,7 +208,15 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
                 	File f = c.getSelectedFile();
                     filename.setText(f.getName());
                     dir.setText(f.getAbsolutePath().toString());
-                    Ihm.instance().getControleurFichier().sauvegarderFichier(dir.getText());
+                    try {
+						Ihm.instance().getControleurFichier().sauvegarderFichier(dir.getText());
+					} catch (FileNotFoundException e1) {
+						new FenetreErreur("Une erreur est survenue pendant la sauvegarde du fichier : il n'existe pas.");
+						e1.printStackTrace();
+					} catch (IOException e1) {
+						new FenetreErreur("Une erreur d'écriture est survenue pendant la sauvegarde du fichier.");
+						e1.printStackTrace();
+					}
                 }
                 if (rVal == JFileChooser.CANCEL_OPTION) {
                     filename.setText("You pressed cancel");
@@ -209,11 +227,14 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
         aplatir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    Ihm.instance().getControleur().applatir();
-                } catch (Exception e1) {
-                    e1.printStackTrace();
-                }
+           
+                    try {
+						Ihm.instance().getControleur().applatir();
+					} catch (Exception e1) {
+						new FenetreErreur("Une erreur non gérée est survenue pendant l'applatissement.");
+						e1.printStackTrace();
+					}
+                
             }
         });
         fichier.add(ouvrir);
