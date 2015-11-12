@@ -160,7 +160,7 @@ public class EditeurGraphique extends JFrame {
 						new FenetreErreur("Une erreur est survenue pendant la sauvegarde du fichier : il n'existe pas.");
 						e1.printStackTrace();
 					} catch (IOException e1) {
-						new FenetreErreur("Une erreur d'écriture est survenue pendant la sauvegarde du fichier.");
+						new FenetreErreur("Une erreur d'ecriture est survenue pendant la sauvegarde du fichier.");
 						e1.printStackTrace();
 					}
                 }
@@ -177,7 +177,7 @@ public class EditeurGraphique extends JFrame {
                     try {
 						Ihm.instance().getControleur().applatir();
 					} catch (Exception e1) {
-						new FenetreErreur("Une erreur non gérée est survenue pendant l'applatissement.");
+						new FenetreErreur("Une erreur non geree est survenue pendant l'aplatissement.");
 						e1.printStackTrace();
 					}
                 
@@ -223,7 +223,7 @@ public class EditeurGraphique extends JFrame {
         a_propos.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String a_propos_texte = "TransUML \n RAKOTOARISOA Jérémy \n BATAL Thibaut \n BEULE DAUZAT Rémy \n ROUSSEAU Benjamin";
+                String a_propos_texte = "TransUML \n RAKOTOARISOA Jeremy \n BATAL Thibaut \n BEULE DAUZAT Remy \n ROUSSEAU Jean-Benjamin";
                 JOptionPane jop = new JOptionPane();
                 jop.showMessageDialog(null, a_propos_texte, "Information", JOptionPane.INFORMATION_MESSAGE);
             }
