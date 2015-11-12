@@ -36,18 +36,19 @@ public class Conteneur implements Serializable {
 	public ArrayList<Element> supprimer(){
 		ArrayList<Element> elmtsSupr = new ArrayList<Element>();
 		ArrayList<Element> elmtsDuConteneur = new ArrayList<Element>();
+
 		for(Element elmt : this._elmts){
 			elmtsDuConteneur.add(elmt);
 		}
 		
 		if(_etatInit != null){
-			_etatInit.supprimer();
 			elmtsSupr.add(_etatInit);
+			_etatInit.supprimer();
 		}
 		
 		for(Element elmt : elmtsDuConteneur){
-			elmt.supprimer();
 			elmtsSupr.add(elmt);
+			elmt.supprimer();
 		}
 		
 		_erreurs = null;
@@ -198,13 +199,22 @@ public class Conteneur implements Serializable {
 
 	public void applatir() throws Exception {
 		HashSet<Element> temp = (HashSet<Element>)_elmts.clone();
+		TransitionInitiale t = getPseudoInitial().getTransition();
 
 		for(Element el: temp){
 			if(el.isEtatComposite()){
 				((Composite)el).applatir();
+				HashSet<Transition> sources = ((Composite) el).getSources();
+				HashSet<Transition> destinations = ((Composite) el).getDestinations();
+
 				ControleurDiagramme.instance().supprimerElement((ElementGraphique)el.getObservateur());
+
+				((Composite) el).setSources(sources);
+				((Composite) el).setDestinations(destinations);
 			}
 		}
+
+		getPseudoInitial().setTransition(t);
 	}
 
 	public void addElements(HashSet<Element> elements){
@@ -212,5 +222,9 @@ public class Conteneur implements Serializable {
 			ti.setConteneurParent(this);
 			this.addElmt(ti);
 		}
+	}
+
+	public void setElmts(HashSet<Element> elements){
+		_elmts = elements;
 	}
 }

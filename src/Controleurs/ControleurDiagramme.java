@@ -108,7 +108,6 @@ public class ControleurDiagramme {
         Element e = getElementFromGraphic(elem);
 
         ArrayList<Element> elementsSupprime = e.supprimer();
-        System.out.println("test supression etat composite: " + elementsSupprime.toString());
         for(Element element : elementsSupprime){
 
         	if(element.isEtat()){

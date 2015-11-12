@@ -103,11 +103,17 @@ public class Composite extends EtatIntermediaire {
 
 
 	public void applatir() throws Exception {
+		System.out.println("TEST0 : " + _fils.getElmts());
+		System.out.println("TEST600 : " + getConteneurParent().getPseudoInitial().getTransition().getEtatDest());
 		_fils.applatir();
+		System.out.println("TEST1 : " + _fils.getElmts());
+		System.out.println("TEST601 : " + _fils.getPseudoInitial().getTransition().getEtatDest());
 
 		//change la parenté des états et transition intermédiaires
 		HashSet<Element> listEtatsAndTransitionIntermediaires = getEtatsAndTransitionIntermediaires();
+		System.out.println("TEST2 : " + getEtatsAndTransitionIntermediaires());
 		getConteneurParent().addElements(listEtatsAndTransitionIntermediaires);
+
 
 		EtatGraph grandParent = ((ElementGraphique) getObservateur()).getParent();
 		//change parentée au niveau graphique
@@ -116,23 +122,27 @@ public class Composite extends EtatIntermediaire {
 		}
 
 		//relie toutes les transitions entrantes à l'état pointé par l'initial
+		System.out.println("TEST4 : " + this.getSources());
 		if(_fils.getPseudoInitial().getTransition() != null){
 			EtatIntermediaire etatPointedByInit = _fils.getPseudoInitial().getTransition().getEtatDest();
+			System.out.println("TEST5 : " + etatPointedByInit);
 			for(Transition t : this.getSources()){
 				if(t.isTransitionIntermediaire()){
-					((TransitionIntermediaire)t).setEtatDest(etatPointedByInit);
+					ControleurDiagramme.instance().ajouterTransition(EnumTransition.INTER,t.getEtiquette(),(EtatGraph)t.getEtatSource().getObservateur(),(EtatGraph)etatPointedByInit.getObservateur());
 				} else if(t.isTransitionInitiale()){
-					((TransitionInitiale)t).setEtatDest(etatPointedByInit);
+					ControleurDiagramme.instance().ajouterTransition(EnumTransition.INIT,t.getEtiquette(),(EtatGraph)t.getEtatSource().getObservateur(),(EtatGraph)etatPointedByInit.getObservateur());
 				}
 			}
 		}
+		System.out.println("TEST61 : " + _fils.getPseudoInitial().getTransition().getEtatDest());
+		System.out.println("TEST62 : " + getConteneurParent().getPseudoInitial().getTransition().getEtatDest());
 
 
 
 		//relie toutes les transitions sortantes aux états finaux
 		HashSet<PseudoFinal> listEtatsFinaux = getEtatsFinaux();
 		if(!listEtatsFinaux.isEmpty()){//il y a des états finaux, on les relie donc aux transitions sortantes
-
+			System.out.println("TEST7 : " + getEtatsPointedByFinal(listEtatsFinaux));
 			for(EtatIntermediaire etatIntermediaire : getEtatsPointedByFinal(listEtatsFinaux)){
 				for(Transition t : this.getDestinations()){
 					if(t.isTransitionFinale()){//clone les transitions sortantes car peux y avoir plusieurs états finaux et il fuat donc les cloner
@@ -146,6 +156,8 @@ public class Composite extends EtatIntermediaire {
 
 		}
 
+		System.out.println("TEST64 : " + getConteneurParent().getPseudoInitial().getTransition().getEtatDest());
+
 		//supprime les transitions sortantes puisqu'on les as clonées
 		HashSet<Transition> clone = (HashSet<Transition>)this.getDestinations().clone();
 		for(Transition t : clone){
@@ -153,14 +165,20 @@ public class Composite extends EtatIntermediaire {
 		}
 		this.getDestinations().clear();
 
+		System.out.println("TEST65 : " + getConteneurParent().getPseudoInitial().getTransition().getEtatDest());
 		//suprime les états finaux et leurs transitions dans l'état composite
 		for(PseudoFinal pseudoFinal : listEtatsFinaux){
 			ControleurDiagramme.instance().supprimerElement((ElementGraphique)pseudoFinal.getObservateur());
 		}
+
+		System.out.println("TEST66 : " + getConteneurParent().getPseudoInitial().getTransition().getEtatDest());
 		//suprime l'état initial et donc sa transition
 		ControleurDiagramme.instance().supprimerElement((ElementGraphique) _fils.getPseudoInitial().getObservateur());
+		System.out.println("TEST67 : " + getConteneurParent().getPseudoInitial().getTransition().getEtatDest());
 		//vide le conteneur
 		_fils.getElmts().clear();
+		System.out.println("TEST68 : " + getConteneurParent().getPseudoInitial().getTransition().getEtatDest());
+
 	}
 
 
@@ -223,10 +241,10 @@ public class Composite extends EtatIntermediaire {
 	@Override
 	public ArrayList<Element> supprimer() {
 		ArrayList<Element> elmtsSupr = super.supprimer(); //TODO : fonctionnel ?
-		
+
 		if(_fils == null)
 			return elmtsSupr;
-		
+
 		elmtsSupr.addAll(_fils.supprimer());
 		return elmtsSupr;
 	}
