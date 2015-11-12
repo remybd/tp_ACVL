@@ -1,8 +1,9 @@
 package Vues;
 
+
 import ElementsDiagramme.EnumEtat;
 import ElementsDiagramme.EnumTransition;
-import ElementsDiagramme.Transition;
+import ElementsDiagramme.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,8 +38,10 @@ public class EditionTransition extends FenetrePopup implements ActionListener{
         this.transition_graph = transition_graph;
 
         evenement_transition.setPreferredSize(new Dimension(150, 30));
-        //Transition t = Ihm.instance().getControleur().get
-        //evenement_transition.setText(transition_graph.get());
+
+        evenement_transition.setText(TransitionIntermediaire.getEvt(transition_graph.getNom()));
+        garde_transition.setText(TransitionIntermediaire.getGarde(transition_graph.getNom()));
+        action_transition.setText(TransitionIntermediaire.getAction(transition_graph.getNom()));
 
         JPanel centered = new JPanel();
         centered.add(evenement_label);
