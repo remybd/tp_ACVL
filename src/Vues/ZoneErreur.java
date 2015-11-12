@@ -30,6 +30,7 @@ public class ZoneErreur extends JPanel implements ObservateurVue {
         String error_text = "";
         for(Erreur e : erreurs){
             System.out.println(" Nom : " + e.getNom());
+            //TODO enlever le comentaire en dessous
             error_text += e.getMessage() + "\n";
         }
         zone_texte.setText(error_text);

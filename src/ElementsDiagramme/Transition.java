@@ -26,18 +26,23 @@ public abstract class Transition extends Element {
 				throw new NoIntermediaryStateException();
 
 			t = new TransitionIntermediaire(parent,etiquette,(EtatIntermediaire)s,(EtatIntermediaire)d);
+			((EtatIntermediaire) s).addDestination(t);
+			((EtatIntermediaire) d).addSource(t);
 		}
 		else if(type == EnumTransition.FINAL){
 			if(!s.isEtatIntermediaire() || !d.isEtatPseudoFinal())
 				throw new NoIntermediaryAndFinalStateException();
-			//TO DO : peut être modifier le constructeur pour avoir à remplir les états
-			t = new TransitionFinale(parent,etiquette);
+
+			t = new TransitionFinale(parent,etiquette,(EtatIntermediaire)s,(PseudoFinal)d);
+			((EtatIntermediaire) s).addDestination(t);
+			((PseudoFinal) d).addTransition((TransitionFinale)t);
 		}
 		else{//transition initiale
 			if(!(s.isEtatPseudoInitial()) || !d.isEtatIntermediaire())
 				throw new NoIntermediaryAndInitialStateException();
-			//TO DO : peut être modifier le constructeur pour avoir à remplir l'état de destination ?
 			t = new TransitionInitiale(parent,(PseudoInitial)s, (EtatIntermediaire)d);
+			((PseudoInitial) s).setTransition((TransitionInitiale)t);
+			((EtatIntermediaire) d).addSource(t);
 		}
 
 		return t;
