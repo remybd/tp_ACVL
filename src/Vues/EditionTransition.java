@@ -1,16 +1,21 @@
 package Vues;
 
-import ElementsDiagramme.EnumEtat;
-import ElementsDiagramme.EnumTransition;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import ElementsDiagramme.EnumTransition;
+
 /**
- * Created by rémy on 06/11/2015.
+ * Created by rï¿½my on 06/11/2015.
  */
 public class EditionTransition extends FenetrePopup implements ActionListener{
 
@@ -48,7 +53,6 @@ public class EditionTransition extends FenetrePopup implements ActionListener{
     public void actionPerformed(ActionEvent arg0){
         EnumTransition type = transition_graph.getType();
         try {
-            //Ihm.instance().getControleur().modifierTransition(transition_graph, liste_elements.get(index_source), liste_elements.get(index_destination), this.etiquette_transition.getText());
             ArrayList<EtatGraph> etats_source_destination = Ihm.instance().getControleur().getSourceAndDestination(transition_graph);
             Ihm.instance().getControleur().supprimerElement(transition_graph);
             Ihm.instance().getControleur().ajouterTransition(type, this.etiquette_transition.getText(),

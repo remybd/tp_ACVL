@@ -1,10 +1,10 @@
 package Vues;
 
-import com.mxgraph.model.mxCell;
-import com.mxgraph.swing.mxGraphComponent;
-
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import com.mxgraph.model.mxCell;
+import com.mxgraph.swing.mxGraphComponent;
 
 /**
  * Created by Jerem on 03/11/2015.
@@ -27,7 +27,6 @@ public class MenuContextuelListener extends MouseAdapter {
     }
 
     private void doPop(MouseEvent e){
-        //ElementGraphique child =  new ElementGraphique(null, ((mxCell)GraphComponent.getCellAt(e.getX(), e.getY())));
         mxCell element_selectionne = ((mxCell)GraphComponent.getCellAt(e.getX(), e.getY()));
         MenuContextuel menu = null;
         if(element_selectionne == null)

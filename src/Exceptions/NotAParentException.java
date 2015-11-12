@@ -1,11 +1,11 @@
 package Exceptions;
 
 /**
- * Created by rémy on 08/11/2015.
+ * Created by rï¿½my on 08/11/2015.
  */
 public class NotAParentException extends Exception {
 
     public NotAParentException(){
-        System.out.println("L'élément sélectionné comme parent n'en est pas un");
+    	super("L'Ã©lÃ©ment sÃ©lectionnÃ© comme parent n'en est pas un");
     }
 }

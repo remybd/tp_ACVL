@@ -3,8 +3,6 @@ package ElementsDiagramme;
 import Exceptions.NoIntermediaryAndFinalStateException;
 import Exceptions.NoIntermediaryAndInitialStateException;
 import Exceptions.NoIntermediaryStateException;
-import Vues.ObservateurVue;
-import Vues.TransitionGraph;
 
 /**
  *  TODO
@@ -20,7 +18,6 @@ public abstract class Transition extends Element {
 	public static Transition creerTransition(EnumTransition type, String etiquette, Etat s, Etat d, Conteneur parent) throws Exception {
 		Transition t;
 
-		//TO DO : peut être modifier les constructeurs pour ne pas avoir à mettre null pour l'Observateur
 		if(type == EnumTransition.INTER){
 			if(!s.isEtatIntermediaire() || !d.isEtatIntermediaire())
 				throw new NoIntermediaryStateException();
@@ -59,12 +56,10 @@ public abstract class Transition extends Element {
 		return true;
 	}
 	
-
 	@Override
 	public boolean isEtatIntermediaire() {
 		return false;
 	}
-
 
 	@Override
 	public boolean isEtatComposite() {

@@ -1,15 +1,18 @@
 package Vues;
 
-import Controleurs.ControleurDiagramme;
-import Controleurs.ControleurFichier;
-import ElementsDiagramme.*;
-import com.mxgraph.model.mxCell;
-
-import javax.naming.ldap.Control;
-import javax.swing.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import Controleurs.ControleurDiagramme;
+import Controleurs.ControleurFichier;
+import ElementsDiagramme.EnumEtat;
+import ElementsDiagramme.EnumTransition;
+import ElementsDiagramme.Etat;
+import ElementsDiagramme.Transition;
+import ElementsDiagramme.TransitionFinale;
+import ElementsDiagramme.TransitionIntermediaire;
+
+import com.mxgraph.model.mxCell;
 
 
 /**
@@ -74,18 +77,12 @@ public class Ihm {
     }
 
     public void removeElem(mxCell m) {
-    	System.out.println("QUIQUOI" + m.toString());
         ElementGraphique eg = this.getEdGraphique().getElement_from_liste(m);
         HashMap<mxCell, ElementGraphique> liste_elements_graphiques = EditeurGraphique.instance().getListe_elements_graphiques();;
 
         if(eg!=null){
             removeElemFromListeEditeurGraphique(m);
             removeElemFromGraph(m);
-        }
-
-        System.out.println("Elements presents dans l'editeur graphique :");
-        for (Map.Entry<mxCell, ElementGraphique> entry : liste_elements_graphiques.entrySet()) {
-            System.out.println(liste_elements_graphiques.get(entry.getKey()).getNom());
         }
     }
 
@@ -95,7 +92,6 @@ public class Ihm {
 
         ElementGraphique eg = this.getEdGraphique().getElement_from_liste(m);
 
-        //A MODIFIER
         for (Map.Entry<mxCell, ElementGraphique> entry : liste_elements_graphiques.entrySet()) {
             if(entry.getKey().isEdge() && ( ((TransitionGraph)entry.getValue()).getDestinationTransition().equals(eg) || ((TransitionGraph)entry.getValue()).getSourceTransition().equals(eg)) ) {
                 liste_elements_graphiques.remove(entry.getKey());

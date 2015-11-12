@@ -1,11 +1,11 @@
 package Exceptions;
 
 /**
- * Created by rémy on 08/11/2015.
+ * Created by rï¿½my on 08/11/2015.
  */
 public class NoIntermediaryAndInitialStateException extends Exception {
 
     public NoIntermediaryAndInitialStateException(){
-        System.out.println("L'état de début de la transition n'est pas un état initial et celui de fin n'est pas un état intermédiaire");
+    	super("L'Ã©tat de dÃ©but de la transition n'est pas un Ã©tat initial et celui de fin n'est pas un Ã©tat intermÃ©diaire");
     }
 }

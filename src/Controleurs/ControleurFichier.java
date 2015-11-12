@@ -48,12 +48,7 @@ public class ControleurFichier {
         return manuel;
     }
     
-    public void ouvrirManuel(){
-    	try {
-			Desktop.getDesktop().open(new File(getManuel().getCheminRelatif()));
-		} catch (IOException e) {
-			//TODO : propager l'erreur dans l'IHM
-			e.printStackTrace();
-		}
+    public void ouvrirManuel() throws IOException{
+		Desktop.getDesktop().open(new File(getManuel().getCheminRelatif()));
     }
 }

@@ -1,8 +1,5 @@
 package RessourcesExternes;
 
-
-import ElementsDiagramme.Conteneur;
-
 public class Fichier {
     private String nom;
     private String extension;

@@ -1,10 +1,10 @@
 package Erreurs;
 
-import Vues.ObservateurVue;
 import ElementsDiagramme.Etat;
+import Vues.ObservateurVue;
 
 /**
- * Created by rémy on 05/11/2015.
+ * Created by rï¿½my on 05/11/2015.
  */
 public class NonUnicite extends ErreurEtat{
     private Etat etatMemeNom;

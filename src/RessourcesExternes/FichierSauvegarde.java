@@ -1,18 +1,25 @@
 package RessourcesExternes;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import ElementsDiagramme.Conteneur;
 
-import java.io.*;
-
 /**
- * Created by rémy on 05/11/2015.
+ * Created by rï¿½my on 05/11/2015.
  */
 public class FichierSauvegarde extends Fichier{
 	public static final String FICHIER_EXTENSION = "diag";
 	
     private Conteneur mainConteneur;
 
-    //création d'un fichier
+    //crÃ©ation d'un fichier
     public FichierSauvegarde(String nom, String extension, String chemin, Conteneur mainConteneur) throws FileNotFoundException, IOException{
         super(nom, extension, chemin);
 
@@ -20,7 +27,7 @@ public class FichierSauvegarde extends Fichier{
         this.sauvegarderFichier();
     }
     
-    //création d'un fichier
+    //crÃ©ation d'un fichier
     public FichierSauvegarde(String chemin, Conteneur mainConteneur) throws FileNotFoundException, IOException{
         super(chemin);
 
@@ -45,15 +52,13 @@ public class FichierSauvegarde extends Fichier{
     public void sauvegarderFichier() throws FileNotFoundException, IOException{
         ObjectOutputStream oos = null;
 
-        try {
-        	System.out.println("Sauvegarder : "+this.getCheminAbsolu());
-        	
+        try {        	
             oos = new ObjectOutputStream(
                     new BufferedOutputStream(
                             new FileOutputStream(
                                     new File(this.getCheminAbsolu()))));
 
-            //écriture du mainconteneur dans le fichier
+            //Ã©criture du mainconteneur dans le fichier
             oos.writeObject(mainConteneur);
 
         }finally{
@@ -74,7 +79,6 @@ public class FichierSauvegarde extends Fichier{
      * @throws ClassNotFoundException 
      */
     public Conteneur chargerFichier() throws FileNotFoundException, ClassNotFoundException, IOException {
-    	System.out.println("Charger : "+this.getCheminAbsolu());
 		FileInputStream fis = new FileInputStream(this.getCheminAbsolu());
 		ObjectInputStream ois= new ObjectInputStream(fis);
 		try {	

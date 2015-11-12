@@ -1,15 +1,19 @@
 package Vues;
 
-import ElementsDiagramme.EnumEtat;
-import ElementsDiagramme.EnumTransition;
-import ElementsDiagramme.Etat;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.HashSet;
+
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import ElementsDiagramme.EnumEtat;
+import ElementsDiagramme.EnumTransition;
 
 /**
  * Created by Jerem on 03/11/2015.
@@ -17,7 +21,7 @@ import java.util.HashSet;
 public class CreationTransition extends FenetrePopup implements ActionListener{
 
     private JComboBox liste_etats;
-    private JLabel liste_label = new JLabel("Liste des etats de destination");
+    private JLabel liste_label = new JLabel("Liste des états de destination");
     private JLabel etiquette_label = new JLabel("Etiquette");
     private JTextField etiquette_transition = new JTextField();
     private JButton valider = new JButton("Valider");

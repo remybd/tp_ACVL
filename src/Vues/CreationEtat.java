@@ -1,11 +1,17 @@
 package Vues;
 
-import ElementsDiagramme.EnumEtat;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import ElementsDiagramme.EnumEtat;
 
 /**
  * Created by Jerem on 03/11/2015.
@@ -13,7 +19,7 @@ import java.awt.event.ActionListener;
 public class CreationEtat extends FenetrePopup implements ActionListener{
 
     private JTextField text_etat = new JTextField();
-    private JLabel nom_etat = new JLabel("Nom de l'etat");
+    private JLabel nom_etat = new JLabel("Nom de l'état");
     private JButton valider = new JButton("Valider");
 
     private ElementGraphique element_graphique;
@@ -37,19 +43,14 @@ public class CreationEtat extends FenetrePopup implements ActionListener{
     }
 
     public void actionPerformed(ActionEvent arg0){
-        //Ihm.instance().getControleur().ajouterEtat(this.type, text_etat.getText(), (EtatGraph)this.element_graphique);
         String nom_etat = text_etat.getText();
-        //TODO Test, � changer
         if(nom_etat.isEmpty()){
             JOptionPane message_erreur = new JOptionPane();
-            message_erreur.showMessageDialog(null, "Un etat doit avoir un nom", "Erreur", JOptionPane.ERROR_MESSAGE);
+            message_erreur.showMessageDialog(null, "Un état doit avoir un nom", "Erreur", JOptionPane.ERROR_MESSAGE);
         } else {
-            //Ihm.instance().getEdGraphique().ajouterEtatSimple(text_etat.getText(), this.type);
             try {
-                Ihm.instance().getControleur().ajouterEtat(this.type, text_etat.getText(), (EtatGraph)this.element_graphique);
-            } catch (Exception e){
-                e.printStackTrace();
-            }
+				Ihm.instance().getControleur().ajouterEtat(this.type, text_etat.getText(), (EtatGraph)this.element_graphique);
+			} catch (Exception e) {	}
             this.dispose();
         }
     }
