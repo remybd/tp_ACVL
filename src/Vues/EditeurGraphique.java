@@ -1,7 +1,6 @@
 package Vues;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -12,7 +11,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.Map;
 
 import javax.swing.JFileChooser;
@@ -20,6 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -30,18 +29,16 @@ import ElementsDiagramme.EnumEtat;
 import ElementsDiagramme.EnumTransition;
 
 import com.mxgraph.model.mxCell;
-import com.mxgraph.model.mxGeometry;
 import com.mxgraph.model.mxICell;
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.util.mxConstants;
 import com.mxgraph.view.mxGraph;
-import com.mxgraph.view.mxStylesheet;
 
 /**
  * Created by Jerem on 11/10/2015.
  */
 
-public class EditeurGraphique extends JFrame implements ObservateurVue {
+public class EditeurGraphique extends JFrame {
 
     private final static String etatInitialStyle = mxConstants.STYLE_SHAPE + "="+ mxConstants.SHAPE_ELLIPSE;
     private final static String etatFinalStyle = mxConstants.STYLE_SHAPE + "="+ mxConstants.SHAPE_DOUBLE_ELLIPSE;
@@ -49,13 +46,10 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
     private static HashMap<mxCell, ElementGraphique> liste_elements_graphiques = new HashMap<>();
 
     private ZoneErreur zone_erreur = new ZoneErreur();
-    private JPanel content = new JPanel();
 
     final private static EditeurGraphique instanceUnique = new EditeurGraphique();
 
     Toolkit tool = getToolkit();
-
-    private Ihm ihm = Ihm.instance();
 
     //-------------------------------------------
     //  Partie Barre de menu
@@ -64,6 +58,7 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
     private JMenu fichier = new JMenu("Fichier");
     private JMenu aide = new JMenu("Aide");
 
+    private JMenuItem nouveau = new JMenuItem("Nouveau");
     private JMenuItem ouvrir = new JMenuItem("Ouvrir");
     private JMenuItem enregistrer = new JMenuItem("Enregistrer");
     private JMenuItem aplatir = new JMenuItem("Aplatir");
@@ -81,7 +76,6 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
     private JTextField dir = new JTextField();
 
     private EditeurGraphique() {
-
         this.setTitle("Editeur Graphique");
         this.setSize(tool.getScreenSize());
 
@@ -96,42 +90,10 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
         mainPanel.setLayout(bl);
         panelGraph.setLayout(b2);
 
-        Object parent = graph.getDefaultParent();
-        Object v1 = null;
-        mxCell vertex = null;
-        graph.getModel().beginUpdate();
-        try {
-
-            mxGeometry geometry = new mxGeometry(20, 20, 80, 30);
-            geometry.setRelative(false);
-
-            /*vertex = new mxCell("Hello", geometry, "ROUNDED");
-            vertex.setId(null);
-            vertex.setVertex(true);
-            vertex.setConnectable(true);
-            graph.addCell(vertex, parent);
-            System.out.println(vertex.isVertex());*/
-
-            //v1 = (Object) vertex;
-
-            // Création du diagramme initial
-            //graph.insertVertex(parent, null, "Initial", 20, 20, 30, 30, etatInitialStyle);
-
-            /*Object v2 = graph.insertVertex(parent, null, "Final!", 240, 150, 30, 30, etatFinalStyle);
-            graph.insertEdge(parent, null, "Edge", v1, v2);*/
-
-        } finally {
-            graph.getModel().endUpdate();
-        }
         graphComponent = new mxGraphComponent(graph);
-        graphComponent.setBackground(Color.black);
         graphComponent.setAutoExtend(false);
-        // graph.getModel().get
-        //  graphComponent.getCellAt(MouseEvent.gCursor.getDefaultCursor().g, arg1)
         graphComponent.getGraphControl().addMouseListener(new MenuContextuelListener(graphComponent));
         graphComponent.getGraphControl().setSize(this.getSize());
-    //    graphComponent.getGraph().setEdgeLabelsMovable(false);
-    //    graphComponent.getGraph().setAllowDanglingEdges(false);
         graphComponent.getGraphHandler().setRemoveCellsFromParent(false);
         graphComponent.setConnectable(false);
         graphComponent.getGraph().setVertexLabelsMovable(false);
@@ -141,29 +103,7 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
         graphComponent.getGraph().setCellsDisconnectable(false);
         graphComponent.getGraph().setCellsEditable(false);
         graphComponent.setEnterStopsCellEditing(false);
-     //   graphComponent.getGraphHandler().set;
         graphComponent.getGraph().setDropEnabled(false);
-     //   graphComponent.setImportEnabled(false);
-
-    //    graphComponent.getGraph().setExtendParents(false);
-
-       // graphComponent.getGraphHandler().set;
-
-        //     graphComponent.getComponentAt(System, arg1)
-        //   graphComponent.getComponents()[0]..addMouseListener(new MenuContextuelListener(graphComponent.getComponent(0)));
-        ///       graphComponent.getGraphControl().getComponentListeners()[0].
-        //     graphComponent.
-
-        mxStylesheet stylesheet = graph.getStylesheet();
-        Hashtable<String, Object> style = new Hashtable<String, Object>();
-        style.put(mxConstants.STYLE_OPACITY, 50);
-        //style.replace(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_CONNECTOR);
-        style.put(mxConstants.STYLE_FONTCOLOR, "#774400");
-        stylesheet.putCellStyle("ROUNDED", style);
-
-        //System.out.println("hsit" + graphComponent.getCellAt(19,19));
-        //System.out.println(graphComponent.getCellAt(20,20).equals(vertex) + "HOURAAAA");
-
         graphComponent.setMaximumSize(new Dimension(400,400));
 
         panelGraph.setMaximumSize(new Dimension(400, 400));
@@ -176,7 +116,6 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
         this.setContentPane(mainPanel);
         setVisible(true); //affiche la JFrame
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //  mxConstants.STYLE_SOURCE_PORT;
     }
 
     private void createMenu() {
@@ -189,19 +128,15 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
                 if (rVal == JFileChooser.APPROVE_OPTION) {
                 	File f = c.getSelectedFile();
                     filename.setText(f.getName());
-                    dir.setText(f.getAbsolutePath().toString());
-                    System.out.println(dir.getText());
-                 
-						try {
-							Ihm.instance().getControleurFichier().chargerFichier(f.getAbsolutePath().toString());
-						} catch (ClassNotFoundException e1){
-							new FenetreErreur("Une erreur est survenue pendant le chargement du fichier; il est ptrobablement corrompu.");
-							
-						}catch(IOException e2) {
-							new FenetreErreur("Une erreur est survenue pendant l'ouverture du fichier ; il n'existe peut-etre pas.");
-							e2.printStackTrace();
-						}
-					
+                    dir.setText(f.getAbsolutePath().toString());                 
+					try {
+						Ihm.instance().getControleurFichier().chargerFichier(f.getAbsolutePath().toString());
+					} catch (ClassNotFoundException e1){
+						new FenetreErreur("Une erreur est survenue pendant le chargement du fichier; il est ptrobablement corrompu.");
+					} catch(IOException e2) {
+						new FenetreErreur("Une erreur est survenue pendant l'ouverture du fichier ; il n'existe peut-etre pas.");
+						e2.printStackTrace();
+					}					
                 }
                 if (rVal == JFileChooser.CANCEL_OPTION) {
                     filename.setText("");
@@ -225,7 +160,7 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
 						new FenetreErreur("Une erreur est survenue pendant la sauvegarde du fichier : il n'existe pas.");
 						e1.printStackTrace();
 					} catch (IOException e1) {
-						new FenetreErreur("Une erreur d'ecriture est survenue pendant la sauvegarde du fichier.");
+						new FenetreErreur("Une erreur d'écriture est survenue pendant la sauvegarde du fichier.");
 						e1.printStackTrace();
 					}
                 }
@@ -242,12 +177,24 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
                     try {
 						Ihm.instance().getControleur().applatir();
 					} catch (Exception e1) {
-						new FenetreErreur("Une erreur non geree est survenue pendant l'applatissement.");
+						new FenetreErreur("Une erreur non gérée est survenue pendant l'applatissement.");
 						e1.printStackTrace();
 					}
                 
             }
         });
+        nouveau.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	reset();
+            	try {
+            		ControleurDiagramme.instance().nouveau();
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+            }
+        });
+        fichier.add(nouveau);
         fichier.add(ouvrir);
         fichier.add(enregistrer);
         fichier.add(aplatir);
@@ -261,7 +208,26 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
         });
         fichier.add(fermer);
 
+        consulter_manuel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+					Ihm.instance().getControleurFichier().ouvrirManuel();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+            }
+        });
         aide.add(consulter_manuel);
+        a_propos.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String a_propos_texte = "TransUML \n RAKOTOARISOA Jérémy \n BATAL Thibaut \n BEULE DAUZAT Rémy \n ROUSSEAU Benjamin";
+                JOptionPane jop = new JOptionPane();
+                jop.showMessageDialog(null, a_propos_texte, "Information", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
         aide.add(a_propos);
 
         menu.add(fichier);
@@ -274,11 +240,6 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
         return zone_erreur;
     }
 
-    @Override
-    public void miseAJour() {
-        // TODO Auto-generated method stub
-    }
-
     public EtatGraph ajouterEtatSimple(EtatGraph parent, String label, EnumEtat type){
         this.getGraphComponent().getGraph().getModel().beginUpdate();
         Object newEtatParent = ((parent == null) ? graph.getDefaultParent() : parent.getObjet_graphique());
@@ -286,7 +247,6 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
         EtatGraph eg;
         try {
             etat_graph = (mxCell)this.getGraphComponent().getGraph().insertVertex(newEtatParent, null, label, 50, 50, 80, 30);
-            System.out.println("Creation etat simple: " + etat_graph.getParent());
             eg = new EtatGraph(parent,etat_graph, type);
             this.getListe_elements_graphiques().put(etat_graph, eg);
         } finally {
@@ -302,7 +262,6 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
         EtatGraph eg;
         try {
             etat_mxcell = (mxCell)this.getGraphComponent().getGraph().insertVertex(newEtatParent, null, label, 50, 50, 80, 30, etatInitialStyle);
-            System.out.println("Creation etat initial : " + etat_mxcell.getParent());
             eg = new EtatGraph(parent, (mxCell) etat_mxcell, type);
             this.getListe_elements_graphiques().put(etat_mxcell, eg);
         } finally {
@@ -333,7 +292,6 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
         EtatGraph eg;
         try {
             etat_mxcell = (mxCell)this.getGraphComponent().getGraph().insertVertex(newEtatParent, null, label, 50, 50, 80, 30);
-            System.out.println("Creation etat composite: " + etat_mxcell.getParent());
             eg = new EtatGraph(parent,etat_mxcell, type);
             this.getListe_elements_graphiques().put(etat_mxcell,eg);
         } finally {
@@ -361,49 +319,6 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
         return tg;
     }
 
-	/*	JPanel mainPanel = new JPanel();
-	  mainPanel.addMouseListener(new MouseAdapter() {
-	     @Override
-	     public void mousePressed(MouseEvent e) {
-	       System.out.println("yeah");
-	     }
-	  });*/
-
-    //  this.add(mainPanel);
-/*     mxGraph graph = new mxGraph();
-  Object parent = graph.getDefaultParent();
-
-  graph.getModel().beginUpdate();
-  try {
-    Object v1 = graph.insertVertex(parent, null, "Hello", 20, 20, 80, 30);
-    Object v2 = graph.insertVertex(parent, null, "World!", 240, 150, 80, 30);
-    graph.insertEdge(parent, null, "Edge", v1, v2);
-  } finally {
-    graph.getModel().endUpdate();
-  }
-
-  mxGraphComponent graphComponent = new mxGraphComponent(graph);
-//  graphComponent.addMouseListener(new MenuContextuelListener());
-  graphComponent.addMouseListener(new MouseAdapter() {
-	     @Override
-	     public void mousePressed(MouseEvent e) {
-	       System.out.println("yeah");
-	     }
-	  });
-  graphComponent.setBackground(Color.BLACK);
-  graphComponent.setSize(400, 320);
-  graphComponent.setVisible(true);
-  getContentPane().add(graphComponent);
-	this.addMouseListener(new MouseAdapter() {
-	     @Override
-	     public void mousePressed(MouseEvent e) {
-	       System.out.println("yeah");
-	     }
-	  });
-  graphComponent.repaint();
-  graphComponent.
-  LayoutManager.pack();
-*/
     public static EditeurGraphique instance() {
         return instanceUnique;
     }
@@ -440,24 +355,12 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
 
 			for(Element e : listAllElements) {
 				if(e.getConteneurParent().equals(top) || ( ((ElementGraphique) e.getObservateur()).getParent() == null)) {
-					System.out.println("LAAAAAAAAAAAAAA");
 	                graph.addCell(((ElementGraphique)e.getObservateur()).getObjet_graphique(), Ihm.instance().getEdGraphique().getGraph().getDefaultParent());
 				} else {
-					if(((ElementGraphique)e.getObservateur()) == null)
-						System.out.println("1");
-					else if(((ElementGraphique)e.getObservateur()).getObjet_graphique() == null)
-						System.out.println("2");
-					else if(e.getObservateur() == null)
-						System.out.println("3");
-					else if( ((ElementGraphique) e.getObservateur()).getParent() == null)
-						System.out.println("4");
-					else if(((ElementGraphique) e.getObservateur()).getParent().getObjet_graphique() == null)
-						System.out.println("5");
 	                graph.addCell(((ElementGraphique)e.getObservateur()).getObjet_graphique(), ((ElementGraphique)e.getObservateur()).getParent().getObjet_graphique());
 				}
                 liste_elements_graphiques.put(((ElementGraphique)e.getObservateur()).getObjet_graphique(), (ElementGraphique)e.getObservateur());
 			}
-			
 		} finally {
             graph.getModel().endUpdate();
 		}
@@ -475,18 +378,12 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
 			for(ElementGraphique e : listAllElementsGraphique) {
                 if(!eg_array.contains(e)) {
                 	if(e.getObjet_graphique().isVertex()) {
-                        mxICell res = (mxICell) addParent(e,eg_array);
-                     //   if(res == null) {
+                        addParent(e,eg_array);
                         if(e.getParent() != null) {
                         	e.getObjet_graphique().setParent((mxICell) graph.getDefaultParent()); 
                         } else {
-                        	if(e.getParent().getObjet_graphique() == null)
-                        		System.out.println("ALLLERTE GENERALE");
                         	e.getObjet_graphique().setParent((mxICell) e.getParent().getObjet_graphique()); 
                         }
-                   /*     } else {
-                        	e.getObjet_graphique().setParent(res);
-                        }*/
                         liste_elements_graphiques.put(e.getObjet_graphique(), e);
                 	}
                 }
@@ -494,17 +391,12 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
 			
 			for(ElementGraphique e : listAllElementsGraphique) {
                 if(!eg_array.contains(e)) {
-                    mxICell res = (mxICell) addParent(e,eg_array);
-               //     if(res == null) {
+                    addParent(e,eg_array);
                     if(e.getParent() != null) {
                     	e.getObjet_graphique().setParent((mxICell) graph.getDefaultParent()); 
                     } else {
                     	e.getObjet_graphique().setParent((mxICell) e.getParent().getObjet_graphique()); 
                     }
-                //    	e.getObjet_graphique().setParent((mxICell) graph.getDefaultParent()); 
-              /*      } else {
-                    	e.getObjet_graphique().setParent(res);
-                    }*/
                     liste_elements_graphiques.put(e.getObjet_graphique(), e);
                 }
 			}
@@ -527,15 +419,12 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
         }
         return res;
     }
-	
+
     private void reset() {
         for (Map.Entry<mxCell, ElementGraphique> entry : liste_elements_graphiques.entrySet()) {
         	Object[] tab = {entry.getKey()};
             EditeurGraphique.instance().getGraph().removeCells(tab);
         }
         liste_elements_graphiques = new HashMap<>();
-
-        //EditeurGraphique.instance().getGraph().removeCells();
-        //EditeurGraphique.instance().getGraph().removeCells(tabCells);
     }
 }

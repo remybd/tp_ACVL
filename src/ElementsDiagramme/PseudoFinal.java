@@ -17,7 +17,7 @@ public class PseudoFinal  extends Etat {
 	
 
 	/**
-	 * Converti le pseudo intial spécifié en PseudoFinal ; la transition associée est perdue
+	 * Converti le pseudo intial spÃ©cifiÃ© en PseudoFinal ; la transition associÃ©e est perdue
 	 * @param 
 	 */
 	public PseudoFinal(PseudoInitial init){
@@ -27,7 +27,7 @@ public class PseudoFinal  extends Etat {
 	
 
 	/**
-	 * Converti le EtatIntermediaire spécifié en PseudoFinal
+	 * Converti le EtatIntermediaire spÃ©cifiÃ© en PseudoFinal
 	 * @param 
 	 */
 	public PseudoFinal(EtatIntermediaire etat){
@@ -67,8 +67,6 @@ public class PseudoFinal  extends Etat {
 	public ArrayList<Element> supprimer() {
 		ArrayList<Element> elmtsSupr = new ArrayList<Element>();
 		elmtsSupr.add(this);
-
-
 		HashSet<TransitionFinale> clone = (HashSet<TransitionFinale>)_trans.clone();
 		for(TransitionFinale trans : clone){
 			elmtsSupr.add(trans);
@@ -104,6 +102,5 @@ public class PseudoFinal  extends Etat {
 	public boolean isEtatPseudoFinal() {
 		return true;
 	}
-
 
 }

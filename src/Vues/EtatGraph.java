@@ -4,8 +4,6 @@ import ElementsDiagramme.EnumEtat;
 
 import com.mxgraph.model.mxCell;
 
-import javax.swing.*;
-
 
 /**
  * Created by Jerem on 03/11/2015.

@@ -11,11 +11,9 @@ import Erreurs.ErreurEtat;
 import Erreurs.NonUnicite;
 import Erreurs.TransitionNonDeterministe;
 import Tools.TableSymboles;
-import Vues.ElementGraphique;
 import Vues.ObservateurVue;
 
 /**
- * TODO : instanceof : bien ou pas bien ?
  * @author Thibaut
  *
  */
@@ -61,7 +59,7 @@ public class Conteneur implements Serializable {
 	
 	/**
 	 * 
-	 * @return La liste des erreurs trouv�es dans le conteneur this et tous ses �tats composites
+	 * @return La liste des erreurs trouvées dans le conteneur this et tous ses états composites
 	 */
 	public HashSet<Erreur> chercherErreurs(ObservateurVue zoneErreur){
 		HashSet<Erreur> erreurs = new HashSet<Erreur>();
@@ -77,8 +75,8 @@ public class Conteneur implements Serializable {
 	}
 	
 	/**
-	 * Gestion erreur d'unicit� des �tats
-	 * @return la liste des etats qui ont le m�me nom au sein d'un conteneur
+	 * Gestion erreur d'unicité des états
+	 * @return la liste des etats qui ont le même nom au sein d'un conteneur
 	 */
 	public HashMap<Conteneur,HashSet<NonUnicite>> chercherPluriciteEtats(ObservateurVue zoneErreur){
 		HashMap<Conteneur,HashSet<NonUnicite>> etatsIdentiques = new HashMap<Conteneur,HashSet<NonUnicite>>();
@@ -89,10 +87,10 @@ public class Conteneur implements Serializable {
 			if(elmt instanceof EtatIntermediaire){
 				String nomEtat = TableSymboles.get( ((EtatIntermediaire) elmt).getNom() );
 				
-				//l'�tat a un nom d�j� utilis�
+				//l'état a un nom déjà utilisé
 				if(nomsUtilises.containsKey(nomEtat)){
 					
-					//this n'a encore jamais �t� r�pertori�
+					//this n'a encore jamais été répertorié
 					if(!etatsIdentiques.containsKey(this)){
 						etatsIdentiques.put(this, new HashSet<NonUnicite>() );
 					}
@@ -104,7 +102,7 @@ public class Conteneur implements Serializable {
 				else
 					nomsUtilises.put(nomEtat, (EtatIntermediaire) elmt);
 				
-				//si l'�l�ment est un composite, on doit y faire les m�mes v�rifications
+				//si l'élément est un composite, on doit y faire les mêmes vérifications
 				if(elmt instanceof Composite){
 					etatsIdentiques.putAll( ((Composite)elmt).chercherPluriciteEtats(zoneErreur) );
 				}
@@ -126,7 +124,7 @@ public class Conteneur implements Serializable {
 				if(((EtatIntermediaire)elmt).estBloquant())
 					etatsBloquants.add(new ErreurEtat("Etat bloquant", (Etat) elmt, Erreur.ERR_ETAT_BLOQUANT, zoneErreur));
 				
-				//si l'elmt est un �tat composite : nous devons d�tecter les erreurs au sein de celui-ci
+				//si l'elmt est un état composite : nous devons détecter les erreurs au sein de celui-ci
 				if(elmt instanceof Composite)
 					etatsBloquants.addAll(((Composite)elmt).chercherEtatsBloquants(zoneErreur));
 			}
@@ -173,23 +171,6 @@ public class Conteneur implements Serializable {
 		return _elmts;
 	}
 	
-	/*public HashSet<Element> getAllElements() {
-		HashSet<Element> elmts = new HashSet<Element>(); 
-		
-		if(_elmts == null)
-			return elmts;
-		
-		for(Element elmt : _elmts){
-			if(elmt.isEtatComposite()){
-				elmts.addAll( ((Composite)elmt).getAllElements());
-			}
-			
-			elmts.add(elmt);
-		}
-		
-		return elmts;
-	}*/
-	
 	public void getAllElements(ArrayList<Element> l) {		
 		if(_elmts != null) {
 			for(Element elmt : _elmts){
@@ -211,22 +192,14 @@ public class Conteneur implements Serializable {
 
 	public void applatir() throws Exception {
 		HashSet<Element> temp = (HashSet<Element>)_elmts.clone();
-		//TransitionInitiale t = getPseudoInitial().getTransition();
 
 		for(Element el: temp){
 			if(el.isEtatComposite()){
 				((Composite)el).applatir();
-				//HashSet<Transition> sources = ((Composite) el).getSources();
-				//HashSet<Transition> destinations = ((Composite) el).getDestinations();
 
 				ControleurDiagramme.instance().supprimerElementForAplatir((Composite) el);
-
-				//((Composite) el).setSources(sources);
-				//((Composite) el).setDestinations(destinations);
 			}
 		}
-
-		//getPseudoInitial().setTransition(t);
 	}
 
 	public void addElements(HashSet<Element> elements){

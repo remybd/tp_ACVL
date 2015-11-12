@@ -1,11 +1,14 @@
 package Vues;
 
-import Erreurs.Erreur;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.util.HashSet;
-import java.util.Iterator;
+
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+
+import Erreurs.Erreur;
 
 /**
  * Created by Jerem on 06/11/2015.
@@ -16,11 +19,9 @@ public class ZoneErreur extends JPanel implements ObservateurVue {
 
     public ZoneErreur(){
         super();
-        //this.setSize(Toolkit.getDefaultToolkit().getScreenSize().width, );
         zone_texte.setEditable(false);
         zone_texte.setPreferredSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width-50, 70));
         JScrollPane scrollPane = new JScrollPane(zone_texte,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        //scrollPane.set(Toolkit.getDefaultToolkit().getScreenSize().width, 100);
         this.add(scrollPane);
     }
 
@@ -29,8 +30,6 @@ public class ZoneErreur extends JPanel implements ObservateurVue {
         HashSet<Erreur> erreurs = Ihm.instance().getControleur().getErreurs();
         String error_text = "";
         for(Erreur e : erreurs){
-            System.out.println(" Nom : " + e.getNom());
-            //TODO enlever le comentaire en dessous
             error_text += e.getMessage() + "\n";
         }
         zone_texte.setText(error_text);

@@ -3,7 +3,7 @@ package ElementsDiagramme;
 import java.util.ArrayList;
 
 /**
- *  TODO : Surveiller la bonne construction de l'étiquette ?
+ *  TODO : Surveiller la bonne construction de l'ï¿½tiquette ?
  * @author Thibaut
  *
  */
@@ -20,7 +20,7 @@ public class TransitionIntermediaire extends Transition {
 	}
 	
 	/**
-	 * Converti le TransitionInitiale spécifié en TransitionIntermediaire
+	 * Converti le TransitionInitiale spÃ©cifiÃ© en TransitionIntermediaire
 	 * @param transInit
 	 * @param EtatIntermediaire : la source
 	 */
@@ -34,7 +34,7 @@ public class TransitionIntermediaire extends Transition {
 	}
 
 	/**
-	 * Converti le TransitionFinale spécifié en TransitionIntermediaire
+	 * Converti le TransitionFinale spï¿½cifiï¿½ en TransitionIntermediaire
 	 * @param trans
 	 * @param etatIntermediaire : la destination
 	 */
@@ -57,10 +57,8 @@ public class TransitionIntermediaire extends Transition {
 		informe();
 	}
 
-
-	
 	/**
-	 * Retourne la garde indiquée dans l'étiquette
+	 * Retourne la garde indiquÃ©e dans l'Ã©tiquette
 	 * @return
 	 */
 	@Override
@@ -68,9 +66,8 @@ public class TransitionIntermediaire extends Transition {
 		return this.getGarde(_etiquette);
 	}
 	
-
 	/**
-	 * Retourne la garde indiquée dans l'étiquette
+	 * Retourne la garde indiquÃ©e dans l'Ã©tiquette
 	 * @return
 	 */
 	public static String getGarde(String etiquette){
@@ -79,15 +76,15 @@ public class TransitionIntermediaire extends Transition {
 			return "";
 		
 		int secCrochet = etiquette.indexOf(']', premCrochet);
-		if(secCrochet<0) //pas de fermeture de garde => on considère que tout le reste de la chaîne est la garde TODO : Avertir l'utilisateur ?
+		if(secCrochet<0) //pas de fermeture de garde => on considï¿½re que tout le reste de la chaï¿½ne est la garde TODO : Avertir l'utilisateur ?
 			secCrochet = etiquette.length();
 		
 		return etiquette.substring(premCrochet+1, secCrochet);
 	}
 	
 	/**
-	 * Retourne l'événement indiqué dans l'étiquette
-	 * L'événement se trouve avant le premier '[', à défaut avant le premier '/', sinon ce n'est rien
+	 * Retourne l'Ã©vÃ¨nement indiquÃ© dans l'Ã©tiquette
+	 * L'Ã©vÃ¨nement se trouve avant le premier '[', Ã  dÃ©faut avant le premier '/', sinon ce n'est rien
 	 * @return
 	 */
 	@Override
@@ -96,8 +93,8 @@ public class TransitionIntermediaire extends Transition {
 	}
 	
 	/**
-	 * Retourne l'événement indiqué dans l'étiquette
-	 * L'événement se trouve avant le premier '[', à défaut avant le premier '/', sinon ce n'est rien
+	 * Retourne l'Ã©vÃ¨nement indiquÃ© dans l'Ã©tiquette
+	 * L'Ã©vÃ¨nement se trouve avant le premier '[', Ã  dÃ©faut avant le premier '/', sinon ce n'est rien
 	 * @return
 	 */
 	public static String getEvt(String etiquette){
@@ -113,8 +110,8 @@ public class TransitionIntermediaire extends Transition {
 	}
 	
 	/**
-	 * Retourne l'action indiquée dans l'étiquette
-	 * L'action se trouve après le slash, c'est toute l'étiquette s'il n'y en a pas
+	 * Retourne l'action indiquÃ©e dans l'Ã©tiquette
+	 * L'action se trouve aprÃ¨s le slash, c'est toute l'Ã©tiquette s'il n'y en a pas
 	 * @return
 	 */
 	@Override
@@ -123,8 +120,8 @@ public class TransitionIntermediaire extends Transition {
 	}
 	
 	/**
-	 * Retourne l'action indiquée dans l'étiquette
-	 * L'action se trouve après le slash, c'est toute l'étiquette s'il n'y en a pas
+	 * Retourne l'action indiquÃ©e dans l'Ã©tiquette
+	 * L'action se trouve aprÃ¨s le slash, c'est toute l'Ã©tiquette s'il n'y en a pas
 	 * @return
 	 */
 	public static String getAction(String etiquette){
@@ -150,8 +147,6 @@ public class TransitionIntermediaire extends Transition {
 		return elmtsSupr;
 	}
 	
-
-
 	@Override
 	public boolean isTransitionFinale() {
 		return false;

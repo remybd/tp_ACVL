@@ -1,10 +1,10 @@
 package Exceptions;
 
 /**
- * Created by rémy on 10/11/2015.
+ * Created by rï¿½my on 10/11/2015.
  */
 public class BadCorrespondanceBetweenObservateurAndSubjectType extends Exception {
     public BadCorrespondanceBetweenObservateurAndSubjectType(){
-        System.out.println(" !!! La correspondance entre l'objet du modèle et celui de l'IHM n'est pas bonne !!!");
+        super(" !!! La correspondance entre l'objet du modÃ¨le et celui de l'IHM n'est pas bonne !!!");
     }
 }

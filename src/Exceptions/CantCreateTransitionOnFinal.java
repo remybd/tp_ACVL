@@ -1,11 +1,11 @@
 package Exceptions;
 
 /**
- * Created by rémy on 08/11/2015.
+ * Created by rï¿½my on 08/11/2015.
  */
 public class CantCreateTransitionOnFinal extends Exception {
 
     public CantCreateTransitionOnFinal(){
-        System.out.println("On ne peut pas créer une transition à partir d'un état final");
+    	super("On ne peut pas crÃ©er une transition Ã  partir d'un Ã©tat final");
     }
 }

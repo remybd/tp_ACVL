@@ -1,15 +1,20 @@
 package Vues;
 
-import ElementsDiagramme.EnumEtat;
-import Exceptions.NameNotModifiableException;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import ElementsDiagramme.EnumEtat;
+import Exceptions.NameNotModifiableException;
+
 /**
- * Created by rémy on 06/11/2015.
+ * Created by rï¿½my on 06/11/2015.
  */
 public class EditionEtat extends FenetrePopup implements ActionListener{
     private JTextField text_etat = new JTextField();
@@ -23,7 +28,6 @@ public class EditionEtat extends FenetrePopup implements ActionListener{
         super();
         this.etat_courant = etat_courant;
         this.type = etat_courant.getType();
-        System.out.println();
 
         JPanel centered = new JPanel();
         text_etat.setPreferredSize(new Dimension(150,30));

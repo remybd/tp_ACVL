@@ -15,9 +15,9 @@ import Vues.ObservateurVue;
  *
  */
 public abstract class EtatIntermediaire extends Etat{
-	//transitions dont la destination est un autre état
+	//transitions dont la destination est un autre Ã©tat
 	private HashSet<Transition> _dest = new HashSet<Transition>();
-	//transitions dont la source est un autre état
+	//transitions dont la source est un autre Ã©tat
 	private HashSet<Transition> _sources = new HashSet<Transition>();
 	
 	public EtatIntermediaire(Conteneur parent, String nom){
@@ -25,7 +25,7 @@ public abstract class EtatIntermediaire extends Etat{
 	}
 	
 	/**
-	 * Converti le pseudo initial spécifié en EtatIntermediaire
+	 * Converti le pseudo initial spÃ©cifiÃ© en EtatIntermediaire
 	 * @param init
 	 */
 	public EtatIntermediaire(PseudoInitial init){
@@ -40,7 +40,7 @@ public abstract class EtatIntermediaire extends Etat{
 
 
 	/**
-	 * Converti le pseudo final spécifié en EtatIntermediaire
+	 * Converti le pseudo final spÃ©cifiÃ© en EtatIntermediaire
 	 * @param init
 	 */
 	public EtatIntermediaire(PseudoFinal etat){
@@ -127,7 +127,7 @@ public abstract class EtatIntermediaire extends Etat{
 
 	/**
 	 * 
-	 * @return true si l'état n'a pas de transition renvoyant vers un autre état
+	 * @return true si l'Ã©tat n'a pas de transition renvoyant vers un autre Ã©tat
 	 * 			false sinon
 	 */
 	public boolean estBloquant(){
@@ -156,8 +156,8 @@ public abstract class EtatIntermediaire extends Etat{
 	
 
 	/**
-	 * Retourne les erreurs de transition non déterministes liés à cet état
-	 * 2 transitions sont non déterministes si elles ont le même événement et la même condition
+	 * Retourne les erreurs de transition non dÃ©terministes liÃ©s Ã  cet Ã©tat
+	 * 2 transitions sont non dÃ©terministes si elles ont le mÃªme Ã©vÃ¨nement et la mÃªme condition
 	 * @return
 	 */
 	public HashSet<TransitionNonDeterministe> chercherTransNnDeterm(ObservateurVue zoneErreur){
@@ -170,7 +170,7 @@ public abstract class EtatIntermediaire extends Etat{
 			evtCond = evtCond.replaceAll("\\s", "");
 			evtCond = evtCond.replaceAll("\\t", "");
 			
-			//evtsConds contient déjà ces infos -> trans est une transition non déterministe
+			//evtsConds contient dï¿½jï¿½ ces infos -> trans est une transition non dï¿½terministe
 			symbol = TableSymboles.get(evtCond);
 			if(evtsConds.contains(symbol)){
 				transNonDeterm.add(new TransitionNonDeterministe(trans, Erreur.ERR_TRANSITION_NON_DETERM, zoneErreur));
