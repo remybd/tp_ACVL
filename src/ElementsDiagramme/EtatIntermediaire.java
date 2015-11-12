@@ -107,13 +107,13 @@ public abstract class EtatIntermediaire extends Etat{
 		elmtsSupr.add(this);
 		
 		for(Transition trans : _sources){
-			trans.supprimer();
 			elmtsSupr.add(trans);
+			trans.supprimer();
 		}
 		
 		for(Transition trans : _dest){
-			trans.supprimer();
 			elmtsSupr.add(trans);
+			trans.supprimer();
 		}
 		
 		this.getConteneurParent().supprimerElmt(this);

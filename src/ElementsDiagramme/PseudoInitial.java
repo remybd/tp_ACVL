@@ -70,9 +70,9 @@ public class PseudoInitial extends Etat {
 		
 		if(_trans == null)
 			return elmtsSupr;
-		
-		_trans.supprimer();	
+
 		elmtsSupr.add(_trans);
+		_trans.supprimer();	
 		return elmtsSupr;
 	}
 

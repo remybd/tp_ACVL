@@ -107,14 +107,17 @@ public class ControleurDiagramme {
     public void supprimerElement(ElementGraphique elem){
         Element e = getElementFromGraphic(elem);
 
-        for(Element element : e.supprimer()){
+        ArrayList<Element> elementsSupprime = e.supprimer();
+        System.out.println("test supression etat composite: " + elementsSupprime.toString());
+        for(Element element : elementsSupprime){
+
         	if(element.isEtat()){
         		System.out.println("Suppression graphique de "+( (Etat)element).getNom());
         	}
         	else if(element.isTransition()){
-        		System.out.println("Suppression graphique de "+( (Transition)element).getEtiquette());	
+        		System.out.println("Suppression graphique de "+( (Transition)element).getEtiquette());
         	}
-        	
+
             ihm.removeElem(getElemGraphFromElem(element).getObjet_graphique());
             correspondance.remove(elem);
         }
