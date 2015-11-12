@@ -105,16 +105,20 @@ public abstract class EtatIntermediaire extends Etat{
 	public ArrayList<Element> supprimer() {
 		ArrayList<Element> elmtsSupr = new ArrayList<Element>();
 		elmtsSupr.add(this);
-		
-		for(Transition trans : _sources){
+
+		HashSet<Transition> clone = (HashSet<Transition>)_sources.clone();
+		for(Transition trans : clone){
 			elmtsSupr.add(trans);
 			trans.supprimer();
 		}
-		
-		for(Transition trans : _dest){
+		_sources.clear();
+
+		clone = (HashSet<Transition>)_dest.clone();
+		for(Transition trans : clone){
 			elmtsSupr.add(trans);
 			trans.supprimer();
 		}
+		_dest.clear();
 		
 		this.getConteneurParent().supprimerElmt(this);
 		

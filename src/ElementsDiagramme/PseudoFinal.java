@@ -67,11 +67,14 @@ public class PseudoFinal  extends Etat {
 	public ArrayList<Element> supprimer() {
 		ArrayList<Element> elmtsSupr = new ArrayList<Element>();
 		elmtsSupr.add(this);
-		
-		for(TransitionFinale trans : _trans){
+
+
+		HashSet<TransitionFinale> clone = (HashSet<TransitionFinale>)_trans.clone();
+		for(TransitionFinale trans : clone){
 			elmtsSupr.add(trans);
 			trans.supprimer();
 		}
+		_trans.clear();
 
 		this.getConteneurParent().supprimerElmt(this);
 		return elmtsSupr;

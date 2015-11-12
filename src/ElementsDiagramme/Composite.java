@@ -119,7 +119,6 @@ public class Composite extends EtatIntermediaire {
 		if(_fils.getPseudoInitial().getTransition() != null){
 			EtatIntermediaire etatPointedByInit = _fils.getPseudoInitial().getTransition().getEtatDest();
 			for(Transition t : this.getSources()){
-				System.out.println("test");
 				if(t.isTransitionIntermediaire()){
 					((TransitionIntermediaire)t).setEtatDest(etatPointedByInit);
 				} else if(t.isTransitionInitiale()){
@@ -148,9 +147,12 @@ public class Composite extends EtatIntermediaire {
 		}
 
 		//supprime les transitions sortantes puisqu'on les as clonées
-		for(Transition t : this.getDestinations()){
+		HashSet<Transition> clone = (HashSet<Transition>)this.getDestinations().clone();
+		for(Transition t : clone){
 			ControleurDiagramme.instance().supprimerElement((ElementGraphique)t.getObservateur());
 		}
+		this.getDestinations().clear();
+
 		//suprime les états finaux et leurs transitions dans l'état composite
 		for(PseudoFinal pseudoFinal : listEtatsFinaux){
 			ControleurDiagramme.instance().supprimerElement((ElementGraphique)pseudoFinal.getObservateur());
