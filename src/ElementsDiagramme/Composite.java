@@ -116,9 +116,12 @@ public class Composite extends EtatIntermediaire {
 		}
 
 		//relie toutes les transitions entrantes à l'état pointé par l'initial
+		System.out.println("test : " + _fils.getPseudoInitial() + "   " + _fils.getPseudoInitial().getTransition());
 		if(_fils.getPseudoInitial().getTransition() != null){
 			EtatIntermediaire etatPointedByInit = _fils.getPseudoInitial().getTransition().getEtatDest();
+			System.out.println("etatPointedByInit : " + etatPointedByInit.getNom());
 			for(Transition t : this.getSources()){
+				System.out.println("test");
 				if(t.isTransitionIntermediaire()){
 					((TransitionIntermediaire)t).setEtatDest(etatPointedByInit);
 				} else if(t.isTransitionInitiale()){

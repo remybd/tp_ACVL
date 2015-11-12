@@ -74,7 +74,7 @@ public abstract class EtatIntermediaire extends Etat{
 	public HashSet<Transition> getSources() {
 		return _sources;
 	}
-	public void addSource(TransitionIntermediaire source) {
+	public void addSource(Transition source) {
 		if(this._sources == null)
 			this._sources = new HashSet<Transition>();
 			

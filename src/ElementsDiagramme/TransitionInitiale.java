@@ -14,6 +14,7 @@ public class TransitionInitiale extends Transition {
 	public TransitionInitiale(Conteneur parent, PseudoInitial etatInitial, EtatIntermediaire _etatDest){
 		super(parent);
 		this.setPseudoInitial(etatInitial);
+		this.setEtatDest(_etatDest);
 	}
 
 	public TransitionInitiale(TransitionIntermediaire trans, PseudoInitial pseudoInitial) {
