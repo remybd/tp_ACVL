@@ -90,7 +90,7 @@ public class CreationTransition extends FenetrePopup implements ActionListener{
         int index = liste_etats.getSelectedIndex();
         EnumEtat type_etat = liste_elements.get(index).getType();
 
-        String etiquette = this.evenement_transition.getText() + " [" + this.garde_transition.getText() + "] /" + this.action_transition.getText();
+        String etiquette = this.evenement_transition.getText() + " [" + this.garde_transition.getText() + "] / " + this.action_transition.getText();
         try {
             if(type_etat == EnumEtat.FINAL)
                 Ihm.instance().getControleur().ajouterTransition(EnumTransition.FINAL, etiquette,etat_source, liste_elements.get(index));
