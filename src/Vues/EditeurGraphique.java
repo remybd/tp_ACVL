@@ -426,29 +426,24 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
 		graph.getModel().beginUpdate();
 		try {
 			reset();
-			System.out.println("YOUHOUZE");
             ArrayList<ElementGraphique> eg_array = new ArrayList<ElementGraphique>();
 
 			for(ElementGraphique e : listAllElementsGraphique) {
                 if(!eg_array.contains(e)) {
-
-                    addParent(e,eg_array);
-                    /*if (e.getObjet_graphique().getParent() != null)
-                        graph.addCell(e.getObjet_graphique().getParent());
-                    graph.addCell(e.getObjet_graphique(), e.getObjet_graphique().getParent());
-
-                    System.out.println("Objet ; " + e.getObjet_graphique());
-                if(e.getObjet_graphique().getParent() == null){
-                    System.out.println("Parent : " + e.getObjet_graphique().getParent());
-                    graph.addCell(e.getObjet_graphique());
-                } else {
-                    System.out.println("Parent 2: " + e.getObjet_graphique().getParent());
-                    graph.addCell(e.getObjet_graphique(),e.getObjet_graphique().getParent());
-                }*/
+                	if(e.getObjet_graphique().isVertex()) {
+                        addParent(e,eg_array);
+                        liste_elements_graphiques.put(e.getObjet_graphique(), e);
+                	}
                 }
-                liste_elements_graphiques.put(e.getObjet_graphique(), e);
-
 			}
+			
+			for(ElementGraphique e : listAllElementsGraphique) {
+                if(!eg_array.contains(e)) {
+                    addParent(e,eg_array);
+                    liste_elements_graphiques.put(e.getObjet_graphique(), e);
+                }
+			}
+			
 		} finally {
             graph.getModel().endUpdate();
 		}
