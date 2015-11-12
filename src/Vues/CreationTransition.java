@@ -35,7 +35,6 @@ public class CreationTransition extends FenetrePopup implements ActionListener{
         this.type = type;
         this.etat_source = etat_source;
 
-        //TODO On ne récupère pas la bonne liste !!!! (Pas d'état composite par exemple)
         liste_elements = Ihm.instance().getControleur().getStatesFromSameConteneur(etat_source);
         String[] liste_noms_etats = new String[liste_elements.size()];
 

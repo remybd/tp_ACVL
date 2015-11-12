@@ -20,11 +20,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.Map;
-import java.util.WeakHashMap;
+import java.util.*;
 
 /**
  * Created by Jerem on 11/10/2015.
@@ -254,6 +250,7 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
         EtatGraph eg;
         try {
             etat_graph = (mxCell)this.getGraphComponent().getGraph().insertVertex(newEtatParent, null, label, 50, 50, 80, 30);
+            System.out.println("Creation etat simple: " + etat_graph.getParent());
             eg = new EtatGraph(parent,etat_graph, type);
             this.getListe_elements_graphiques().put(etat_graph, eg);
         } finally {
@@ -269,6 +266,7 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
         EtatGraph eg;
         try {
             etat_mxcell = (mxCell)this.getGraphComponent().getGraph().insertVertex(newEtatParent, null, label, 50, 50, 80, 30, etatInitialStyle);
+            System.out.println("Creation etat initial : " + etat_mxcell.getParent());
             eg = new EtatGraph(parent, (mxCell) etat_mxcell, type);
             this.getListe_elements_graphiques().put(etat_mxcell, eg);
         } finally {
@@ -299,6 +297,7 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
         EtatGraph eg;
         try {
             etat_mxcell = (mxCell)this.getGraphComponent().getGraph().insertVertex(newEtatParent, null, label, 50, 50, 80, 30);
+            System.out.println("Creation etat composite: " + etat_mxcell.getParent());
             eg = new EtatGraph(parent,etat_mxcell, type);
             this.getListe_elements_graphiques().put(etat_mxcell,eg);
         } finally {
@@ -401,17 +400,40 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
 		try {
 			reset();
 			System.out.println("YOUHOUZE");
+            ArrayList<ElementGraphique> eg_array = new ArrayList<ElementGraphique>();
 
 			for(ElementGraphique e : listAllElementsGraphique) {
-				if(e == null)
-					System.out.println("YOUHOU");
-				liste_elements_graphiques.put(e.getObjet_graphique(), e);
-				graph.addCell(e.getObjet_graphique());
+                if(!eg_array.contains(e)) {
+
+                    addParent(e,eg_array);
+                    liste_elements_graphiques.put(e.getObjet_graphique(), e);
+                    /*if (e.getObjet_graphique().getParent() != null)
+                        graph.addCell(e.getObjet_graphique().getParent());
+                    graph.addCell(e.getObjet_graphique(), e.getObjet_graphique().getParent());
+
+                    System.out.println("Objet ; " + e.getObjet_graphique());
+                if(e.getObjet_graphique().getParent() == null){
+                    System.out.println("Parent : " + e.getObjet_graphique().getParent());
+                    graph.addCell(e.getObjet_graphique());
+                } else {
+                    System.out.println("Parent 2: " + e.getObjet_graphique().getParent());
+                    graph.addCell(e.getObjet_graphique(),e.getObjet_graphique().getParent());
+                }*/
+                }
 			}
 		} finally {
-		    graph.getModel().endUpdate();
+            graph.getModel().endUpdate();
 		}
 	}
+
+    public void addParent(ElementGraphique eg, ArrayList<ElementGraphique> eg_array) {
+        if(eg != null) {
+            if (eg.getObjet_graphique().getParent() != null)
+                addParent(eg.getParent(), eg_array);
+            graph.addCell(eg.getObjet_graphique());
+            eg_array.add(eg);
+        }
+    }
 	
     private void reset() {
         for (Map.Entry<mxCell, ElementGraphique> entry : liste_elements_graphiques.entrySet()) {
