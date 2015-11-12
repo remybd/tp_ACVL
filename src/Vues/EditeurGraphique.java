@@ -233,7 +233,7 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
                     try {
 						Ihm.instance().getControleur().applatir();
 					} catch (Exception e1) {
-						new FenetreErreur("Une erreur non g�r�e est survenue pendant l'applatissement.");
+						new FenetreErreur("Une erreur non geree est survenue pendant l'applatissement.");
 						e1.printStackTrace();
 					}
                 
@@ -252,7 +252,21 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
         });
         fichier.add(fermer);
 
+        consulter_manuel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Ihm.instance().getControleurFichier().ouvrirManuel();
+            }
+        });
         aide.add(consulter_manuel);
+        a_propos.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String a_propos_texte = "TransUML \n RAKOTOARISOA Jérémy \n BATAL Thibaut \n BEULE DAUZAT Rémy \n ROUSSEAU Benjamin";
+                JOptionPane jop = new JOptionPane();
+                jop.showMessageDialog(null, a_propos_texte, "Information", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
         aide.add(a_propos);
 
         menu.add(fichier);

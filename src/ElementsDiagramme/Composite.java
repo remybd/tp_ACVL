@@ -97,11 +97,6 @@ public class Composite extends EtatIntermediaire {
 		return transNnDeterm;			
 	}
 
-
-
-
-
-
 	public void applatir() throws Exception {
 		_fils.applatir();
 

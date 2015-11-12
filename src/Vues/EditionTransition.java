@@ -16,9 +16,6 @@ import java.util.ArrayList;
  */
 public class EditionTransition extends FenetrePopup implements ActionListener{
 
-    private JComboBox nouvel_etat_source;
-    private JComboBox liste_etats_destination;
-
     private JLabel evenement_label = new JLabel("Evenement");
     private JTextField evenement_transition = new JTextField();
 
