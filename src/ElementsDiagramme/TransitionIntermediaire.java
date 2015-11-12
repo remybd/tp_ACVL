@@ -82,7 +82,7 @@ public class TransitionIntermediaire extends Transition {
 		if(secCrochet<0) //pas de fermeture de garde => on considère que tout le reste de la chaîne est la garde TODO : Avertir l'utilisateur ?
 			secCrochet = etiquette.length();
 		
-		return etiquette.substring(premCrochet, secCrochet);
+		return etiquette.substring(premCrochet+1, secCrochet);
 	}
 	
 	/**
@@ -132,7 +132,7 @@ public class TransitionIntermediaire extends Transition {
 		if(slash<0)
 			return etiquette;
 		
-		return etiquette.substring(slash, etiquette.length());
+		return etiquette.substring(slash+1, etiquette.length());
 	}
 
 	@Override
