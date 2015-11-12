@@ -99,7 +99,6 @@ public class Composite extends EtatIntermediaire {
 		HashSet<Element> listEtatsAndTransitionIntermediaires = getEtatsAndTransitionIntermediaires();
 		getConteneurParent().addElements(listEtatsAndTransitionIntermediaires);
 
-		EtatGraph grandParent = ((ElementGraphique) getObservateur()).getParent();
 
 		//change parentée au niveau graphique
 		for(Element el : listEtatsAndTransitionIntermediaires){

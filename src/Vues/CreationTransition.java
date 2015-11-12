@@ -15,6 +15,7 @@ import javax.swing.JTextField;
 
 import ElementsDiagramme.EnumEtat;
 import ElementsDiagramme.EnumTransition;
+import ElementsDiagramme.TransitionIntermediaire;
 
 /**
  * Created by Jerem on 03/11/2015.
@@ -35,11 +36,6 @@ public class CreationTransition extends FenetrePopup implements ActionListener{
     private JTextField action_transition = new JTextField();
 
     private JButton valider = new JButton("Valider");
-    private JPanel line_1 = new JPanel();
-    private JPanel line_2 = new JPanel();
-    private JPanel line_3 = new JPanel();
-    private JPanel line_4 = new JPanel();
-    private JPanel line_5 = new JPanel();
 
     private EnumTransition type;
     private EtatGraph etat_source;
@@ -60,38 +56,34 @@ public class CreationTransition extends FenetrePopup implements ActionListener{
             i++;
         }
 
+        liste_etats = new JComboBox(liste_noms_etats);
+
         evenement_transition.setPreferredSize(new Dimension(150, 30));
         garde_transition.setPreferredSize(new Dimension(150, 30));
         action_transition.setPreferredSize(new Dimension(150, 30));
 
-        liste_etats = new JComboBox(liste_noms_etats);
+        JPanel centered = new JPanel();
+        centered.add(liste_label);
+        centered.add(liste_etats);
 
-        line_2.setLayout(new BoxLayout(line_2, BoxLayout.LINE_AXIS));
-        line_2.add(liste_label);
-        line_2.add(liste_etats);
-
-        line_3.setLayout(new BoxLayout(line_3, BoxLayout.LINE_AXIS));
         if(etat_source.getType() != EnumEtat.INIT) {
-            line_3.add(evenement_label);
-            line_3.add(evenement_transition);
-            line_4.add(garde_label);
-            line_4.add(garde_transition);
-            line_5.add(action_label);
-            line_5.add(action_transition);
+            centered.add(evenement_label);
+            centered.add(evenement_transition);
+            centered.add(garde_label);
+            centered.add(garde_transition);
+            centered.add(action_label);
+            centered.add(action_transition);
         }
 
         this.valider.addActionListener(this);
 
-        getPan().setLayout(new BoxLayout(getPan(), BoxLayout.PAGE_AXIS));
-        getPan().add(line_1);
-        getPan().add(line_2);
-        getPan().add(line_3);
-        getPan().add(line_4);
-        getPan().add(line_5);
-        getPan().add(valider, BorderLayout.CENTER);
+        centered.add(valider);
 
-        this.add(getPan());
+        centered.add(valider);
+        getPan().add(centered, BorderLayout.CENTER);
+        this.add(getPan(), BorderLayout.CENTER);
         this.pack();
+
     }
 
     public void actionPerformed(ActionEvent arg0){
