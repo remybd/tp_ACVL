@@ -344,6 +344,7 @@ public class ControleurDiagramme {
         correspondance.clear();
 
         HashSet<Element> listAllElements = mainConteneur.getAllElements();
+
         HashSet<ElementGraphique> listAllElementsGraphique = new HashSet<ElementGraphique>();
         for(Element e : listAllElements){
             ElementGraphique eg = (ElementGraphique)e.getObservateur();
@@ -353,6 +354,7 @@ public class ControleurDiagramme {
 
         this.DEBUG_displayElmts();
         EditeurGraphique.instance().updateListeElementGraphiqueAndDisplay(listAllElementsGraphique);
+        Ihm.instance().getEdGraphique().getGraph().refresh();
         this.chercherErreurs();
     }
 
