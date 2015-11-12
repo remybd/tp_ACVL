@@ -347,5 +347,6 @@ public class ControleurDiagramme {
 		reset();
 		ajouterEtat(EnumEtat.INIT, "", null);
 		chercherErreurs();
+        Ihm.instance().getEdGraphique().getZoneErreur().miseAJour();
 	}
 }
