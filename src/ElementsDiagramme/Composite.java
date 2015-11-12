@@ -48,13 +48,12 @@ public class Composite extends EtatIntermediaire {
 	
 	/**
 	 * 
+	 * @param l 
 	 * @return Tous les �l�ments, m�me les sous-�l�ments des �tats composites
 	 */
-	public HashSet<Element> getAllElements(){
-		if(_fils == null)
-			return new HashSet<Element>();
-		
-		return _fils.getAllElements();
+	public void getAllElements(ArrayList<Element> l){
+		if(_fils != null)
+			_fils.getAllElements(l);
 	}
 
 	/**
