@@ -127,8 +127,8 @@ public abstract class EtatIntermediaire extends Etat{
 	 * 			false sinon
 	 */
 	public boolean estBloquant(){
-		for(Transition source : _dest){
-			if(source.getEtatDestination() == this)
+		for(Transition dest : _dest){
+			if(dest.getEtatDestination() != this)
 				return false;
 		}
 		
@@ -161,7 +161,7 @@ public abstract class EtatIntermediaire extends Etat{
 		HashSet<TransitionNonDeterministe> transNonDeterm = new HashSet<TransitionNonDeterministe>();
 		String evtCond; //pr 1 transition, contient evenement+condition sans espaces
 		String symbol;
-		for(Transition trans : _sources){
+		for(Transition trans : _dest){
 			evtCond = trans.getEvt()+trans.getAction();
 			evtCond = evtCond.replaceAll("\\s", "");
 			evtCond = evtCond.replaceAll("\\t", "");
