@@ -65,12 +65,15 @@ public class CreationTransition extends FenetrePopup implements ActionListener{
         JPanel centered = new JPanel();
         centered.add(liste_label);
         centered.add(liste_etats);
-        centered.add(evenement_label);
-        centered.add(evenement_transition);
-        centered.add(garde_label);
-        centered.add(garde_transition);
-        centered.add(action_label);
-        centered.add(action_transition);
+
+        if(etat_source.getType() != EnumEtat.INIT) {
+            centered.add(evenement_label);
+            centered.add(evenement_transition);
+            centered.add(garde_label);
+            centered.add(garde_transition);
+            centered.add(action_label);
+            centered.add(action_transition);
+        }
 
         this.valider.addActionListener(this);
 
