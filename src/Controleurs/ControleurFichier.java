@@ -8,6 +8,7 @@ import java.io.IOException;
 import ElementsDiagramme.Conteneur;
 import RessourcesExternes.Fichier;
 import RessourcesExternes.FichierSauvegarde;
+import Vues.FenetreErreur;
 
 /**
  * Created by r�my on 05/11/2015.
@@ -52,7 +53,8 @@ public class ControleurFichier {
     	try {
 			Desktop.getDesktop().open(new File(getManuel().getCheminRelatif()));
 		} catch (IOException e) {
-			//TODO : propager l'erreur dans l'IHM
+			new FenetreErreur("Le manuel n'a pas ete trouve. Verifiez qu'un fichier UserGuide.pdf existe bien a la racine de l'application.");
+		
 			e.printStackTrace();
 		}
     }

@@ -187,10 +187,12 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
                  
 						try {
 							Ihm.instance().getControleurFichier().chargerFichier(f.getAbsolutePath().toString());
-						} catch (ClassNotFoundException
-								| IOException e1) {
-							new FenetreErreur("Une erreur survenue pendant l'ouverture du fichier ; il n'existe peut-�tre pas.");
-							e1.printStackTrace();
+						} catch (ClassNotFoundException e1){
+							new FenetreErreur("Une erreur est survenue pendant le chargement du fichier; il est ptrobablement corrompu.");
+							
+						}catch(IOException e2) {
+							new FenetreErreur("Une erreur est survenue pendant l'ouverture du fichier ; il n'existe peut-etre pas.");
+							e2.printStackTrace();
 						}
 					
                 }
@@ -216,7 +218,7 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
 						new FenetreErreur("Une erreur est survenue pendant la sauvegarde du fichier : il n'existe pas.");
 						e1.printStackTrace();
 					} catch (IOException e1) {
-						new FenetreErreur("Une erreur d'�criture est survenue pendant la sauvegarde du fichier.");
+						new FenetreErreur("Une erreur d'ecriture est survenue pendant la sauvegarde du fichier.");
 						e1.printStackTrace();
 					}
                 }
@@ -233,7 +235,7 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
                     try {
 						Ihm.instance().getControleur().applatir();
 					} catch (Exception e1) {
-						new FenetreErreur("Une erreur non g�r�e est survenue pendant l'applatissement.");
+						new FenetreErreur("Une erreur non geree est survenue pendant l'applatissement.");
 						e1.printStackTrace();
 					}
                 

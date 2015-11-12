@@ -141,10 +141,10 @@ public class ControleurDiagramme {
 			
     		Element elmt = correspondance.get(elmtGraph);
     		if(elmt.isEtat()){
-    			System.out.println(((Etat)elmt).getNom());
+    			System.out.println("Etat : "+((Etat)elmt).getNom());
     		}
     		else if(elmt.isTransition()){
-    			System.out.println(((Transition)elmt).getEtiquette());
+    			System.out.println("Transition : "+((Transition)elmt).getEtiquette());
     		}
     		
     		i++;
