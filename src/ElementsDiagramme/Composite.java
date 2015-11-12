@@ -109,9 +109,10 @@ public class Composite extends EtatIntermediaire {
 		HashSet<Element> listEtatsAndTransitionIntermediaires = getEtatsAndTransitionIntermediaires();
 		getConteneurParent().addElements(listEtatsAndTransitionIntermediaires);
 
+		EtatGraph grandParent = ((ElementGraphique) getObservateur()).getParent();
 		//change parentée au niveau graphique
 		for(Element el : listEtatsAndTransitionIntermediaires){
-			((ElementGraphique)el.getObservateur()).setParent(((ElementGraphique)getObservateur()).getParent());
+			((ElementGraphique)el.getObservateur()).setParent(grandParent);
 		}
 
 		//relie toutes les transitions entrantes à l'état pointé par l'initial
@@ -154,7 +155,7 @@ public class Composite extends EtatIntermediaire {
 			ControleurDiagramme.instance().supprimerElement((ElementGraphique)pseudoFinal.getObservateur());
 		}
 		//suprime l'état initial et donc sa transition
-		ControleurDiagramme.instance().supprimerElement((ElementGraphique)_fils.getPseudoInitial().getObservateur());
+		ControleurDiagramme.instance().supprimerElement((ElementGraphique) _fils.getPseudoInitial().getObservateur());
 		//vide le conteneur
 		_fils.getElmts().clear();
 	}

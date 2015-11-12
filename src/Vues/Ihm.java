@@ -79,13 +79,8 @@ public class Ihm {
         HashMap<mxCell, ElementGraphique> liste_elements_graphiques = EditeurGraphique.instance().getListe_elements_graphiques();;
 
         if(eg!=null){
-	        if (eg.isSupprimable()){
-	            removeElemFromListeEditeurGraphique(m);
-	            removeElemFromGraph(m);
-	        } else {
-                JOptionPane message_erreur = new JOptionPane();
-                message_erreur.showMessageDialog(null, "On ne peut pas supprimé un etat initial", "Erreur", JOptionPane.ERROR_MESSAGE);
-	        }
+            removeElemFromListeEditeurGraphique(m);
+            removeElemFromGraph(m);
         }
 
         System.out.println("Elements presents dans l'editeur graphique :");

@@ -41,6 +41,7 @@ public class ControleurDiagramme {
             e.printStackTrace();
         }
         pi.setConteneurParent(mainConteneur);
+        mainConteneur.setPseudoInital(pi);
 
     }
 
