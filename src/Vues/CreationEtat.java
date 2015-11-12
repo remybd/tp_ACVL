@@ -46,7 +46,7 @@ public class CreationEtat extends FenetrePopup implements ActionListener{
         String nom_etat = text_etat.getText();
         if(nom_etat.isEmpty()){
             JOptionPane message_erreur = new JOptionPane();
-            message_erreur.showMessageDialog(null, "Un état doit avoir un nom", "Erreur", JOptionPane.ERROR_MESSAGE);
+            message_erreur.showMessageDialog(null, "Un etat doit avoir un nom", "Erreur", JOptionPane.ERROR_MESSAGE);
         } else {
             try {
 				Ihm.instance().getControleur().ajouterEtat(this.type, text_etat.getText(), (EtatGraph)this.element_graphique);

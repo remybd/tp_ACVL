@@ -5,10 +5,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 import ElementsDiagramme.EnumEtat;
 import Exceptions.NameNotModifiableException;
@@ -44,11 +41,15 @@ public class EditionEtat extends FenetrePopup implements ActionListener{
     }
 
     public void actionPerformed(ActionEvent arg0){
-        try{
-            Ihm.instance().getControleur().renommerEtat(etat_courant, text_etat.getText());
-        } catch(NameNotModifiableException e){
-            e.printStackTrace();
+        String nom_etat = text_etat.getText();
+        if(nom_etat.isEmpty()){
+            JOptionPane message_erreur = new JOptionPane();
+            message_erreur.showMessageDialog(null, "Un etat doit avoir un nom", "Erreur", JOptionPane.ERROR_MESSAGE);
+        } else {
+            try {
+                Ihm.instance().getControleur().renommerEtat(etat_courant, text_etat.getText());
+            } catch (Exception e) {	}
+            this.dispose();
         }
-        this.dispose();
     }
 }
