@@ -112,7 +112,7 @@ public class Composite extends EtatIntermediaire {
 		EtatGraph grandParent = ((ElementGraphique) getObservateur()).getParent();
 		//change parentée au niveau graphique
 		for(Element el : listEtatsAndTransitionIntermediaires){
-			((ElementGraphique)el.getObservateur()).setParent(grandParent);
+			((ElementGraphique)el.getObservateur()).setParentPourAplatissement();
 		}
 
 		//relie toutes les transitions entrantes à l'état pointé par l'initial
