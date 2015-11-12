@@ -476,7 +476,7 @@ public class EditeurGraphique extends JFrame implements ObservateurVue {
         }
         return res;
     }
-	
+
     private void reset() {
         for (Map.Entry<mxCell, ElementGraphique> entry : liste_elements_graphiques.entrySet()) {
         	Object[] tab = {entry.getKey()};
