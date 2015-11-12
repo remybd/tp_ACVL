@@ -19,7 +19,7 @@ import ElementsDiagramme.EnumEtat;
 public class CreationEtat extends FenetrePopup implements ActionListener{
 
     private JTextField text_etat = new JTextField();
-    private JLabel nom_etat = new JLabel("Nom de l'état");
+    private JLabel nom_etat = new JLabel("Nom de l'etat");
     private JButton valider = new JButton("Valider");
 
     private ElementGraphique element_graphique;
