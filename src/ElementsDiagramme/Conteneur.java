@@ -199,22 +199,22 @@ public class Conteneur implements Serializable {
 
 	public void applatir() throws Exception {
 		HashSet<Element> temp = (HashSet<Element>)_elmts.clone();
-		TransitionInitiale t = getPseudoInitial().getTransition();
+		//TransitionInitiale t = getPseudoInitial().getTransition();
 
 		for(Element el: temp){
 			if(el.isEtatComposite()){
 				((Composite)el).applatir();
-				HashSet<Transition> sources = ((Composite) el).getSources();
-				HashSet<Transition> destinations = ((Composite) el).getDestinations();
+				//HashSet<Transition> sources = ((Composite) el).getSources();
+				//HashSet<Transition> destinations = ((Composite) el).getDestinations();
 
-				ControleurDiagramme.instance().supprimerElement((ElementGraphique)el.getObservateur());
+				ControleurDiagramme.instance().supprimerElementForAplatir((Composite) el);
 
-				((Composite) el).setSources(sources);
-				((Composite) el).setDestinations(destinations);
+				//((Composite) el).setSources(sources);
+				//((Composite) el).setDestinations(destinations);
 			}
 		}
 
-		getPseudoInitial().setTransition(t);
+		//getPseudoInitial().setTransition(t);
 	}
 
 	public void addElements(HashSet<Element> elements){

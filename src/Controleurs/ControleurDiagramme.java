@@ -6,6 +6,7 @@ import ElementsDiagramme.Transition;
 import Erreurs.Erreur;
 import Exceptions.*;
 import Vues.*;
+import com.mxgraph.model.mxCell;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,7 +52,6 @@ public class ControleurDiagramme {
         Etat dEtat = (Etat)getElementFromGraphic(d);
 
         Conteneur conteneurParent = sEtat.getConteneurParent();
-
         Transition t = Transition.creerTransition(type,etiquette,sEtat,dEtat,conteneurParent);
 
         TransitionGraph tg = ihm.createTransitionGraph(s,d,t);
@@ -110,17 +110,24 @@ public class ControleurDiagramme {
         ArrayList<Element> elementsSupprime = e.supprimer();
         for(Element element : elementsSupprime){
 
-        	if(element.isEtat()){
-        		System.out.println("Suppression graphique de "+( (Etat)element).getNom());
-        	}
-        	else if(element.isTransition()){
-        		System.out.println("Suppression graphique de "+( (Transition)element).getEtiquette());
-        	}
-
             ihm.removeElem(getElemGraphFromElem(element).getObjet_graphique());
             correspondance.remove(elem);
         }
         
+        DEBUG_displayElmts();
+        this.chercherErreurs();
+    }
+
+    public void supprimerElementForAplatir(Composite e) throws Exception {
+        EtatGraph elem = getEtatGraphFromEtat(e);
+
+        ArrayList<Element> elementsSupprime = e.supprimerForAplatir();
+        for(Element element : elementsSupprime){
+
+            ihm.removeElem(getElemGraphFromElem(element).getObjet_graphique());
+            correspondance.remove(elem);
+        }
+
         DEBUG_displayElmts();
         this.chercherErreurs();
     }
@@ -329,6 +336,7 @@ public class ControleurDiagramme {
 
     public void applatir() throws Exception {
         mainConteneur.applatir();
+        Ihm.instance().getEdGraphique().getGraph().refresh();
     }
 
     public void chargerMainConteneur(Conteneur mainConteneur){
@@ -336,6 +344,7 @@ public class ControleurDiagramme {
         correspondance.clear();
 
         HashSet<Element> listAllElements = mainConteneur.getAllElements();
+
         HashSet<ElementGraphique> listAllElementsGraphique = new HashSet<ElementGraphique>();
         for(Element e : listAllElements){
             ElementGraphique eg = (ElementGraphique)e.getObservateur();
@@ -345,6 +354,7 @@ public class ControleurDiagramme {
 
         this.DEBUG_displayElmts();
         EditeurGraphique.instance().updateListeElementGraphiqueAndDisplay(listAllElementsGraphique);
+        Ihm.instance().getEdGraphique().getGraph().refresh();
         this.chercherErreurs();
     }
 

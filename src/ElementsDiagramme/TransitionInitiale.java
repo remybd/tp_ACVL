@@ -45,11 +45,13 @@ public class TransitionInitiale extends Transition {
 	public ArrayList<Element> supprimer() {
 		ArrayList<Element> elmtsSupr = new ArrayList<Element>();
 		elmtsSupr.add(this);
-		
-		if(_etatInit == null)
-			return elmtsSupr;
-		
-		_etatInit.setTransition(null);
+
+		if(_etatInit != null && _etatInit.getTransition().equals(this))
+			_etatInit.setTransition(null);
+
+		if(_etatDest != null )
+			_etatDest.unLinkSource(this);
+
 		this.getConteneurParent().supprimerElmt(this);
 		return elmtsSupr;
 	}
