@@ -166,7 +166,7 @@ public abstract class EtatIntermediaire extends Etat{
 		String evtCond; //pr 1 transition, contient evenement+condition sans espaces
 		String symbol;
 		for(Transition trans : _dest){
-			evtCond = trans.getEvt()+trans.getAction();
+			evtCond = trans.getGarde()+trans.getEvt();
 			evtCond = evtCond.replaceAll("\\s", "");
 			evtCond = evtCond.replaceAll("\\t", "");
 			
