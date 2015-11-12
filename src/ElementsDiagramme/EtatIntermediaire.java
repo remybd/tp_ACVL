@@ -15,9 +15,9 @@ import Vues.ObservateurVue;
  *
  */
 public abstract class EtatIntermediaire extends Etat{
-	//transitions dont la destination est this
+	//transitions dont la destination est un autre état
 	private HashSet<Transition> _dest = new HashSet<Transition>();
-	//transitions dont la source est this
+	//transitions dont la source est un autre état
 	private HashSet<Transition> _sources = new HashSet<Transition>();
 	
 	public EtatIntermediaire(Conteneur parent, String nom){
@@ -127,8 +127,8 @@ public abstract class EtatIntermediaire extends Etat{
 	 * 			false sinon
 	 */
 	public boolean estBloquant(){
-		for(Transition source : _sources){
-			if(source.getEtatDestination() == ((Etat)this))
+		for(Transition source : _dest){
+			if(source.getEtatDestination() == this)
 				return false;
 		}
 		
